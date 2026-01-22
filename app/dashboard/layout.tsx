@@ -27,6 +27,7 @@ export default function DashboardLayout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -60,6 +61,15 @@ export default function DashboardLayout({
       if (profile) {
         setUserProfile(profile);
       }
+
+      // Fetch unread notifications count (unread messages)
+      const { count: unreadMessages } = await supabase
+        .from('messages')
+        .select('*', { count: 'exact', head: true })
+        .eq('recipient_id', session.user.id)
+        .eq('read', false);
+
+      setUnreadCount(unreadMessages || 0);
     };
 
     checkAuth();
@@ -132,10 +142,18 @@ export default function DashboardLayout({
                 className="bg-stone-900 border border-stone-700 pl-9 pr-4 py-2 text-sm text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 w-64"
               />
             </form>
-            <button className="relative text-stone-400 hover:text-amber-600">
-              <Bell className="w-5 h-5" />
-              <div className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
-            </button>
+            <Link href="/dashboard/messages">
+              <button className="relative text-stone-400 hover:text-amber-600">
+                <Bell className="w-5 h-5" />
+                {unreadCount > 0 && (
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                    <span className="text-[10px] text-white font-medium">
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                  </div>
+                )}
+              </button>
+            </Link>
             <div className="flex items-center gap-4">
               <div className="text-right">
                 <div className="text-sm font-light">{userProfile?.name || 'Member'}</div>
@@ -150,50 +168,55 @@ export default function DashboardLayout({
       <div className="flex pt-20">
         {/* Sidebar */}
         <aside
-          className={`fixed left-0 top-20 bottom-0 w-64 border-r border-stone-800 bg-stone-950 transform transition-transform lg:translate-x-0 ${
+          className={`fixed left-0 top-20 bottom-0 w-64 border-r border-stone-800 bg-stone-950 transform transition-transform z-30 lg:translate-x-0 ${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } lg:relative lg:top-0`}
+          }`}
         >
-          <nav className="p-6 space-y-2">
-            {navItems.map(item => {
-              const Icon = item.icon;
-              const isActive = pathname === item.href;
-              return (
-                <Link key={item.href} href={item.href}>
-                  <div
-                    className={`flex items-center gap-3 px-4 py-3 rounded text-sm font-light tracking-wide transition-colors cursor-pointer ${
-                      isActive
-                        ? 'bg-stone-900 text-amber-600 border-l-2 border-amber-600'
-                        : 'text-stone-400 hover:text-amber-600'
-                    }`}
-                  >
-                    <Icon className="w-5 h-5" />
-                    {item.label}
-                  </div>
-                </Link>
-              );
-            })}
-          </nav>
+          <div className="flex flex-col h-full">
+            <nav className="flex-1 p-6 space-y-2 overflow-y-auto">
+              {navItems.map(item => {
+                const Icon = item.icon;
+                const isActive = pathname === item.href;
+                return (
+                  <Link key={item.href} href={item.href}>
+                    <div
+                      className={`flex items-center gap-3 px-4 py-3 rounded text-sm font-light tracking-wide transition-colors cursor-pointer ${
+                        isActive
+                          ? 'bg-stone-900 text-amber-600 border-l-2 border-amber-600'
+                          : 'text-stone-400 hover:text-amber-600'
+                      }`}
+                    >
+                      <Icon className="w-5 h-5" />
+                      {item.label}
+                    </div>
+                  </Link>
+                );
+              })}
+            </nav>
 
-          <div className="absolute bottom-6 left-6 right-6 space-y-2 border-t border-stone-800 pt-6">
-            <Link href="/dashboard/settings">
-              <div className="flex items-center gap-3 px-4 py-3 text-sm font-light text-stone-400 hover:text-amber-600 cursor-pointer transition-colors">
-                <Settings className="w-5 h-5" />
-                Settings
-              </div>
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 text-sm font-light text-stone-400 hover:text-red-500 cursor-pointer transition-colors"
-            >
-              <LogOut className="w-5 h-5" />
-              Sign Out
-            </button>
+            <div className="flex-shrink-0 p-6 space-y-2 border-t border-stone-800">
+              <Link href="/dashboard/settings">
+                <div className="flex items-center gap-3 px-4 py-3 text-sm font-light text-stone-400 hover:text-amber-600 cursor-pointer transition-colors">
+                  <Settings className="w-5 h-5" />
+                  Settings
+                </div>
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-light text-stone-400 hover:text-red-500 cursor-pointer transition-colors"
+              >
+                <LogOut className="w-5 h-5" />
+                Sign Out
+              </button>
+            </div>
           </div>
         </aside>
 
+        {/* Sidebar spacer for desktop */}
+        <div className="hidden lg:block w-64 flex-shrink-0" />
+
         {/* Main Content */}
-        <main className="flex-1 lg:ml-0 ml-0">
+        <main className="flex-1 min-w-0">
           <div className="p-6 md:p-8">
             {children}
           </div>

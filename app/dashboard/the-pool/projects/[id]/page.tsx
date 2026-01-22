@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
-import { ArrowLeft, Calendar, MapPin, Users, DollarSign, Clock, Play, X, Check, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Calendar, MapPin, Users, DollarSign, Clock, Play, X, Check, TrendingUp, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
@@ -244,12 +244,64 @@ export default function ProjectDetailPage() {
         )}
       </div>
 
-      {/* Video Preview (Placeholder) */}
+      {/* Video Embed */}
       {project.video_url && (
-        <div className="border border-stone-800 aspect-video mb-8 flex items-center justify-center bg-stone-900">
-          <button className="w-16 h-16 border-2 border-amber-600 rounded-full flex items-center justify-center text-amber-600 hover:bg-amber-600 hover:text-stone-950 transition-colors">
-            <Play className="w-8 h-8 ml-1" />
-          </button>
+        <div className="border border-stone-800 aspect-video mb-8 overflow-hidden bg-stone-900">
+          {(() => {
+            const url = project.video_url;
+            // YouTube embed
+            const youtubeMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+            if (youtubeMatch) {
+              return (
+                <iframe
+                  src={`https://www.youtube.com/embed/${youtubeMatch[1]}`}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title="Project Video"
+                />
+              );
+            }
+            // Vimeo embed
+            const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+            if (vimeoMatch) {
+              return (
+                <iframe
+                  src={`https://player.vimeo.com/video/${vimeoMatch[1]}`}
+                  className="w-full h-full"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  title="Project Video"
+                />
+              );
+            }
+            // Loom embed
+            const loomMatch = url.match(/loom\.com\/share\/([a-zA-Z0-9]+)/);
+            if (loomMatch) {
+              return (
+                <iframe
+                  src={`https://www.loom.com/embed/${loomMatch[1]}`}
+                  className="w-full h-full"
+                  allowFullScreen
+                  title="Project Video"
+                />
+              );
+            }
+            // Default: show link with play button fallback
+            return (
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full h-full flex flex-col items-center justify-center gap-4 hover:bg-stone-800/50 transition-colors"
+              >
+                <div className="w-16 h-16 border-2 border-amber-600 rounded-full flex items-center justify-center text-amber-600">
+                  <Play className="w-8 h-8 ml-1" />
+                </div>
+                <span className="text-amber-600 text-sm font-light">Watch Video</span>
+              </a>
+            );
+          })()}
         </div>
       )}
 
@@ -287,7 +339,17 @@ export default function ProjectDetailPage() {
         {/* Investment CTA */}
         {project.status === 'active' && (
           <div>
-            {myInvestment ? (
+            {currentUserId === project.creator_id ? (
+              <div className="border border-stone-700 bg-stone-900/50 p-6">
+                <div className="flex items-center gap-3">
+                  <Users className="w-5 h-5 text-amber-600" />
+                  <span className="font-light text-stone-300">This is your project</span>
+                </div>
+                <p className="text-sm text-stone-500 font-light mt-2">
+                  Share this page with potential investors to get funding for your project.
+                </p>
+              </div>
+            ) : myInvestment ? (
               <div className="border border-green-600/30 bg-green-600/5 p-6">
                 <div className="flex items-center gap-3 mb-3">
                   <Check className="w-5 h-5 text-green-500" />
@@ -319,9 +381,10 @@ export default function ProjectDetailPage() {
             ) : (
               <button
                 onClick={() => setShowInvestModal(true)}
-                className="w-full bg-amber-600 text-stone-950 py-4 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors"
+                className="w-full bg-amber-600 text-stone-950 py-4 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors flex items-center justify-center gap-2"
               >
-                Contribute to This Project
+                <DollarSign className="w-5 h-5" />
+                Invest in This Project
               </button>
             )}
           </div>

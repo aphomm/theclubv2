@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { FileText, Video, Download } from 'lucide-react';
+import { FileText, Video, Download, ExternalLink, File, Star } from 'lucide-react';
 
 interface Resource {
   id: string;
@@ -11,12 +11,17 @@ interface Resource {
   category: string;
   format: string;
   featured: boolean;
+  file_url?: string;
 }
+
+// Match the categories from admin panel
+const categories = ['Business', 'Legal', 'Production', 'Marketing', 'Distribution', 'Samples', 'Templates', 'Tutorials'];
 
 export default function ResourcesPage() {
   const [resources, setResources] = useState<Resource[]>([]);
   const [filterCategory, setFilterCategory] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
+  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchResources = async () => {
@@ -27,36 +32,47 @@ export default function ResourcesPage() {
 
       const supabase = createClient(supabaseUrl, supabaseKey);
 
-      let query = supabase.from('resources').select('*');
+      // First fetch all resources to get available categories
+      const { data: allData } = await supabase
+        .from('resources')
+        .select('*')
+        .order('featured', { ascending: false })
+        .order('created_at', { ascending: false });
 
-      if (filterCategory !== 'all') {
-        query = query.eq('category', filterCategory);
+      if (allData) {
+        // Get unique categories that have resources
+        const uniqueCategories = [...new Set(allData.map(r => r.category))];
+        setAvailableCategories(uniqueCategories);
+
+        // Filter if needed
+        if (filterCategory === 'all') {
+          setResources(allData);
+        } else {
+          setResources(allData.filter(r => r.category === filterCategory));
+        }
       }
 
-      const { data } = await query.order('created_at', { ascending: false });
-
-      setResources(data || []);
       setIsLoading(false);
     };
 
     fetchResources();
   }, [filterCategory]);
 
-  const categories = [
-    'all',
-    'Legal Templates',
-    'Marketing Resources',
-    'Business Development',
-    'Technical Guides',
-    'Industry Reports',
-  ];
-
   const getFormatIcon = (format: string) => {
     switch (format.toLowerCase()) {
       case 'video':
         return <Video className="w-5 h-5 text-blue-500" />;
-      default:
+      case 'pdf':
+      case 'document':
         return <FileText className="w-5 h-5 text-amber-600" />;
+      default:
+        return <File className="w-5 h-5 text-amber-600" />;
+    }
+  };
+
+  const handleResourceClick = (resource: Resource) => {
+    if (resource.file_url) {
+      window.open(resource.file_url, '_blank', 'noopener,noreferrer');
     }
   };
 
@@ -69,7 +85,17 @@ export default function ResourcesPage() {
 
       {/* Categories */}
       <div className="flex gap-2 mb-10 overflow-x-auto pb-4">
-        {categories.map(cat => (
+        <button
+          onClick={() => setFilterCategory('all')}
+          className={`px-4 py-2 text-sm font-light whitespace-nowrap transition-colors border ${
+            filterCategory === 'all'
+              ? 'border-amber-600 text-amber-600 bg-amber-600/10'
+              : 'border-stone-700 text-stone-400 hover:border-amber-600'
+          }`}
+        >
+          All
+        </button>
+        {availableCategories.map(cat => (
           <button
             key={cat}
             onClick={() => setFilterCategory(cat)}
@@ -93,14 +119,25 @@ export default function ResourcesPage() {
         </div>
       ) : resources.length === 0 ? (
         <div className="text-center py-20 border border-stone-800 p-12">
-          <p className="text-stone-400 font-light">No resources found in this category</p>
+          <p className="text-stone-400 font-light">No resources available yet</p>
+          <p className="text-stone-500 font-light text-sm mt-2">Check back soon for new materials</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {resources.map(resource => (
-            <div key={resource.id} className="border border-stone-800 p-6 hover:border-amber-600 transition-colors">
+            <div
+              key={resource.id}
+              className={`border p-6 transition-colors ${
+                resource.featured
+                  ? 'border-amber-600/50 bg-amber-600/5'
+                  : 'border-stone-800 hover:border-amber-600'
+              }`}
+            >
               <div className="flex items-center justify-between mb-4">
-                {getFormatIcon(resource.format)}
+                <div className="flex items-center gap-2">
+                  {getFormatIcon(resource.format)}
+                  {resource.featured && <Star className="w-4 h-4 text-amber-600 fill-amber-600" />}
+                </div>
                 <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase">
                   {resource.format}
                 </span>
@@ -111,10 +148,26 @@ export default function ResourcesPage() {
 
               <div className="flex items-center justify-between pt-4 border-t border-stone-800">
                 <span className="text-xs text-stone-500 font-light">{resource.category}</span>
-                <button className="flex items-center gap-2 text-amber-600 hover:underline text-sm font-light">
-                  <Download className="w-4 h-4" />
-                  Download
-                </button>
+                {resource.file_url ? (
+                  <button
+                    onClick={() => handleResourceClick(resource)}
+                    className="flex items-center gap-2 text-amber-600 hover:underline text-sm font-light"
+                  >
+                    {resource.format.toLowerCase() === 'link' ? (
+                      <>
+                        <ExternalLink className="w-4 h-4" />
+                        Open
+                      </>
+                    ) : (
+                      <>
+                        <Download className="w-4 h-4" />
+                        Download
+                      </>
+                    )}
+                  </button>
+                ) : (
+                  <span className="text-xs text-stone-600 font-light">Coming soon</span>
+                )}
               </div>
             </div>
           ))}
