@@ -184,7 +184,8 @@ export default function StudioBookingPage() {
     ]);
 
     if (error) {
-      toast.error('Failed to book studio');
+      console.error('Studio booking error:', error);
+      toast.error(`Failed to book studio: ${error.message || error.code || 'Unknown error'}`);
     } else {
       toast.success('Studio booked successfully!');
       setShowBookingModal(false);

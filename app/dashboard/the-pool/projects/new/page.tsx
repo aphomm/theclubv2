@@ -141,8 +141,8 @@ export default function CreateProjectPage() {
       .single();
 
     if (error) {
-      toast.error('Failed to create project. Please try again.');
-      console.error(error);
+      console.error('Project creation error:', error);
+      toast.error(`Failed to create project: ${error.message || error.code || 'Unknown error'}`);
     } else if (data) {
       toast.success('Project submitted successfully! It will be reviewed shortly.');
       router.push(`/dashboard/the-pool/projects/${data.id}`);
