@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Plus } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -51,9 +51,17 @@ export default function ProjectsListPage() {
         </button>
       </Link>
 
-      <div className="mb-10">
-        <h1 className="text-4xl font-light mb-2">All Projects</h1>
-        <p className="text-stone-400 font-light">Browse and invest in community projects</p>
+      <div className="flex items-start justify-between mb-10">
+        <div>
+          <h1 className="text-4xl font-light mb-2">All Projects</h1>
+          <p className="text-stone-400 font-light">Browse and invest in community projects</p>
+        </div>
+        <Link href="/dashboard/the-pool/projects/new">
+          <button className="flex items-center gap-2 bg-amber-600 text-stone-950 px-6 py-3 text-sm font-light hover:bg-amber-700 transition-colors">
+            <Plus className="w-5 h-5" />
+            Start a Project
+          </button>
+        </Link>
       </div>
 
       {/* Filter Tabs */}

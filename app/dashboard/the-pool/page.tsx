@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { DollarSign, TrendingUp, Users, Calendar } from 'lucide-react';
+import { DollarSign, TrendingUp, Users, Calendar, Plus } from 'lucide-react';
 import Link from 'next/link';
 
 interface Project {
@@ -79,11 +79,19 @@ export default function ThePoolPage() {
 
   return (
     <div className="max-w-7xl">
-      <div className="mb-12">
-        <h1 className="text-4xl font-light mb-2">THE POOL</h1>
-        <p className="text-stone-400 font-light">
-          Collaborative projects where members fund, create, and share in the success
-        </p>
+      <div className="flex items-start justify-between mb-12">
+        <div>
+          <h1 className="text-4xl font-light mb-2">THE POOL</h1>
+          <p className="text-stone-400 font-light">
+            Collaborative projects where members fund, create, and share in the success
+          </p>
+        </div>
+        <Link href="/dashboard/the-pool/projects/new">
+          <button className="flex items-center gap-2 bg-amber-600 text-stone-950 px-6 py-3 text-sm font-light hover:bg-amber-700 transition-colors">
+            <Plus className="w-5 h-5" />
+            Start a Project
+          </button>
+        </Link>
       </div>
 
       {/* Stats */}
@@ -96,16 +104,23 @@ export default function ThePoolPage() {
       {/* Featured Section */}
       <div className="border border-amber-600/30 bg-gradient-to-br from-amber-600/5 to-transparent p-12 mb-12">
         <div className="max-w-2xl">
-          <h2 className="text-3xl font-light mb-4">Featured Opportunity</h2>
+          <h2 className="text-3xl font-light mb-4">Build Together, Win Together</h2>
           <p className="text-stone-300 font-light leading-relaxed mb-8">
-            Browse active projects, learn about investment opportunities, and gain equity ownership in
-            collaborative music ventures. Every contribution—cash, time, or equipment—receives transparent equity allocation.
+            Have a project that needs funding? Launch it here and get support from THE CLUB community.
+            Or browse active projects and invest your cash, time, or equipment for equity ownership.
           </p>
-          <Link href="/dashboard/the-pool/projects">
-            <button className="border border-amber-600 text-amber-600 px-12 py-4 text-sm font-light tracking-wide hover:bg-amber-600 hover:text-stone-950 transition-colors">
-              Browse All Projects
-            </button>
-          </Link>
+          <div className="flex flex-wrap gap-4">
+            <Link href="/dashboard/the-pool/projects/new">
+              <button className="bg-amber-600 text-stone-950 px-8 py-4 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors">
+                Start Your Project
+              </button>
+            </Link>
+            <Link href="/dashboard/the-pool/projects">
+              <button className="border border-amber-600 text-amber-600 px-8 py-4 text-sm font-light tracking-wide hover:bg-amber-600 hover:text-stone-950 transition-colors">
+                Browse Projects
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
 
