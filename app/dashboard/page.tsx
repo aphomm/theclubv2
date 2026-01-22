@@ -4,9 +4,38 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { Calendar, Users, Music, TrendingUp } from 'lucide-react';
 
+// Monthly studio hour allocation per member
+const MONTHLY_STUDIO_HOURS = 10;
+// Hours per booking slot
+const HOURS_PER_BOOKING = 2;
+
+// Helper to get current date in PST
+const getPSTDate = () => {
+  return new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
+};
+
+// Helper to format date as YYYY-MM-DD in PST
+const formatDatePST = (date: Date) => {
+  const pstDate = new Date(date.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
+  return pstDate.toISOString().split('T')[0];
+};
+
+// Get first day of current month in PST
+const getStartOfMonthPST = () => {
+  const pst = getPSTDate();
+  return new Date(pst.getFullYear(), pst.getMonth(), 1);
+};
+
+// Get last day of current month in PST
+const getEndOfMonthPST = () => {
+  const pst = getPSTDate();
+  return new Date(pst.getFullYear(), pst.getMonth() + 1, 0);
+};
+
 interface DashboardStats {
   eventsRsvpd: number;
   studioHoursAvailable: number;
+  studioHoursUsed: number;
   networkConnections: number;
   activePoolProjects: number;
 }
@@ -14,7 +43,8 @@ interface DashboardStats {
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats>({
     eventsRsvpd: 0,
-    studioHoursAvailable: 0,
+    studioHoursAvailable: MONTHLY_STUDIO_HOURS,
+    studioHoursUsed: 0,
     networkConnections: 0,
     activePoolProjects: 0,
   });
@@ -36,21 +66,39 @@ export default function DashboardPage() {
 
       if (!user) return;
 
-      const [eventRsvps, events, userCount, poolProjects] = await Promise.all([
+      // Get current month boundaries in PST
+      const startOfMonth = formatDatePST(getStartOfMonthPST());
+      const endOfMonth = formatDatePST(getEndOfMonthPST());
+      const today = formatDatePST(getPSTDate());
+
+      const [eventRsvps, events, userCount, poolProjects, studioBookings] = await Promise.all([
         supabase.from('event_rsvps').select('*').eq('user_id', user.id),
         supabase
           .from('events')
           .select('*')
-          .gte('date', new Date().toISOString().split('T')[0])
+          .gte('date', today)
           .order('date')
           .limit(5),
         supabase.from('users').select('id', { count: 'exact' }),
         supabase.from('pool_projects').select('*').eq('status', 'active').limit(5),
+        // Fetch user's studio bookings for current month
+        supabase
+          .from('studio_bookings')
+          .select('*')
+          .eq('user_id', user.id)
+          .gte('date', startOfMonth)
+          .lte('date', endOfMonth)
+          .neq('status', 'cancelled'),
       ]);
+
+      // Calculate hours used this month (each booking = 2 hours)
+      const hoursUsed = (studioBookings.data?.length || 0) * HOURS_PER_BOOKING;
+      const hoursAvailable = Math.max(0, MONTHLY_STUDIO_HOURS - hoursUsed);
 
       setStats({
         eventsRsvpd: eventRsvps.data?.length || 0,
-        studioHoursAvailable: 10,
+        studioHoursAvailable: hoursAvailable,
+        studioHoursUsed: hoursUsed,
         networkConnections: userCount.count || 0,
         activePoolProjects: poolProjects.data?.length || 0,
       });
@@ -119,7 +167,12 @@ export default function DashboardPage() {
                 <div>
                   <h3 className="font-light text-lg">{event.title}</h3>
                   <p className="text-sm text-stone-400 font-light">
-                    {new Date(event.date).toLocaleDateString()} • {event.location}
+                    {new Date(event.date + 'T12:00:00').toLocaleDateString('en-US', {
+                      timeZone: 'America/Los_Angeles',
+                      weekday: 'short',
+                      month: 'short',
+                      day: 'numeric',
+                    })} • {event.location}
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
@@ -149,7 +202,10 @@ export default function DashboardPage() {
             </a>
           </div>
           <p className="text-stone-400 font-light text-sm">
-            You have 10 studio hours available this month. Book your recording sessions.
+            You have <span className="text-amber-600">{stats.studioHoursAvailable}h</span> available this month
+            {stats.studioHoursUsed > 0 && (
+              <span> ({stats.studioHoursUsed}h used)</span>
+            )}. Book your recording sessions.
           </p>
         </div>
 
