@@ -41,7 +41,7 @@ export default function ResourcesPage() {
 
       if (allData) {
         // Get unique categories that have resources
-        const uniqueCategories = [...new Set(allData.map(r => r.category))];
+  const uniqueCategories = Array.from(new Set(allData.map(r => r.category)));
         setAvailableCategories(uniqueCategories);
 
         // Filter if needed
