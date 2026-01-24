@@ -65,8 +65,14 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-40 pb-32 px-6">
-        <div className="max-w-5xl mx-auto text-center">
+      <section className="pt-40 pb-32 px-6 relative overflow-hidden">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+          style={{ backgroundImage: 'url(/images/weplay-interior.jpg)' }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-stone-950/50 via-transparent to-stone-950" />
+        <div className="max-w-5xl mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 border border-amber-600 text-amber-600 text-xs font-light tracking-extra-wide mb-12">
             <MapPin className="w-3 h-3" />
             INGLEWOOD, CALIFORNIA
@@ -334,34 +340,47 @@ export default function LandingPage() {
               Tour the Space
             </button>
           </div>
-          <div className="bg-stone-900 aspect-[4/3] flex items-center justify-center border border-stone-800">
-            <MapPin className="w-16 h-16 text-stone-700" />
+          <div className="aspect-[4/3] overflow-hidden border border-stone-800">
+            <img
+              src="/images/weplay-exterior.png"
+              alt="WePlay Studios Exterior"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
       </section>
 
       {/* Team */}
       <section className="py-32 px-6 border-t border-stone-900">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-light mb-6">Leadership & Advisors</h2>
           </div>
-          <div className="grid md:grid-cols-4 gap-12">
-            {[
-              { name: 'James Wilson', role: 'Founder & CEO', bio: '20+ years in music production' },
-              { name: 'Sarah Martinez', role: 'Head of Operations', bio: 'Former Warner Music executive' },
-              { name: 'Michael Brown', role: 'Creative Director', bio: 'Multi-platinum producer' },
-              { name: 'Lisa Anderson', role: 'Community Lead', bio: 'Artist development specialist' }
-            ].map((member, i) => (
-              <div key={i} className="text-center">
-                <div className="bg-stone-900 aspect-square mb-6 flex items-center justify-center border border-stone-800">
-                  <Users className="w-16 h-16 text-stone-700" />
-                </div>
-                <h3 className="text-xl font-light mb-2">{member.name}</h3>
-                <div className="text-amber-600 text-sm font-light mb-3">{member.role}</div>
-                <p className="text-stone-400 text-sm font-light">{member.bio}</p>
+          <div className="grid md:grid-cols-2 gap-16">
+            <div className="text-center">
+              <div className="aspect-square mb-6 overflow-hidden border border-stone-800">
+                <img
+                  src="/images/larrance-dopson.jpg"
+                  alt="Larrance Dopson"
+                  className="w-full h-full object-cover object-top"
+                />
               </div>
-            ))}
+              <h3 className="text-xl font-light mb-2">Larrance "Rance" Dopson</h3>
+              <div className="text-amber-600 text-sm font-light mb-1">4x Grammy Award Winner</div>
+              <p className="text-stone-400 text-sm font-light">Founder of 1500 Or Nothin'</p>
+            </div>
+            <div className="text-center">
+              <div className="aspect-square mb-6 overflow-hidden border border-stone-800">
+                <img
+                  src="/images/max-bilonogov.webp"
+                  alt="Max Bilonogov"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+              <h3 className="text-xl font-light mb-2">Max Bilonogov</h3>
+              <div className="text-amber-600 text-sm font-light mb-1">Chief Visionary Officer</div>
+              <p className="text-stone-400 text-sm font-light">WePlay Studios</p>
+            </div>
           </div>
         </div>
       </section>
