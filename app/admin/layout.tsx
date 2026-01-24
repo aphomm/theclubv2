@@ -4,13 +4,14 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
-import { Users, Calendar, Settings, LogOut } from 'lucide-react';
+import { Users, Calendar, Settings, LogOut, Bell } from 'lucide-react';
 import { toast } from 'sonner';
 
 const adminNavItems = [
   { href: '/admin', label: 'Overview', icon: Settings },
   { href: '/admin/members', label: 'Members', icon: Users },
   { href: '/admin/events', label: 'Events', icon: Calendar },
+  { href: '/admin/notifications', label: 'Notifications', icon: Bell },
 ];
 
 export default function AdminLayout({

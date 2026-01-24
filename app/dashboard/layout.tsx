@@ -69,7 +69,21 @@ export default function DashboardLayout({
         .eq('recipient_id', session.user.id)
         .eq('read', false);
 
-      setUnreadCount(unreadMessages || 0);
+      // Count unread platform notifications for user's tier
+      const { data: platformNotifs } = await supabase
+        .from('platform_notifications')
+        .select('id')
+        .contains('target_tiers', [profile?.tier || 'Creator']);
+
+      const { data: readNotifs } = await supabase
+        .from('platform_notification_reads')
+        .select('notification_id')
+        .eq('user_id', session.user.id);
+
+      const readIds = new Set(readNotifs?.map(r => r.notification_id) || []);
+      const unreadPlatform = (platformNotifs || []).filter(n => !readIds.has(n.id)).length;
+
+      setUnreadCount((unreadMessages || 0) + unreadPlatform);
     };
 
     checkAuth();
@@ -142,7 +156,7 @@ export default function DashboardLayout({
                 className="bg-stone-900 border border-stone-700 pl-9 pr-4 py-2 text-sm text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 w-64"
               />
             </form>
-            <Link href="/dashboard/messages">
+            <Link href="/dashboard/notifications">
               <button className="relative text-stone-400 hover:text-amber-600">
                 <Bell className="w-5 h-5" />
                 {unreadCount > 0 && (
