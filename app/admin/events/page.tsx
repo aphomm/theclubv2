@@ -239,172 +239,6 @@ export default function EventsPage() {
     setActiveMenu(null);
   };
 
-  const EventForm = ({ onSubmit, isEdit = false }: { onSubmit: (e: React.FormEvent) => void; isEdit?: boolean }) => (
-    <form onSubmit={onSubmit} className="space-y-6">
-      <div>
-        <label className="text-sm text-stone-400 font-light mb-2 block">Event Title *</label>
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleInputChange}
-          placeholder="e.g., Songwriting Masterclass"
-          className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
-          required
-        />
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm text-stone-400 font-light mb-2 block">Event Type *</label>
-          <select
-            name="event_type"
-            value={formData.event_type}
-            onChange={handleInputChange}
-            className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
-          >
-            {eventTypes.map(type => (
-              <option key={type} value={type}>{type}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="text-sm text-stone-400 font-light mb-2 block">Capacity *</label>
-          <input
-            type="number"
-            name="capacity"
-            value={formData.capacity}
-            onChange={handleInputChange}
-            min="1"
-            className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 transition-colors"
-            required
-          />
-        </div>
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm text-stone-400 font-light mb-2 block">Date *</label>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleInputChange}
-            className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
-            required
-          />
-        </div>
-        <div>
-          <label className="text-sm text-stone-400 font-light mb-2 block">Time *</label>
-          <input
-            type="time"
-            name="time"
-            value={formData.time}
-            onChange={handleInputChange}
-            className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
-            required
-          />
-        </div>
-      </div>
-
-      <div>
-        <label className="text-sm text-stone-400 font-light mb-2 block">Location *</label>
-        <input
-          type="text"
-          name="location"
-          value={formData.location}
-          onChange={handleInputChange}
-          placeholder="e.g., WePlay Studios - Main Room"
-          className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
-          required
-        />
-      </div>
-
-      <div>
-        <label className="text-sm text-stone-400 font-light mb-2 block">Description</label>
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleInputChange}
-          placeholder="Describe the event..."
-          rows={4}
-          className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
-        />
-      </div>
-
-      <div>
-        <label className="text-sm text-stone-400 font-light mb-3 block">Tier Access</label>
-        <div className="flex gap-3">
-          {tierOptions.map(tier => (
-            <button
-              key={tier}
-              type="button"
-              onClick={() => handleTierToggle(tier)}
-              className={`px-4 py-2 text-sm font-light border transition-colors ${
-                formData.tier_access.includes(tier)
-                  ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-                  : 'border-stone-700 text-stone-400 hover:border-stone-600'
-              }`}
-            >
-              {tier}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="border-t border-stone-800 pt-6">
-        <h4 className="text-sm text-stone-400 font-light mb-4">Instructor Details (Optional)</h4>
-        <div className="space-y-4">
-          <input
-            type="text"
-            name="instructor_name"
-            value={formData.instructor_name}
-            onChange={handleInputChange}
-            placeholder="Instructor name"
-            className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
-          />
-          <input
-            type="text"
-            name="instructor_title"
-            value={formData.instructor_title}
-            onChange={handleInputChange}
-            placeholder="Instructor title (e.g., Grammy-winning Producer)"
-            className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
-          />
-          <textarea
-            name="instructor_bio"
-            value={formData.instructor_bio}
-            onChange={handleInputChange}
-            placeholder="Brief bio..."
-            rows={2}
-            className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
-          />
-        </div>
-      </div>
-
-      <div className="flex gap-4 pt-4">
-        <button
-          type="button"
-          onClick={() => {
-            isEdit ? setShowEditModal(false) : setShowCreateModal(false);
-            resetForm();
-            setEditingEvent(null);
-          }}
-          className="flex-1 border border-stone-700 py-3 text-sm font-light hover:border-stone-600 transition-colors"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="flex-1 bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50"
-        >
-          {isSubmitting ? 'Saving...' : isEdit ? 'Update Event' : 'Create Event'}
-        </button>
-      </div>
-    </form>
-  );
-
   return (
     <div className="max-w-7xl">
       <div className="flex items-center justify-between mb-10">
@@ -529,7 +363,168 @@ export default function EventsPage() {
                 <X className="w-6 h-6" />
               </button>
             </div>
-            <EventForm onSubmit={handleCreateEvent} />
+            <form onSubmit={handleCreateEvent} className="space-y-6">
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">Event Title *</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  placeholder="e.g., Songwriting Masterclass"
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  required
+                />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm text-stone-400 font-light mb-2 block">Event Type *</label>
+                  <select
+                    name="event_type"
+                    value={formData.event_type}
+                    onChange={handleInputChange}
+                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                  >
+                    {eventTypes.map(type => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm text-stone-400 font-light mb-2 block">Capacity *</label>
+                  <input
+                    type="number"
+                    name="capacity"
+                    value={formData.capacity}
+                    onChange={handleInputChange}
+                    min="1"
+                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 transition-colors"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm text-stone-400 font-light mb-2 block">Date *</label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleInputChange}
+                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-stone-400 font-light mb-2 block">Time *</label>
+                  <input
+                    type="time"
+                    name="time"
+                    value={formData.time}
+                    onChange={handleInputChange}
+                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">Location *</label>
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  placeholder="e.g., WePlay Studios - Main Room"
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">Description</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  placeholder="Describe the event..."
+                  rows={4}
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-3 block">Tier Access</label>
+                <div className="flex gap-3">
+                  {tierOptions.map(tier => (
+                    <button
+                      key={tier}
+                      type="button"
+                      onClick={() => handleTierToggle(tier)}
+                      className={`px-4 py-2 text-sm font-light border transition-colors ${
+                        formData.tier_access.includes(tier)
+                          ? 'border-amber-600 text-amber-600 bg-amber-600/10'
+                          : 'border-stone-700 text-stone-400 hover:border-stone-600'
+                      }`}
+                    >
+                      {tier}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="border-t border-stone-800 pt-6">
+                <h4 className="text-sm text-stone-400 font-light mb-4">Instructor Details (Optional)</h4>
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    name="instructor_name"
+                    value={formData.instructor_name}
+                    onChange={handleInputChange}
+                    placeholder="Instructor name"
+                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  />
+                  <input
+                    type="text"
+                    name="instructor_title"
+                    value={formData.instructor_title}
+                    onChange={handleInputChange}
+                    placeholder="Instructor title (e.g., Grammy-winning Producer)"
+                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  />
+                  <textarea
+                    name="instructor_bio"
+                    value={formData.instructor_bio}
+                    onChange={handleInputChange}
+                    placeholder="Brief bio..."
+                    rows={2}
+                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowCreateModal(false);
+                    resetForm();
+                  }}
+                  className="flex-1 border border-stone-700 py-3 text-sm font-light hover:border-stone-600 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50"
+                >
+                  {isSubmitting ? 'Saving...' : 'Create Event'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
@@ -551,7 +546,169 @@ export default function EventsPage() {
                 <X className="w-6 h-6" />
               </button>
             </div>
-            <EventForm onSubmit={handleEditEvent} isEdit />
+            <form onSubmit={handleEditEvent} className="space-y-6">
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">Event Title *</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  placeholder="e.g., Songwriting Masterclass"
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  required
+                />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm text-stone-400 font-light mb-2 block">Event Type *</label>
+                  <select
+                    name="event_type"
+                    value={formData.event_type}
+                    onChange={handleInputChange}
+                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                  >
+                    {eventTypes.map(type => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm text-stone-400 font-light mb-2 block">Capacity *</label>
+                  <input
+                    type="number"
+                    name="capacity"
+                    value={formData.capacity}
+                    onChange={handleInputChange}
+                    min="1"
+                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 transition-colors"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm text-stone-400 font-light mb-2 block">Date *</label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleInputChange}
+                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-stone-400 font-light mb-2 block">Time *</label>
+                  <input
+                    type="time"
+                    name="time"
+                    value={formData.time}
+                    onChange={handleInputChange}
+                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">Location *</label>
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  placeholder="e.g., WePlay Studios - Main Room"
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">Description</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  placeholder="Describe the event..."
+                  rows={4}
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-3 block">Tier Access</label>
+                <div className="flex gap-3">
+                  {tierOptions.map(tier => (
+                    <button
+                      key={tier}
+                      type="button"
+                      onClick={() => handleTierToggle(tier)}
+                      className={`px-4 py-2 text-sm font-light border transition-colors ${
+                        formData.tier_access.includes(tier)
+                          ? 'border-amber-600 text-amber-600 bg-amber-600/10'
+                          : 'border-stone-700 text-stone-400 hover:border-stone-600'
+                      }`}
+                    >
+                      {tier}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="border-t border-stone-800 pt-6">
+                <h4 className="text-sm text-stone-400 font-light mb-4">Instructor Details (Optional)</h4>
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    name="instructor_name"
+                    value={formData.instructor_name}
+                    onChange={handleInputChange}
+                    placeholder="Instructor name"
+                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  />
+                  <input
+                    type="text"
+                    name="instructor_title"
+                    value={formData.instructor_title}
+                    onChange={handleInputChange}
+                    placeholder="Instructor title (e.g., Grammy-winning Producer)"
+                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  />
+                  <textarea
+                    name="instructor_bio"
+                    value={formData.instructor_bio}
+                    onChange={handleInputChange}
+                    placeholder="Brief bio..."
+                    rows={2}
+                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowEditModal(false);
+                    setEditingEvent(null);
+                    resetForm();
+                  }}
+                  className="flex-1 border border-stone-700 py-3 text-sm font-light hover:border-stone-600 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50"
+                >
+                  {isSubmitting ? 'Saving...' : 'Update Event'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

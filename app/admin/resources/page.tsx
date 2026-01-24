@@ -244,114 +244,6 @@ export default function AdminResourcesPage() {
     ? resources
     : resources.filter(r => r.category === filterCategory);
 
-  const ResourceForm = ({ onSubmit, isEdit = false }: { onSubmit: (e: React.FormEvent) => void; isEdit?: boolean }) => (
-    <form onSubmit={onSubmit} className="space-y-6">
-      <div>
-        <label className="text-sm text-stone-400 font-light mb-2 block">Title *</label>
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleInputChange}
-          placeholder="e.g., Sample Recording Contract"
-          className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
-          required
-        />
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm text-stone-400 font-light mb-2 block">Category *</label>
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleInputChange}
-            className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
-          >
-            {categories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="text-sm text-stone-400 font-light mb-2 block">Format *</label>
-          <select
-            name="format"
-            value={formData.format}
-            onChange={handleInputChange}
-            className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
-          >
-            {formats.map(fmt => (
-              <option key={fmt} value={fmt}>{fmt}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <label className="text-sm text-stone-400 font-light mb-2 block">Description</label>
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleInputChange}
-          placeholder="Describe the resource..."
-          rows={3}
-          className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
-        />
-      </div>
-
-      <div>
-        <label className="text-sm text-stone-400 font-light mb-2 block">File URL / Link</label>
-        <input
-          type="url"
-          name="file_url"
-          value={formData.file_url}
-          onChange={handleInputChange}
-          placeholder="https://..."
-          className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
-        />
-        <p className="text-xs text-stone-500 mt-2">
-          Paste a link to the file (Google Drive, Dropbox, etc.) or direct URL
-        </p>
-      </div>
-
-      <div className="flex items-center gap-3">
-        <input
-          type="checkbox"
-          name="featured"
-          id="featured"
-          checked={formData.featured}
-          onChange={handleInputChange}
-          className="w-4 h-4 bg-stone-900 border border-stone-700 accent-amber-600"
-        />
-        <label htmlFor="featured" className="text-sm font-light">
-          Feature this resource (shows at the top of the library)
-        </label>
-      </div>
-
-      <div className="flex gap-4 pt-4">
-        <button
-          type="button"
-          onClick={() => {
-            isEdit ? setShowEditModal(false) : setShowCreateModal(false);
-            resetForm();
-            setEditingResource(null);
-          }}
-          className="flex-1 border border-stone-700 py-3 text-sm font-light hover:border-stone-600 transition-colors"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="flex-1 bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50"
-        >
-          {isSubmitting ? 'Saving...' : isEdit ? 'Update Resource' : 'Add Resource'}
-        </button>
-      </div>
-    </form>
-  );
-
   return (
     <div className="max-w-7xl">
       <div className="flex items-center justify-between mb-10">
@@ -541,7 +433,110 @@ export default function AdminResourcesPage() {
                 <X className="w-6 h-6" />
               </button>
             </div>
-            <ResourceForm onSubmit={handleCreateResource} />
+            <form onSubmit={handleCreateResource} className="space-y-6">
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">Title *</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  placeholder="e.g., Sample Recording Contract"
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  required
+                />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm text-stone-400 font-light mb-2 block">Category *</label>
+                  <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                  >
+                    {categories.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm text-stone-400 font-light mb-2 block">Format *</label>
+                  <select
+                    name="format"
+                    value={formData.format}
+                    onChange={handleInputChange}
+                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                  >
+                    {formats.map(fmt => (
+                      <option key={fmt} value={fmt}>{fmt}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">Description</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  placeholder="Describe the resource..."
+                  rows={3}
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">File URL / Link</label>
+                <input
+                  type="url"
+                  name="file_url"
+                  value={formData.file_url}
+                  onChange={handleInputChange}
+                  placeholder="https://..."
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                />
+                <p className="text-xs text-stone-500 mt-2">
+                  Paste a link to the file (Google Drive, Dropbox, etc.) or direct URL
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  name="featured"
+                  id="featured-create"
+                  checked={formData.featured}
+                  onChange={handleInputChange}
+                  className="w-4 h-4 bg-stone-900 border border-stone-700 accent-amber-600"
+                />
+                <label htmlFor="featured-create" className="text-sm font-light">
+                  Feature this resource (shows at the top of the library)
+                </label>
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowCreateModal(false);
+                    resetForm();
+                  }}
+                  className="flex-1 border border-stone-700 py-3 text-sm font-light hover:border-stone-600 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50"
+                >
+                  {isSubmitting ? 'Saving...' : 'Add Resource'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
@@ -563,7 +558,111 @@ export default function AdminResourcesPage() {
                 <X className="w-6 h-6" />
               </button>
             </div>
-            <ResourceForm onSubmit={handleEditResource} isEdit />
+            <form onSubmit={handleEditResource} className="space-y-6">
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">Title *</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  placeholder="e.g., Sample Recording Contract"
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  required
+                />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm text-stone-400 font-light mb-2 block">Category *</label>
+                  <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                  >
+                    {categories.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm text-stone-400 font-light mb-2 block">Format *</label>
+                  <select
+                    name="format"
+                    value={formData.format}
+                    onChange={handleInputChange}
+                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                  >
+                    {formats.map(fmt => (
+                      <option key={fmt} value={fmt}>{fmt}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">Description</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  placeholder="Describe the resource..."
+                  rows={3}
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">File URL / Link</label>
+                <input
+                  type="url"
+                  name="file_url"
+                  value={formData.file_url}
+                  onChange={handleInputChange}
+                  placeholder="https://..."
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                />
+                <p className="text-xs text-stone-500 mt-2">
+                  Paste a link to the file (Google Drive, Dropbox, etc.) or direct URL
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  name="featured"
+                  id="featured-edit"
+                  checked={formData.featured}
+                  onChange={handleInputChange}
+                  className="w-4 h-4 bg-stone-900 border border-stone-700 accent-amber-600"
+                />
+                <label htmlFor="featured-edit" className="text-sm font-light">
+                  Feature this resource (shows at the top of the library)
+                </label>
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowEditModal(false);
+                    setEditingResource(null);
+                    resetForm();
+                  }}
+                  className="flex-1 border border-stone-700 py-3 text-sm font-light hover:border-stone-600 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50"
+                >
+                  {isSubmitting ? 'Saving...' : 'Update Resource'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
