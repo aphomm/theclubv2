@@ -7,10 +7,19 @@ import { toast } from 'sonner';
 import { createClient } from '@supabase/supabase-js';
 import { Eye, EyeOff } from 'lucide-react';
 
+// Normalize tier to proper capitalization
+const normalizeTier = (tier: string | null): string => {
+  if (!tier) return 'Creator';
+  const tierLower = tier.toLowerCase();
+  if (tierLower === 'professional') return 'Professional';
+  if (tierLower === 'executive') return 'Executive';
+  return 'Creator';
+};
+
 export default function SignupPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const tier = searchParams.get('tier') || 'Creator';
+  const tier = normalizeTier(searchParams.get('tier'));
 
   const [formData, setFormData] = useState({
     name: '',

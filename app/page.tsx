@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { MapPin, Users, Calendar, Briefcase, Network, Check, Play, Star } from 'lucide-react';
+import { MapPin, Users, Calendar, Briefcase, Network, Check, Star } from 'lucide-react';
 import { toast } from 'sonner';
 import { createClient } from '@supabase/supabase-js';
 
@@ -56,7 +56,7 @@ export default function LandingPage() {
             <a href="#membership" className="hover:text-amber-600 transition-colors">Membership</a>
             <a href="#features" className="hover:text-amber-600 transition-colors">Features</a>
           </div>
-          <a href="/auth/signup">
+          <a href="#membership">
             <button className="bg-amber-600 text-stone-950 px-8 py-3 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors">
               Apply
             </button>
@@ -85,15 +85,11 @@ export default function LandingPage() {
           A private cultural membership built at the intersection of music, tech, film, fashion, sports, wellness, and aerospace. This isn't just another club – it's the front door into the 1500 or Nothin' × WePlay Studios cultural operating system, where the world's most influential creators and operators gather to build, connect, and own.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <a href="/auth/signup">
+            <a href="#membership">
               <button className="bg-amber-600 text-stone-950 px-12 py-4 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors">
                 Apply for Membership
               </button>
             </a>
-            <button className="border border-stone-700 text-stone-100 px-12 py-4 text-sm font-light tracking-wide hover:border-amber-600 hover:text-amber-600 transition-colors flex items-center gap-3">
-              <Play className="w-4 h-4" />
-              Watch Video
-            </button>
           </div>
         </div>
       </section>
