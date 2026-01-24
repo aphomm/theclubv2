@@ -66,17 +66,20 @@ export default function ProjectsListPage() {
 
       {/* Filter Tabs */}
       <div className="flex gap-4 mb-10 border-b border-stone-800 pb-6">
-        {['active', 'completed', 'pending'].map(f => (
+        {[
+          { value: 'active', label: 'Live' },
+          { value: 'completed', label: 'Completed' },
+        ].map(f => (
           <button
-            key={f}
-            onClick={() => setFilter(f)}
+            key={f.value}
+            onClick={() => setFilter(f.value)}
             className={`px-4 py-2 text-sm font-light transition-colors ${
-              filter === f
+              filter === f.value
                 ? 'text-amber-600 border-b-2 border-amber-600 pb-4'
                 : 'text-stone-400 hover:text-amber-600'
             }`}
           >
-            {f.charAt(0).toUpperCase() + f.slice(1)}
+            {f.label}
           </button>
         ))}
       </div>
@@ -90,7 +93,9 @@ export default function ProjectsListPage() {
         </div>
       ) : projects.length === 0 ? (
         <div className="text-center py-20 border border-stone-800 p-12">
-          <p className="text-stone-400 font-light">No {filter} projects found</p>
+          <p className="text-stone-400 font-light">
+            No {filter === 'active' ? 'live' : filter} projects found
+          </p>
         </div>
       ) : (
         <div className="space-y-6">

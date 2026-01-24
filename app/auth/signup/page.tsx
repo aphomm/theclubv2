@@ -27,6 +27,13 @@ export default function SignupPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
+    company: '',
+    address_line1: '',
+    address_line2: '',
+    city: '',
+    state: '',
+    postal_code: '',
     password: '',
     confirmPassword: '',
   });
@@ -41,8 +48,8 @@ export default function SignupPage() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
-      toast.error('Please fill in all fields');
+    if (!formData.name || !formData.email || !formData.phone || !formData.password || !formData.confirmPassword) {
+      toast.error('Please fill in all required fields');
       return;
     }
 
@@ -70,18 +77,26 @@ export default function SignupPage() {
 
       const supabase = createClient(supabaseUrl, supabaseKey);
 
+      // Set initial status based on whether payment is bypassed
+      const initialStatus = isPaymentBypassed ? 'active' : 'pending_payment';
+
       // Determine redirect URL after email verification
-      // If payment is bypassed, go to dashboard; otherwise go to checkout
+      // Use the auth callback page which handles the session and redirects appropriately
       const appUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
-      const redirectTo = isPaymentBypassed
-        ? `${appUrl}/dashboard`
-        : `${appUrl}/checkout?tier=${tier}`;
+      const redirectTo = `${appUrl}/auth/callback`;
 
       const { data, error: signupError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
           emailRedirectTo: redirectTo,
+          data: {
+            name: formData.name,
+            tier: tier,
+            status: initialStatus,
+            phone: formData.phone,
+            company: formData.company,
+          },
         },
       });
 
@@ -92,43 +107,50 @@ export default function SignupPage() {
       }
 
       if (data.user) {
-        // Set initial status based on whether payment is bypassed
-        const initialStatus = isPaymentBypassed ? 'active' : 'pending_payment';
-
+        // Try to create/update user profile
+        // Use upsert to handle cases where trigger already created the record
         const { error: profileError } = await supabase
           .from('users')
-          .insert([
+          .upsert(
             {
               id: data.user.id,
               email: formData.email,
               name: formData.name,
               tier,
               status: initialStatus,
+              phone: formData.phone || null,
+              company: formData.company || null,
+              address_line1: formData.address_line1 || null,
+              address_line2: formData.address_line2 || null,
+              city: formData.city || null,
+              state: formData.state || null,
+              postal_code: formData.postal_code || null,
               join_date: new Date().toISOString(),
             },
-          ]);
+            { onConflict: 'id' }
+          );
 
         if (profileError) {
-          toast.error('Error creating profile');
-          setIsLoading(false);
-          return;
+          console.error('Profile error:', profileError);
+          // Don't block signup - trigger may have created the profile
         }
 
+        // Try to create membership record
         const { error: membershipError } = await supabase
           .from('memberships')
-          .insert([
+          .upsert(
             {
               user_id: data.user.id,
               tier,
               status: initialStatus,
               start_date: new Date().toISOString(),
             },
-          ]);
+            { onConflict: 'user_id' }
+          );
 
         if (membershipError) {
-          toast.error('Error creating membership');
-          setIsLoading(false);
-          return;
+          console.error('Membership error:', membershipError);
+          // Don't block signup - trigger may have created the membership
         }
 
         // Show appropriate message based on email confirmation requirement
@@ -165,19 +187,19 @@ export default function SignupPage() {
 
       <form onSubmit={handleSignup} className="space-y-6">
         <div>
-          <label className="block text-sm font-light mb-2">Full Name</label>
+          <label className="block text-sm font-light mb-2">Full Name *</label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleInputChange}
-            placeholder="Your name"
+            placeholder="Your full legal name"
             className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-light mb-2">Email Address</label>
+          <label className="block text-sm font-light mb-2">Email Address *</label>
           <input
             type="email"
             name="email"
@@ -189,7 +211,91 @@ export default function SignupPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-light mb-2">Password</label>
+          <label className="block text-sm font-light mb-2">Phone Number *</label>
+          <input
+            type="tel"
+            name="phone"
+            value={formData.phone}
+            onChange={handleInputChange}
+            placeholder="+1 (555) 000-0000"
+            className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-light mb-2">Company/Organization</label>
+          <input
+            type="text"
+            name="company"
+            value={formData.company}
+            onChange={handleInputChange}
+            placeholder="Your company or label"
+            className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+          />
+        </div>
+
+        {/* Address Section */}
+        <div className="border-t border-stone-800 pt-6">
+          <h3 className="text-sm font-light text-stone-400 mb-4">Address (Optional)</h3>
+          <div className="space-y-4">
+            <div>
+              <input
+                type="text"
+                name="address_line1"
+                value={formData.address_line1}
+                onChange={handleInputChange}
+                placeholder="Street address"
+                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                name="address_line2"
+                value={formData.address_line2}
+                onChange={handleInputChange}
+                placeholder="Apt, suite, unit (optional)"
+                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <input
+                type="text"
+                name="city"
+                value={formData.city}
+                onChange={handleInputChange}
+                placeholder="City"
+                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+              />
+              <input
+                type="text"
+                name="state"
+                value={formData.state}
+                onChange={handleInputChange}
+                placeholder="State"
+                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                name="postal_code"
+                value={formData.postal_code}
+                onChange={handleInputChange}
+                placeholder="ZIP / Postal code"
+                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Password Section */}
+        <div className="border-t border-stone-800 pt-6">
+          <h3 className="text-sm font-light text-stone-400 mb-4">Set Your Password</h3>
+        </div>
+
+        <div>
+          <label className="block text-sm font-light mb-2">Password *</label>
           <div className="relative">
             <input
               type={showPassword ? 'text' : 'password'}
@@ -210,7 +316,7 @@ export default function SignupPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-light mb-2">Confirm Password</label>
+          <label className="block text-sm font-light mb-2">Confirm Password *</label>
           <input
             type="password"
             name="confirmPassword"

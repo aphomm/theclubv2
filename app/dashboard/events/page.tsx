@@ -2,8 +2,21 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { Calendar, MapPin, Users } from 'lucide-react';
+import { Calendar, MapPin, Users, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
+
+// Helper to get current date in PST
+const getPSTDate = () => {
+  return new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
+};
+
+// Helper to format date as YYYY-MM-DD in PST
+const formatDatePST = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
 interface Event {
   id: string;
@@ -15,6 +28,7 @@ interface Event {
   event_type: string;
   capacity: number;
   instructor_name?: string;
+  external_rsvp_url?: string;
 }
 
 export default function EventsPage() {
@@ -31,10 +45,13 @@ export default function EventsPage() {
 
       const supabase = createClient(supabaseUrl, supabaseKey);
 
+      // Use PST date for comparison (consistent with other pages)
+      const today = formatDatePST(getPSTDate());
+
       const query = supabase
         .from('events')
         .select('*')
-        .gte('date', new Date().toISOString().split('T')[0])
+        .gte('date', today)
         .order('date');
 
       if (filter !== 'all') {
@@ -122,9 +139,23 @@ export default function EventsPage() {
                   </div>
                 </div>
 
-                {event.instructor_name && (
-                  <div className="text-sm text-amber-600 font-light">Hosted by {event.instructor_name}</div>
-                )}
+                <div className="flex items-center justify-between">
+                  {event.instructor_name && (
+                    <div className="text-sm text-amber-600 font-light">Hosted by {event.instructor_name}</div>
+                  )}
+                  {event.external_rsvp_url && (
+                    <a
+                      href={event.external_rsvp_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex items-center gap-1 text-xs text-amber-600 hover:underline"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      External RSVP
+                    </a>
+                  )}
+                </div>
               </div>
             </Link>
           ))}

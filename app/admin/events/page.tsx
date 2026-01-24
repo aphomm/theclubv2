@@ -19,6 +19,7 @@ interface Event {
   instructor_title?: string;
   instructor_bio?: string;
   tier_access: string[];
+  external_rsvp_url?: string;
   created_at: string;
 }
 
@@ -47,6 +48,7 @@ export default function EventsPage() {
     instructor_title: '',
     instructor_bio: '',
     tier_access: ['Creator', 'Professional', 'Executive'],
+    external_rsvp_url: '',
   });
 
   useEffect(() => {
@@ -83,6 +85,7 @@ export default function EventsPage() {
       instructor_title: '',
       instructor_bio: '',
       tier_access: ['Creator', 'Professional', 'Executive'],
+      external_rsvp_url: '',
     });
   };
 
@@ -133,6 +136,7 @@ export default function EventsPage() {
       instructor_title: formData.instructor_title || null,
       instructor_bio: formData.instructor_bio || null,
       tier_access: formData.tier_access,
+      external_rsvp_url: formData.external_rsvp_url || null,
     }]);
 
     if (error) {
@@ -179,6 +183,7 @@ export default function EventsPage() {
         instructor_title: formData.instructor_title || null,
         instructor_bio: formData.instructor_bio || null,
         tier_access: formData.tier_access,
+        external_rsvp_url: formData.external_rsvp_url || null,
       })
       .eq('id', editingEvent.id);
 
@@ -234,6 +239,7 @@ export default function EventsPage() {
       instructor_title: event.instructor_title || '',
       instructor_bio: event.instructor_bio || '',
       tier_access: event.tier_access || ['Creator', 'Professional', 'Executive'],
+      external_rsvp_url: event.external_rsvp_url || '',
     });
     setShowEditModal(true);
     setActiveMenu(null);
@@ -444,6 +450,19 @@ export default function EventsPage() {
               </div>
 
               <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">External RSVP/Ticketing URL (Optional)</label>
+                <input
+                  type="url"
+                  name="external_rsvp_url"
+                  value={formData.external_rsvp_url}
+                  onChange={handleInputChange}
+                  placeholder="e.g., https://eventbrite.com/your-event"
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                />
+                <p className="text-xs text-stone-500 mt-1">If set, users will be redirected here for RSVP</p>
+              </div>
+
+              <div>
                 <label className="text-sm text-stone-400 font-light mb-2 block">Description</label>
                 <textarea
                   name="description"
@@ -624,6 +643,19 @@ export default function EventsPage() {
                   className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
                   required
                 />
+              </div>
+
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">External RSVP/Ticketing URL (Optional)</label>
+                <input
+                  type="url"
+                  name="external_rsvp_url"
+                  value={formData.external_rsvp_url}
+                  onChange={handleInputChange}
+                  placeholder="e.g., https://eventbrite.com/your-event"
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                />
+                <p className="text-xs text-stone-500 mt-1">If set, users will be redirected here for RSVP</p>
               </div>
 
               <div>

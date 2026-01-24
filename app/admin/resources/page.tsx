@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { Plus, MoreVertical, X, Edit, Trash2, FileText, Video, File, Star, StarOff } from 'lucide-react';
+import { Plus, MoreVertical, X, Edit, Trash2, FileText, Video, File, Star, StarOff, Upload, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Resource {
@@ -11,6 +11,8 @@ interface Resource {
   description?: string;
   category: string;
   file_url?: string;
+  file_name?: string;
+  file_size?: number;
   format: string;
   featured: boolean;
   created_at: string;
@@ -28,6 +30,8 @@ export default function AdminResourcesPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [filterCategory, setFilterCategory] = useState('all');
+  const [uploadingFile, setUploadingFile] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -35,6 +39,8 @@ export default function AdminResourcesPage() {
     description: '',
     category: 'Business',
     file_url: '',
+    file_name: '',
+    file_size: 0,
     format: 'PDF',
     featured: false,
   });
@@ -66,9 +72,73 @@ export default function AdminResourcesPage() {
       description: '',
       category: 'Business',
       file_url: '',
+      file_name: '',
+      file_size: 0,
       format: 'PDF',
       featured: false,
     });
+    setSelectedFile(null);
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      // Auto-detect format from file extension
+      const ext = file.name.split('.').pop()?.toLowerCase();
+      let format = 'Document';
+      if (ext === 'pdf') format = 'PDF';
+      else if (['mp4', 'mov', 'webm'].includes(ext || '')) format = 'Video';
+      else if (['mp3', 'wav', 'aac'].includes(ext || '')) format = 'Audio';
+      else if (['xlsx', 'xls', 'csv'].includes(ext || '')) format = 'Spreadsheet';
+      else if (['doc', 'docx', 'txt'].includes(ext || '')) format = 'Document';
+      else if (['psd', 'ai', 'sketch'].includes(ext || '')) format = 'Template';
+
+      setFormData(prev => ({
+        ...prev,
+        format,
+        file_name: file.name,
+        file_size: file.size,
+      }));
+    }
+  };
+
+  const uploadFile = async (file: File): Promise<string | null> => {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) return null;
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Generate unique filename
+    const timestamp = Date.now();
+    const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+    const filePath = `${timestamp}_${safeName}`;
+
+    setUploadingFile(true);
+
+    const { data, error } = await supabase.storage
+      .from('resources')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false,
+      });
+
+    setUploadingFile(false);
+
+    if (error) {
+      console.error('Upload error:', error);
+      toast.error('Failed to upload file. Make sure the resources bucket exists.');
+      return null;
+    }
+
+    // Get public URL
+    const { data: urlData } = supabase.storage
+      .from('resources')
+      .getPublicUrl(data.path);
+
+    return urlData.publicUrl;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -99,13 +169,32 @@ export default function AdminResourcesPage() {
       return;
     }
 
+    let fileUrl = formData.file_url;
+    let fileName = formData.file_name;
+    let fileSize = formData.file_size;
+
+    // If a file is selected, upload it first
+    if (selectedFile) {
+      const uploadedUrl = await uploadFile(selectedFile);
+      if (uploadedUrl) {
+        fileUrl = uploadedUrl;
+        fileName = selectedFile.name;
+        fileSize = selectedFile.size;
+      } else {
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     const { error } = await supabase.from('resources').insert([{
       title: formData.title,
       description: formData.description || null,
       category: formData.category,
-      file_url: formData.file_url || null,
+      file_url: fileUrl || null,
+      file_name: fileName || null,
+      file_size: fileSize || null,
       format: formData.format,
       featured: formData.featured,
     }]);
@@ -221,9 +310,12 @@ export default function AdminResourcesPage() {
       description: resource.description || '',
       category: resource.category,
       file_url: resource.file_url || '',
+      file_name: resource.file_name || '',
+      file_size: resource.file_size || 0,
       format: resource.format,
       featured: resource.featured,
     });
+    setSelectedFile(null);
     setShowEditModal(true);
     setActiveMenu(null);
   };
@@ -488,18 +580,65 @@ export default function AdminResourcesPage() {
                 />
               </div>
 
+              {/* File Upload Section */}
+              <div className="border border-stone-700 border-dashed p-6">
+                <div className="text-center">
+                  <Upload className="w-8 h-8 text-stone-500 mx-auto mb-2" />
+                  <p className="text-sm text-stone-400 font-light mb-3">
+                    {selectedFile ? (
+                      <span className="text-amber-600">{selectedFile.name}</span>
+                    ) : (
+                      'Upload a file'
+                    )}
+                  </p>
+                  <label className="cursor-pointer">
+                    <span className="bg-stone-800 text-stone-300 px-4 py-2 text-sm font-light hover:bg-stone-700 transition-colors inline-block">
+                      {uploadingFile ? (
+                        <span className="flex items-center gap-2">
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Uploading...
+                        </span>
+                      ) : (
+                        'Choose File'
+                      )}
+                    </span>
+                    <input
+                      type="file"
+                      onChange={handleFileSelect}
+                      className="hidden"
+                      accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.mp3,.wav,.mp4,.mov,.webm,.txt,.psd,.ai"
+                    />
+                  </label>
+                  {selectedFile && (
+                    <p className="text-xs text-stone-500 mt-2">
+                      {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-stone-800"></div>
+                </div>
+                <div className="relative flex justify-center">
+                  <span className="bg-stone-950 px-4 text-xs text-stone-500">OR</span>
+                </div>
+              </div>
+
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">File URL / Link</label>
+                <label className="text-sm text-stone-400 font-light mb-2 block">External URL / Link</label>
                 <input
                   type="url"
                   name="file_url"
                   value={formData.file_url}
                   onChange={handleInputChange}
                   placeholder="https://..."
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  disabled={!!selectedFile}
+                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors disabled:opacity-50"
                 />
                 <p className="text-xs text-stone-500 mt-2">
-                  Paste a link to the file (Google Drive, Dropbox, etc.) or direct URL
+                  Or paste a link (Google Drive, Dropbox, etc.)
                 </p>
               </div>
 
