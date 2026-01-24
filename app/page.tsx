@@ -134,28 +134,14 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Philosophy & Stats */}
+      {/* Philosophy */}
       <section id="about" className="py-32 px-6 border-t border-stone-900">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-light mb-8">Built for the culture, by the culture</h2>
-          <p className="text-xl text-stone-400 font-light max-w-3xl mx-auto mb-20 leading-relaxed">
+          <p className="text-xl text-stone-400 font-light max-w-3xl mx-auto leading-relaxed">
             We're more than a membership club. We're a movement of creators who believe in collective success,
             shared equity, and building generational wealth through collaboration.
           </p>
-          <div className="grid md:grid-cols-3 gap-16">
-            <div>
-              <div className="text-6xl font-light text-amber-600 mb-4">XXX+</div>
-              <div className="text-stone-400 font-light tracking-wide">Members</div>
-            </div>
-            <div>
-              <div className="text-6xl font-light text-amber-600 mb-4">XXX+</div>
-              <div className="text-stone-400 font-light tracking-wide">Events Annually</div>
-            </div>
-            <div>
-              <div className="text-6xl font-light text-amber-600 mb-4">$XXXM+</div>
-              <div className="text-stone-400 font-light tracking-wide">Deals Closed</div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -254,7 +240,7 @@ export default function LandingPage() {
                 </li>
                 <li className="flex items-start gap-3 text-stone-300 font-light">
                   <Check className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                  Unlimited studio access
+                  20 studio hours per month
                 </li>
                 <li className="flex items-start gap-3 text-stone-300 font-light">
                   <Check className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
@@ -300,24 +286,24 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-12">
             <div className="border-l-2 border-amber-600 pl-8">
               <p className="text-xl italic text-stone-300 font-light mb-6 leading-relaxed">
-                "This isn't just a club, it's a movement. The connections I've made here have transformed my career."
+                "If I were to explain 1500, we're like the X-Men when it comes to entertainment and music. It's a conglomerate of talented people that grew up together."
               </p>
-              <div className="text-stone-100 font-light">Marcus Johnson</div>
-              <div className="text-amber-600 text-sm font-light">Producer, 3x Grammy Winner</div>
+              <div className="text-stone-100 font-light">Larrance Dopson</div>
+              <div className="text-amber-600 text-sm font-light">Founder, 1500 Or Nothin'</div>
             </div>
             <div className="border-l-2 border-amber-600 pl-8">
               <p className="text-xl italic text-stone-300 font-light mb-6 leading-relaxed">
-                "The Pool helped me fund my album without losing creative control. Game changer."
+                "Thundercat was part of the group. Terrace Martin—you wouldn't believe all the successful people that have come through it."
               </p>
-              <div className="text-stone-100 font-light">Aaliyah Davis</div>
-              <div className="text-amber-600 text-sm font-light">Artist, R&B Singer-Songwriter</div>
+              <div className="text-stone-100 font-light">On 1500 Or Nothin'</div>
+              <div className="text-amber-600 text-sm font-light">Grammy-Winning Collective</div>
             </div>
             <div className="border-l-2 border-amber-600 pl-8">
               <p className="text-xl italic text-stone-300 font-light mb-6 leading-relaxed">
-                "Elite access to facilities and people you can't find anywhere else in LA."
+                "The Academy is my number one priority because everyone in the music business has had such a rough road. I want to make it easier for everybody."
               </p>
-              <div className="text-stone-100 font-light">David Chen</div>
-              <div className="text-amber-600 text-sm font-light">Label Executive, Atlantic Records</div>
+              <div className="text-stone-100 font-light">Larrance Dopson</div>
+              <div className="text-amber-600 text-sm font-light">On 1500 Sound Academy</div>
             </div>
           </div>
         </div>

@@ -29,6 +29,32 @@ export default function DashboardLayout({
   const [userProfile, setUserProfile] = useState<any>(null);
   const [unreadCount, setUnreadCount] = useState(0);
 
+  // Function to refresh notification count
+  const refreshNotificationCount = async (supabase: any, userId: string, userTier: string) => {
+    // Fetch unread notifications count (unread messages)
+    const { count: unreadMessages } = await supabase
+      .from('messages')
+      .select('*', { count: 'exact', head: true })
+      .eq('recipient_id', userId)
+      .eq('read', false);
+
+    // Count unread platform notifications for user's tier
+    const { data: platformNotifs } = await supabase
+      .from('platform_notifications')
+      .select('id')
+      .contains('target_tiers', [userTier || 'Creator']);
+
+    const { data: readNotifs } = await supabase
+      .from('platform_notification_reads')
+      .select('notification_id')
+      .eq('user_id', userId);
+
+    const readIds = new Set(readNotifs?.map((r: { notification_id: string }) => r.notification_id) || []);
+    const unreadPlatform = (platformNotifs || []).filter((n: { id: string }) => !readIds.has(n.id)).length;
+
+    setUnreadCount((unreadMessages || 0) + unreadPlatform);
+  };
+
   useEffect(() => {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -62,28 +88,7 @@ export default function DashboardLayout({
         setUserProfile(profile);
       }
 
-      // Fetch unread notifications count (unread messages)
-      const { count: unreadMessages } = await supabase
-        .from('messages')
-        .select('*', { count: 'exact', head: true })
-        .eq('recipient_id', session.user.id)
-        .eq('read', false);
-
-      // Count unread platform notifications for user's tier
-      const { data: platformNotifs } = await supabase
-        .from('platform_notifications')
-        .select('id')
-        .contains('target_tiers', [profile?.tier || 'Creator']);
-
-      const { data: readNotifs } = await supabase
-        .from('platform_notification_reads')
-        .select('notification_id')
-        .eq('user_id', session.user.id);
-
-      const readIds = new Set(readNotifs?.map(r => r.notification_id) || []);
-      const unreadPlatform = (platformNotifs || []).filter(n => !readIds.has(n.id)).length;
-
-      setUnreadCount((unreadMessages || 0) + unreadPlatform);
+      await refreshNotificationCount(supabase, session.user.id, profile?.tier);
     };
 
     checkAuth();
@@ -100,6 +105,17 @@ export default function DashboardLayout({
       subscription?.unsubscribe();
     };
   }, [router]);
+
+  // Refresh notification count when navigating between pages
+  useEffect(() => {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey || !user) return;
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    refreshNotificationCount(supabase, user.id, userProfile?.tier);
+  }, [pathname, user, userProfile?.tier]);
 
   const handleLogout = async () => {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

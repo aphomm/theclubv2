@@ -5,8 +5,12 @@ import { createClient } from '@supabase/supabase-js';
 import { ChevronLeft, ChevronRight, Clock, Music, CheckCircle, X, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
-// Monthly studio hour allocation per member
-const MONTHLY_STUDIO_HOURS = 10;
+// Monthly studio hour allocation per tier
+const TIER_STUDIO_HOURS: Record<string, number> = {
+  'Creator': 0,
+  'Professional': 10,
+  'Executive': 20,
+};
 // Hours per booking slot
 const HOURS_PER_BOOKING = 2;
 
@@ -81,10 +85,12 @@ export default function StudioBookingPage() {
   const [bookingPurpose, setBookingPurpose] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [userTier, setUserTier] = useState<string>('Creator');
 
-  // Calculate remaining hours for the month
+  // Calculate remaining hours for the month based on tier
+  const monthlyStudioHours = TIER_STUDIO_HOURS[userTier] || 0;
   const hoursUsed = monthlyBookings.length * HOURS_PER_BOOKING;
-  const hoursRemaining = Math.max(0, MONTHLY_STUDIO_HOURS - hoursUsed);
+  const hoursRemaining = Math.max(0, monthlyStudioHours - hoursUsed);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -101,6 +107,17 @@ export default function StudioBookingPage() {
 
       if (!user) return;
       setUserId(user.id);
+
+      // Get user's tier
+      const { data: profile } = await supabase
+        .from('users')
+        .select('tier')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (profile?.tier) {
+        setUserTier(profile.tier);
+      }
 
       // Get dates in PST
       const pstNow = getPSTDate();
@@ -209,7 +226,7 @@ export default function StudioBookingPage() {
 
     // Check if user has remaining hours this month
     if (hoursRemaining < HOURS_PER_BOOKING) {
-      toast.error(`You've used all ${MONTHLY_STUDIO_HOURS} studio hours this month. Hours reset on the 1st.`);
+      toast.error(`You've used all ${monthlyStudioHours} studio hours this month. Hours reset on the 1st.`);
       return;
     }
 
@@ -222,7 +239,7 @@ export default function StudioBookingPage() {
 
     // Double-check allocation before booking
     if (hoursRemaining < HOURS_PER_BOOKING) {
-      toast.error(`You've used all ${MONTHLY_STUDIO_HOURS} studio hours this month.`);
+      toast.error(`You've used all ${monthlyStudioHours} studio hours this month.`);
       return;
     }
 
@@ -355,7 +372,7 @@ export default function StudioBookingPage() {
               <span className="font-light">
                 <span className={hoursRemaining > 0 ? 'text-amber-600' : 'text-red-500'}>{hoursRemaining}h</span>
                 <span className="text-stone-400"> remaining this month</span>
-                <span className="text-stone-500 text-sm ml-2">({hoursUsed}h of {MONTHLY_STUDIO_HOURS}h used)</span>
+                <span className="text-stone-500 text-sm ml-2">({hoursUsed}h of {monthlyStudioHours}h used)</span>
               </span>
             </div>
             <span className="text-xs text-stone-500">Resets on the 1st • All times in PST</span>
@@ -576,7 +593,7 @@ export default function StudioBookingPage() {
             </div>
             <div className="border-t border-stone-800 mt-4 pt-4">
               <p className="text-xs text-stone-500 font-light">
-                2-hour booking slots • {MONTHLY_STUDIO_HOURS}h/month allocation • Resets on the 1st
+                2-hour booking slots • {monthlyStudioHours}h/month allocation • Resets on the 1st
               </p>
             </div>
           </div>
