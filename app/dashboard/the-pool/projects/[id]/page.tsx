@@ -627,7 +627,7 @@ export default function ProjectDetailPage() {
 
             <div className="border-t border-stone-800 pt-6">
               <p className="text-xs text-stone-500 font-light mb-6">
-                By contributing, you agree to THE CLUB's investment terms. All contributions are subject
+                By contributing, you agree to ICWT's investment terms. All contributions are subject
                 to review by the project creator. Equity percentages are finalized upon project completion.
               </p>
               <div className="flex gap-4">

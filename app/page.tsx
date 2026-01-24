@@ -402,12 +402,12 @@ export default function LandingPage() {
       <footer className="border-t border-stone-900 py-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-xl font-light tracking-extra-wide">
-            <span className="text-stone-100">THE</span>{' '}
-            <span className="text-amber-600">CLUB</span>
+            <span className="text-stone-100">IC</span>
+            <span className="text-amber-600">WT</span>
           </div>
           <div className="text-stone-500 text-sm font-light text-center">
             <div>Inglewood, California</div>
-            <div>© 2025 The Club. All rights reserved.</div>
+            <div>© 2025 In Culture We Trust. All rights reserved.</div>
           </div>
         </div>
       </footer>

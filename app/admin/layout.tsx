@@ -74,8 +74,8 @@ export default function AdminLayout({
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
           <Link href="/admin">
             <div className="text-xl font-light tracking-extra-wide cursor-pointer hover:text-amber-600 transition-colors">
-              <span className="text-stone-100">THE</span>{' '}
-              <span className="text-amber-600">CLUB</span> ADMIN
+              <span className="text-stone-100">IC</span>
+              <span className="text-amber-600">WT</span> ADMIN
             </div>
           </Link>
           <button

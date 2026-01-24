@@ -106,7 +106,7 @@ export default function ThePoolPage() {
         <div className="max-w-2xl">
           <h2 className="text-3xl font-light mb-4">Build Together, Win Together</h2>
           <p className="text-stone-300 font-light leading-relaxed mb-8">
-            Have a project that needs funding? Launch it here and get support from THE CLUB community.
+            Have a project that needs funding? Launch it here and get support from the ICWT community.
             Or browse active projects and invest your cash, time, or equipment for equity ownership.
           </p>
           <div className="flex flex-wrap gap-4">

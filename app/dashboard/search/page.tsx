@@ -146,7 +146,7 @@ export default function SearchPage() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search THE CLUB..."
+          placeholder="Search ICWT..."
           autoFocus
           className="w-full bg-transparent border border-stone-700 pl-12 pr-4 py-4 text-lg text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
         />

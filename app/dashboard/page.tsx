@@ -124,7 +124,7 @@ export default function DashboardPage() {
     <div className="max-w-7xl">
       <div className="mb-12">
         <h1 className="text-4xl font-light mb-2">Welcome back</h1>
-        <p className="text-stone-400 font-light">Here's what's happening at THE CLUB</p>
+        <p className="text-stone-400 font-light">Here's what's happening at ICWT</p>
       </div>
 
       {/* Quick Stats */}

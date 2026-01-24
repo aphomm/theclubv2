@@ -147,8 +147,8 @@ export default function DashboardLayout({
             </button>
             <Link href="/dashboard">
               <div className="text-xl font-light tracking-extra-wide cursor-pointer hover:text-amber-600 transition-colors">
-                <span className="text-stone-100">THE</span>{' '}
-                <span className="text-amber-600">CLUB</span>
+                <span className="text-stone-100">IC</span>
+                <span className="text-amber-600">WT</span>
               </div>
             </Link>
           </div>

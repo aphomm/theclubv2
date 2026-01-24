@@ -143,7 +143,7 @@ export default function MessagesPage() {
       <div className="mb-10">
         <h1 className="text-4xl font-light mb-2">Messages</h1>
         <p className="text-stone-400 font-light">
-          Connect with other members in THE CLUB
+          Connect with other members in ICWT
         </p>
       </div>
 

@@ -65,7 +65,7 @@ export default function DirectoryPage() {
       <div className="mb-10">
         <h1 className="text-4xl font-light mb-2">Member Directory</h1>
         <p className="text-stone-400 font-light">
-          Connect with {members.length} members in THE CLUB community
+          Connect with {members.length} members in the ICWT community
         </p>
       </div>
 

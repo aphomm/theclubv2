@@ -123,7 +123,7 @@ export default function SignupPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-light mb-2">Create Your Account</h1>
         <p className="text-stone-400 font-light">
-          Join THE CLUB as a{' '}
+          Join ICWT as a{' '}
           <span className="text-amber-600 capitalize">{tier}</span> member
         </p>
       </div>

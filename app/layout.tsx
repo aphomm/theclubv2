@@ -6,8 +6,8 @@ import { Toaster } from 'sonner';
 const inter = Inter({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
 
 export const metadata: Metadata = {
-  title: 'THE CLUB - Exclusive Music Industry Private Club',
-  description: 'In CULTURE We TRUST. An exclusive membership platform for music industry professionals in Inglewood, CA.',
+  title: 'ICWT - In Culture We Trust',
+  description: 'In Culture We Trust. An exclusive membership platform for music industry professionals in Inglewood, CA.',
 };
 
 export default function RootLayout({

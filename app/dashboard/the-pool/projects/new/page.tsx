@@ -163,7 +163,7 @@ export default function CreateProjectPage() {
       <div className="mb-10">
         <h1 className="text-4xl font-light mb-2">Start a Project</h1>
         <p className="text-stone-400 font-light">
-          Launch your creative vision and get funding from THE CLUB community
+          Launch your creative vision and get funding from the ICWT community
         </p>
       </div>
 
@@ -484,7 +484,7 @@ export default function CreateProjectPage() {
 
           <div className="border border-stone-800 p-6">
             <p className="text-xs text-stone-500 font-light">
-              By submitting this project, you agree to THE CLUB's project guidelines and investment terms.
+              By submitting this project, you agree to ICWT's project guidelines and investment terms.
               Your project will be reviewed before being published to the community. Projects typically
               go live within 24-48 hours of submission.
             </p>
