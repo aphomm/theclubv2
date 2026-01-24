@@ -81,11 +81,41 @@ A complete premium music industry membership platform with:
 Update `.env.local` with your actual credentials:
 
 ```env
+# Supabase (Required)
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
-STRIPE_SECRET_KEY=your-stripe-key-here
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here  # For webhook processing
+
+# App URL (Required for redirects)
+NEXT_PUBLIC_APP_URL=https://your-domain.com  # or http://localhost:3000 for local dev
+
+# Stripe (Required for payments - can be test keys)
+STRIPE_SECRET_KEY=sk_test_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+# Stripe Price IDs (Optional - auto-created if not set)
+STRIPE_PRICE_CREATOR=price_...
+STRIPE_PRICE_PROFESSIONAL=price_...
+STRIPE_PRICE_EXECUTIVE=price_...
+
+# Payment Bypass (Development only)
+# Set to 'true' to bypass Stripe payments during development/testing
+NEXT_PUBLIC_BYPASS_PAYMENT=true
+BYPASS_PAYMENT=true
 ```
+
+#### Payment Bypass Mode
+
+For development and testing, set `BYPASS_PAYMENT=true` and `NEXT_PUBLIC_BYPASS_PAYMENT=true`. This will:
+- Skip Stripe checkout entirely
+- Automatically activate memberships on signup
+- Allow testing all features without a Stripe account
+
+When ready to go live:
+1. Remove the `BYPASS_PAYMENT` variables (or set to `false`)
+2. Add your Stripe live keys
+3. Configure Stripe webhook endpoint in Stripe Dashboard
 
 ### 3. **Database Initialization**
 
@@ -226,8 +256,8 @@ Vercel will auto-deploy on every git push.
 
 ## Next Phase Features to Build
 
-1. **Stripe Payment Integration** - Process membership subscriptions
-2. **Studio Booking System** - Calendar interface for studio reservations
+1. ~~**Stripe Payment Integration**~~ - ✅ Implemented! Checkout flow with bypass mode
+2. ~~**Studio Booking System**~~ - ✅ Implemented! Calendar with tier-based hour allocation
 3. **Full Pool Platform** - Investment management, equity calculations
 4. **Messaging System** - Real-time member-to-member chat
 5. **Notifications** - Email and in-app notifications

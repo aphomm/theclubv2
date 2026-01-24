@@ -16,6 +16,9 @@ const normalizeTier = (tier: string | null): string => {
   return 'Creator';
 };
 
+// Check if payment is bypassed (for development/testing)
+const isPaymentBypassed = process.env.NEXT_PUBLIC_BYPASS_PAYMENT === 'true';
+
 export default function SignupPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -67,9 +70,19 @@ export default function SignupPage() {
 
       const supabase = createClient(supabaseUrl, supabaseKey);
 
+      // Determine redirect URL after email verification
+      // If payment is bypassed, go to dashboard; otherwise go to checkout
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
+      const redirectTo = isPaymentBypassed
+        ? `${appUrl}/dashboard`
+        : `${appUrl}/checkout?tier=${tier}`;
+
       const { data, error: signupError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        options: {
+          emailRedirectTo: redirectTo,
+        },
       });
 
       if (signupError) {
@@ -79,6 +92,9 @@ export default function SignupPage() {
       }
 
       if (data.user) {
+        // Set initial status based on whether payment is bypassed
+        const initialStatus = isPaymentBypassed ? 'active' : 'pending_payment';
+
         const { error: profileError } = await supabase
           .from('users')
           .insert([
@@ -87,7 +103,7 @@ export default function SignupPage() {
               email: formData.email,
               name: formData.name,
               tier,
-              status: 'active',
+              status: initialStatus,
               join_date: new Date().toISOString(),
             },
           ]);
@@ -104,7 +120,7 @@ export default function SignupPage() {
             {
               user_id: data.user.id,
               tier,
-              status: 'active',
+              status: initialStatus,
               start_date: new Date().toISOString(),
             },
           ]);
@@ -115,10 +131,20 @@ export default function SignupPage() {
           return;
         }
 
-        toast.success('Account created successfully! Redirecting to dashboard...');
-        setTimeout(() => {
-          router.push('/dashboard');
-        }, 1500);
+        // Show appropriate message based on email confirmation requirement
+        if (data.session) {
+          // User is auto-confirmed (email confirmation disabled in Supabase)
+          if (isPaymentBypassed) {
+            toast.success('Account created successfully! Redirecting to dashboard...');
+            setTimeout(() => router.push('/dashboard'), 1500);
+          } else {
+            toast.success('Account created! Redirecting to payment...');
+            setTimeout(() => router.push(`/checkout?tier=${tier}`), 1500);
+          }
+        } else {
+          // Email confirmation is required
+          toast.success('Account created! Please check your email to verify your account.');
+        }
       }
     } catch (error) {
       toast.error('An error occurred. Please try again.');
