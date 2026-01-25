@@ -7,8 +7,8 @@ import { toast } from 'sonner';
 
 // Monthly studio hour allocation per tier
 const TIER_STUDIO_HOURS: Record<string, number> = {
-  'Creator': 0,
-  'Professional': 10,
+  'Creator': 10,
+  'Professional': 15,
   'Executive': 20,
 };
 // Hours per booking slot

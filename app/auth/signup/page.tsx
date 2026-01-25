@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { createClient } from '@supabase/supabase-js';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, CheckCircle, Mail } from 'lucide-react';
 
 // Normalize tier to proper capitalization
 const normalizeTier = (tier: string | null): string => {
@@ -39,6 +39,8 @@ export default function SignupPage() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [signupSuccess, setSignupSuccess] = useState(false);
+  const [signupEmail, setSignupEmail] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -164,8 +166,9 @@ export default function SignupPage() {
             setTimeout(() => router.push(`/checkout?tier=${tier}`), 1500);
           }
         } else {
-          // Email confirmation is required
-          toast.success('Account created! Please check your email to verify your account.');
+          // Email confirmation is required - show success screen
+          setSignupEmail(formData.email);
+          setSignupSuccess(true);
         }
       }
     } catch (error) {
@@ -174,6 +177,52 @@ export default function SignupPage() {
       setIsLoading(false);
     }
   };
+
+  // Success screen after signup
+  if (signupSuccess) {
+    return (
+      <div className="text-center py-8">
+        <div className="mb-6">
+          <div className="w-16 h-16 bg-green-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Mail className="w-8 h-8 text-green-500" />
+          </div>
+          <h1 className="text-3xl font-light mb-2">Check Your Email</h1>
+          <p className="text-stone-400 font-light">
+            We've sent a verification link to
+          </p>
+          <p className="text-amber-600 font-light mt-1">{signupEmail}</p>
+        </div>
+
+        <div className="border border-stone-800 p-6 text-left mb-6">
+          <h3 className="font-light mb-3">Next Steps:</h3>
+          <ol className="space-y-2 text-sm text-stone-400 font-light">
+            <li className="flex items-start gap-2">
+              <span className="text-amber-600">1.</span>
+              Open your email inbox
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-amber-600">2.</span>
+              Click the verification link in the email from ICWT
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-amber-600">3.</span>
+              Complete your membership setup
+            </li>
+          </ol>
+        </div>
+
+        <p className="text-xs text-stone-500 font-light">
+          Didn't receive the email? Check your spam folder or{' '}
+          <button
+            onClick={() => setSignupSuccess(false)}
+            className="text-amber-600 hover:underline"
+          >
+            try again
+          </button>
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>

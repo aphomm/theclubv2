@@ -4,8 +4,12 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { Calendar, Users, Music, TrendingUp } from 'lucide-react';
 
-// Monthly studio hour allocation per member
-const MONTHLY_STUDIO_HOURS = 10;
+// Monthly studio hour allocation per tier
+const TIER_STUDIO_HOURS: Record<string, number> = {
+  'Creator': 10,
+  'Professional': 15,
+  'Executive': 20,
+};
 // Hours per booking slot
 const HOURS_PER_BOOKING = 2;
 
@@ -36,6 +40,7 @@ interface DashboardStats {
   eventsRsvpd: number;
   studioHoursAvailable: number;
   studioHoursUsed: number;
+  studioHoursTotal: number;
   networkConnections: number;
   activePoolProjects: number;
 }
@@ -43,8 +48,9 @@ interface DashboardStats {
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats>({
     eventsRsvpd: 0,
-    studioHoursAvailable: MONTHLY_STUDIO_HOURS,
+    studioHoursAvailable: 10,
     studioHoursUsed: 0,
+    studioHoursTotal: 10,
     networkConnections: 0,
     activePoolProjects: 0,
   });
@@ -71,7 +77,7 @@ export default function DashboardPage() {
       const endOfMonth = formatDatePST(getEndOfMonthPST());
       const today = formatDatePST(getPSTDate());
 
-      const [eventRsvps, events, userCount, poolProjects, studioBookings] = await Promise.all([
+      const [eventRsvps, events, userCount, poolProjects, studioBookings, userProfile] = await Promise.all([
         supabase.from('event_rsvps').select('*').eq('user_id', user.id),
         supabase
           .from('events')
@@ -89,16 +95,23 @@ export default function DashboardPage() {
           .gte('date', startOfMonth)
           .lte('date', endOfMonth)
           .neq('status', 'cancelled'),
+        // Fetch user's tier
+        supabase.from('users').select('tier').eq('id', user.id).maybeSingle(),
       ]);
+
+      // Get monthly hours based on user's tier
+      const userTier = userProfile.data?.tier || 'Creator';
+      const monthlyHours = TIER_STUDIO_HOURS[userTier] || 10;
 
       // Calculate hours used this month (each booking = 2 hours)
       const hoursUsed = (studioBookings.data?.length || 0) * HOURS_PER_BOOKING;
-      const hoursAvailable = Math.max(0, MONTHLY_STUDIO_HOURS - hoursUsed);
+      const hoursAvailable = Math.max(0, monthlyHours - hoursUsed);
 
       setStats({
         eventsRsvpd: eventRsvps.data?.length || 0,
         studioHoursAvailable: hoursAvailable,
         studioHoursUsed: hoursUsed,
+        studioHoursTotal: monthlyHours,
         networkConnections: userCount.count || 0,
         activePoolProjects: poolProjects.data?.length || 0,
       });
