@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
-import { ArrowLeft, Calendar, MapPin, Users, DollarSign, Clock, Play, X, Check, TrendingUp, Share2 } from 'lucide-react';
+import { ArrowLeft, Calendar, MapPin, Users, DollarSign, Clock, Play, X, Check, TrendingUp, Share2, FileText, Download, ChevronRight, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
@@ -34,6 +34,9 @@ interface Investment {
   equity_percentage: number;
   status: string;
   created_at: string;
+  signature_name?: string;
+  signature_agreed?: boolean;
+  signature_timestamp?: string;
 }
 
 interface Creator {
@@ -51,6 +54,58 @@ const contributionTypes = [
   { value: 'services', label: 'Services', description: 'Marketing, legal, distribution, etc.' },
 ];
 
+const INVESTMENT_TERMS = `IN CULTURE WE TRUST (ICWT) INVESTMENT AGREEMENT
+
+TERMS AND CONDITIONS
+
+1. PARTIES
+This Investment Agreement ("Agreement") is entered into between In Culture We Trust ("ICWT" or "Company") and the undersigned investor ("Investor") regarding participation in the specified project ("Project") within The Pool investment platform.
+
+2. INVESTMENT STRUCTURE
+2.1. The Investor agrees to contribute the specified amount or resources to the Project as indicated in this investment submission.
+2.2. Equity percentages are calculated based on the proportion of the Investor's contribution relative to the total funding goal.
+2.3. Final equity allocations are subject to adjustment based on total contributions received and will be confirmed upon project completion.
+
+3. INVESTOR ACKNOWLEDGMENTS
+The Investor acknowledges and agrees that:
+3.1. All investments in creative projects carry inherent risk, including the potential for total loss of investment.
+3.2. Returns on investment are not guaranteed and depend on the commercial success of the Project.
+3.3. The Project timeline may be subject to delays beyond the initially stated completion date.
+3.4. ICWT acts as a facilitator and is not responsible for the success or failure of individual projects.
+
+4. PROJECT CREATOR OBLIGATIONS
+4.1. The Project Creator is responsible for executing the Project as described and providing regular updates to Investors.
+4.2. The Project Creator agrees to distribute any profits according to the equity structure established through The Pool.
+4.3. The Project Creator shall maintain accurate financial records related to the Project.
+
+5. PROFIT DISTRIBUTION
+5.1. Net profits from the Project shall be distributed to Investors in proportion to their equity stake.
+5.2. Distribution timing and frequency will be determined by the Project Creator and communicated to Investors.
+5.3. ICWT may retain a platform fee as disclosed in the Project listing.
+
+6. NON-CASH CONTRIBUTIONS
+6.1. Non-cash contributions (time, equipment, services) will be valued in good faith between the Investor and Project Creator.
+6.2. Equity for non-cash contributions is subject to negotiation and final approval by the Project Creator.
+
+7. CONFIDENTIALITY
+7.1. The Investor agrees to maintain confidentiality regarding any proprietary project information shared during the investment process.
+
+8. DISPUTE RESOLUTION
+8.1. Any disputes arising from this Agreement shall first be addressed through mediation facilitated by ICWT.
+8.2. If mediation fails, disputes shall be resolved through binding arbitration in accordance with applicable laws.
+
+9. GOVERNING LAW
+This Agreement shall be governed by the laws of the State of California, United States.
+
+10. ENTIRE AGREEMENT
+This Agreement, together with any Project-specific terms, constitutes the entire agreement between the parties regarding the investment described herein.
+
+By typing your signature below, you acknowledge that you have read, understand, and agree to be bound by these Terms and Conditions.
+
+Version 1.0 - Effective Date: January 2026`;
+
+const TERMS_VERSION = '1.0';
+
 export default function ProjectDetailPage() {
   const params = useParams();
   const router = useRouter();
@@ -67,6 +122,12 @@ export default function ProjectDetailPage() {
   const [investmentAmount, setInvestmentAmount] = useState('');
   const [contributionDetails, setContributionDetails] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // E-sign flow state
+  const [investmentStep, setInvestmentStep] = useState(1); // 1: contribution details, 2: review & sign
+  const [signatureName, setSignatureName] = useState('');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [hasScrolledTerms, setHasScrolledTerms] = useState(false);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -144,6 +205,17 @@ export default function ProjectDetailPage() {
   const handleInvest = async () => {
     if (!currentUserId || !project) return;
 
+    // Validate signature
+    if (!signatureName.trim()) {
+      toast.error('Please type your signature');
+      return;
+    }
+
+    if (!agreedToTerms) {
+      toast.error('Please agree to the investment terms');
+      return;
+    }
+
     const amount = parseFloat(investmentAmount);
     if (contributionType === 'cash' && (isNaN(amount) || amount <= 0)) {
       toast.error('Please enter a valid amount');
@@ -171,6 +243,10 @@ export default function ProjectDetailPage() {
       contribution_details: contributionDetails || null,
       equity_percentage: contributionType === 'cash' ? calculateEquityForAmount(amount) : 0,
       status: 'pending',
+      signature_name: signatureName.trim(),
+      signature_agreed: true,
+      signature_timestamp: new Date().toISOString(),
+      terms_version: TERMS_VERSION,
     };
 
     const { data, error } = await supabase
@@ -196,6 +272,31 @@ export default function ProjectDetailPage() {
     setContributionType('cash');
     setInvestmentAmount('');
     setContributionDetails('');
+    setInvestmentStep(1);
+    setSignatureName('');
+    setAgreedToTerms(false);
+    setHasScrolledTerms(false);
+  };
+
+  const handleTermsScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    const scrolledToBottom = target.scrollHeight - target.scrollTop <= target.clientHeight + 50;
+    if (scrolledToBottom) {
+      setHasScrolledTerms(true);
+    }
+  };
+
+  const downloadTermsPDF = () => {
+    // Create a simple text blob for download (in production, this would be a proper PDF)
+    const blob = new Blob([INVESTMENT_TERMS], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'ICWT_Investment_Terms.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   if (isLoading) {
@@ -516,12 +617,22 @@ export default function ProjectDetailPage() {
         </div>
       )}
 
-      {/* Investment Modal */}
+      {/* Investment Modal - Two Step Flow */}
       {showInvestModal && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-950 border border-stone-800 p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-stone-950 border border-stone-800 p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Header */}
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-light">Contribute to Project</h2>
+              <div>
+                <h2 className="text-2xl font-light">
+                  {investmentStep === 1 ? 'Contribute to Project' : 'Review & Sign Agreement'}
+                </h2>
+                <div className="flex items-center gap-2 mt-2">
+                  <div className={`w-8 h-1 ${investmentStep >= 1 ? 'bg-amber-600' : 'bg-stone-700'}`} />
+                  <div className={`w-8 h-1 ${investmentStep >= 2 ? 'bg-amber-600' : 'bg-stone-700'}`} />
+                  <span className="text-xs text-stone-500 ml-2">Step {investmentStep} of 2</span>
+                </div>
+              </div>
               <button
                 onClick={() => {
                   setShowInvestModal(false);
@@ -533,122 +644,238 @@ export default function ProjectDetailPage() {
               </button>
             </div>
 
-            <div className="mb-6">
-              <p className="text-stone-400 font-light text-sm">
-                Choose how you'd like to contribute to "{project.title}"
-              </p>
-            </div>
-
-            {/* Contribution Type */}
-            <div className="mb-6">
-              <label className="text-sm text-stone-400 font-light mb-3 block">
-                Contribution Type
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                {contributionTypes.map(type => (
-                  <button
-                    key={type.value}
-                    onClick={() => setContributionType(type.value)}
-                    className={`p-4 border text-left transition-colors ${
-                      contributionType === type.value
-                        ? 'border-amber-600 bg-amber-600/10'
-                        : 'border-stone-800 hover:border-stone-700'
-                    }`}
-                  >
-                    <div className="font-light text-sm mb-1">{type.label}</div>
-                    <div className="text-xs text-stone-500">{type.description}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Amount (for cash contributions) */}
-            {contributionType === 'cash' && (
-              <div className="mb-6">
-                <label className="text-sm text-stone-400 font-light mb-2 block">
-                  Investment Amount
-                </label>
-                <div className="relative">
-                  <span className="absolute left-4 top-3.5 text-stone-400">$</span>
-                  <input
-                    type="number"
-                    value={investmentAmount}
-                    onChange={(e) => setInvestmentAmount(e.target.value)}
-                    placeholder="5,000"
-                    min="100"
-                    className="w-full bg-transparent border border-stone-700 pl-8 pr-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
-                  />
+            {/* Step 1: Contribution Details */}
+            {investmentStep === 1 && (
+              <>
+                <div className="mb-6">
+                  <p className="text-stone-400 font-light text-sm">
+                    Choose how you'd like to contribute to "{project.title}"
+                  </p>
                 </div>
-                {investmentAmount && parseFloat(investmentAmount) > 0 && (
-                  <div className="mt-3 p-4 border border-amber-600/30 bg-amber-600/5">
-                    <div className="flex items-center gap-2 text-amber-600 text-sm font-light">
-                      <TrendingUp className="w-4 h-4" />
-                      <span>
-                        Estimated equity: {calculateEquityForAmount(parseFloat(investmentAmount)).toFixed(2)}%
-                      </span>
+
+                {/* Contribution Type */}
+                <div className="mb-6">
+                  <label className="text-sm text-stone-400 font-light mb-3 block">
+                    Contribution Type
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {contributionTypes.map(type => (
+                      <button
+                        key={type.value}
+                        onClick={() => setContributionType(type.value)}
+                        className={`p-4 border text-left transition-colors ${
+                          contributionType === type.value
+                            ? 'border-amber-600 bg-amber-600/10'
+                            : 'border-stone-800 hover:border-stone-700'
+                        }`}
+                      >
+                        <div className="font-light text-sm mb-1">{type.label}</div>
+                        <div className="text-xs text-stone-500">{type.description}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Amount (for cash contributions) */}
+                {contributionType === 'cash' && (
+                  <div className="mb-6">
+                    <label className="text-sm text-stone-400 font-light mb-2 block">
+                      Investment Amount
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-4 top-3.5 text-stone-400">$</span>
+                      <input
+                        type="number"
+                        value={investmentAmount}
+                        onChange={(e) => setInvestmentAmount(e.target.value)}
+                        placeholder="5,000"
+                        min="100"
+                        className="w-full bg-transparent border border-stone-700 pl-8 pr-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                      />
+                    </div>
+                    {investmentAmount && parseFloat(investmentAmount) > 0 && (
+                      <div className="mt-3 p-4 border border-amber-600/30 bg-amber-600/5">
+                        <div className="flex items-center gap-2 text-amber-600 text-sm font-light">
+                          <TrendingUp className="w-4 h-4" />
+                          <span>
+                            Estimated equity: {calculateEquityForAmount(parseFloat(investmentAmount)).toFixed(2)}%
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    <div className="flex gap-2 mt-3">
+                      {[1000, 2500, 5000, 10000].map(amount => (
+                        <button
+                          key={amount}
+                          onClick={() => setInvestmentAmount(amount.toString())}
+                          className="flex-1 border border-stone-800 py-2 text-xs font-light hover:border-amber-600 hover:text-amber-600 transition-colors"
+                        >
+                          ${(amount / 1000).toFixed(0)}K
+                        </button>
+                      ))}
                     </div>
                   </div>
                 )}
-                <div className="flex gap-2 mt-3">
-                  {[1000, 2500, 5000, 10000].map(amount => (
-                    <button
-                      key={amount}
-                      onClick={() => setInvestmentAmount(amount.toString())}
-                      className="flex-1 border border-stone-800 py-2 text-xs font-light hover:border-amber-600 hover:text-amber-600 transition-colors"
-                    >
-                      ${(amount / 1000).toFixed(0)}K
-                    </button>
-                  ))}
+
+                {/* Contribution Details */}
+                <div className="mb-8">
+                  <label className="text-sm text-stone-400 font-light mb-2 block">
+                    {contributionType === 'cash' ? 'Notes (optional)' : 'Describe Your Contribution'}
+                  </label>
+                  <textarea
+                    value={contributionDetails}
+                    onChange={(e) => setContributionDetails(e.target.value)}
+                    placeholder={
+                      contributionType === 'cash'
+                        ? 'Any additional notes...'
+                        : contributionType === 'time'
+                        ? 'e.g., 40 hours of mixing and mastering...'
+                        : contributionType === 'equipment'
+                        ? 'e.g., Neumann U87 microphone, SSL compressor...'
+                        : 'e.g., Social media marketing campaign, legal review...'
+                    }
+                    rows={3}
+                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                  />
                 </div>
-              </div>
+
+                <div className="border-t border-stone-800 pt-6">
+                  <div className="flex gap-4">
+                    <button
+                      onClick={() => {
+                        setShowInvestModal(false);
+                        resetForm();
+                      }}
+                      className="flex-1 border border-stone-700 py-3 text-sm font-light hover:border-stone-600 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => setInvestmentStep(2)}
+                      disabled={contributionType === 'cash' && (!investmentAmount || parseFloat(investmentAmount) <= 0)}
+                      className="flex-1 bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      Continue to Agreement
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </>
             )}
 
-            {/* Contribution Details */}
-            <div className="mb-8">
-              <label className="text-sm text-stone-400 font-light mb-2 block">
-                {contributionType === 'cash' ? 'Notes (optional)' : 'Describe Your Contribution'}
-              </label>
-              <textarea
-                value={contributionDetails}
-                onChange={(e) => setContributionDetails(e.target.value)}
-                placeholder={
-                  contributionType === 'cash'
-                    ? 'Any additional notes...'
-                    : contributionType === 'time'
-                    ? 'e.g., 40 hours of mixing and mastering...'
-                    : contributionType === 'equipment'
-                    ? 'e.g., Neumann U87 microphone, SSL compressor...'
-                    : 'e.g., Social media marketing campaign, legal review...'
-                }
-                rows={3}
-                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
-              />
-            </div>
+            {/* Step 2: Review Terms & Sign */}
+            {investmentStep === 2 && (
+              <>
+                {/* Investment Summary */}
+                <div className="border border-stone-800 p-4 mb-6 bg-stone-900/50">
+                  <h4 className="text-sm text-stone-400 font-light mb-2">Your Contribution</h4>
+                  <div className="flex items-center justify-between">
+                    <span className="font-light capitalize">{contributionType}</span>
+                    {contributionType === 'cash' && (
+                      <span className="text-amber-600 font-light">
+                        ${parseFloat(investmentAmount).toLocaleString()} ({calculateEquityForAmount(parseFloat(investmentAmount)).toFixed(2)}% equity)
+                      </span>
+                    )}
+                  </div>
+                  {contributionDetails && (
+                    <p className="text-xs text-stone-500 mt-2">{contributionDetails}</p>
+                  )}
+                </div>
 
-            <div className="border-t border-stone-800 pt-6">
-              <p className="text-xs text-stone-500 font-light mb-6">
-                By contributing, you agree to ICWT's investment terms. All contributions are subject
-                to review by the project creator. Equity percentages are finalized upon project completion.
-              </p>
-              <div className="flex gap-4">
-                <button
-                  onClick={() => {
-                    setShowInvestModal(false);
-                    resetForm();
-                  }}
-                  className="flex-1 border border-stone-700 py-3 text-sm font-light hover:border-stone-600 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleInvest}
-                  disabled={isSubmitting || (contributionType === 'cash' && (!investmentAmount || parseFloat(investmentAmount) <= 0))}
-                  className="flex-1 bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? 'Submitting...' : 'Submit Contribution'}
-                </button>
-              </div>
-            </div>
+                {/* Terms Section */}
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-amber-600" />
+                      <span className="text-sm text-stone-400 font-light">Investment Agreement</span>
+                    </div>
+                    <button
+                      onClick={downloadTermsPDF}
+                      className="flex items-center gap-1 text-xs text-amber-600 hover:text-amber-500 transition-colors"
+                    >
+                      <Download className="w-3 h-3" />
+                      Download Terms
+                    </button>
+                  </div>
+                  <div
+                    onScroll={handleTermsScroll}
+                    className="border border-stone-700 bg-stone-950 p-4 h-64 overflow-y-auto text-xs text-stone-400 font-light leading-relaxed whitespace-pre-wrap"
+                  >
+                    {INVESTMENT_TERMS}
+                  </div>
+                  {!hasScrolledTerms && (
+                    <p className="text-xs text-amber-600/70 mt-2 text-center">
+                      Please scroll through the entire agreement to continue
+                    </p>
+                  )}
+                </div>
+
+                {/* Signature Section */}
+                <div className="mb-6">
+                  <label className="text-sm text-stone-400 font-light mb-2 block">
+                    Type Your Full Legal Name as Signature
+                  </label>
+                  <input
+                    type="text"
+                    value={signatureName}
+                    onChange={(e) => setSignatureName(e.target.value)}
+                    placeholder="Your Full Legal Name"
+                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors font-serif text-lg italic"
+                  />
+                  {signatureName && (
+                    <div className="mt-3 p-4 border border-stone-800 bg-stone-900/30">
+                      <p className="text-xs text-stone-500 mb-1">Signature Preview:</p>
+                      <p className="font-serif text-xl italic text-stone-100">{signatureName}</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Agreement Checkbox */}
+                <div className="mb-8">
+                  <label className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={agreedToTerms}
+                      onChange={(e) => setAgreedToTerms(e.target.checked)}
+                      disabled={!hasScrolledTerms}
+                      className="mt-1 w-5 h-5 bg-transparent border border-stone-600 rounded-sm checked:bg-amber-600 checked:border-amber-600 focus:ring-amber-600 focus:ring-offset-stone-950 disabled:opacity-50 disabled:cursor-not-allowed"
+                    />
+                    <span className={`text-sm font-light ${hasScrolledTerms ? 'text-stone-300' : 'text-stone-500'}`}>
+                      I have read and agree to the Investment Agreement terms and conditions. I understand that investments carry risk and returns are not guaranteed. I confirm that my typed signature above constitutes my legal electronic signature.
+                    </span>
+                  </label>
+                </div>
+
+                <div className="border-t border-stone-800 pt-6">
+                  <p className="text-xs text-stone-500 font-light mb-4 text-center">
+                    By clicking "Sign & Submit", you are electronically signing this agreement.
+                    <br />
+                    Timestamp: {new Date().toLocaleString()}
+                  </p>
+                  <div className="flex gap-4">
+                    <button
+                      onClick={() => setInvestmentStep(1)}
+                      className="flex-1 border border-stone-700 py-3 text-sm font-light hover:border-stone-600 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                      Back
+                    </button>
+                    <button
+                      onClick={handleInvest}
+                      disabled={isSubmitting || !signatureName.trim() || !agreedToTerms || !hasScrolledTerms}
+                      className="flex-1 bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      {isSubmitting ? 'Submitting...' : (
+                        <>
+                          <Check className="w-4 h-4" />
+                          Sign & Submit Investment
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
