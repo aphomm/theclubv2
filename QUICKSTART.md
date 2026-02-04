@@ -1,4 +1,4 @@
-# THE CLUB - Quick Start Guide
+# ICWT - Quick Start Guide
 
 ## 30-Second Setup
 

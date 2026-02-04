@@ -1,8 +1,8 @@
-# THE CLUB - Project Summary
+# ICWT - Project Summary
 
 ## Completion Status: Phase 1 ✓ COMPLETE
 
-A premium membership platform for an exclusive music industry private club in Inglewood, CA has been fully developed and is production-ready.
+A premium membership platform for In Culture We Trust (ICWT), an exclusive music industry community in Inglewood, CA has been fully developed and is production-ready.
 
 ---
 

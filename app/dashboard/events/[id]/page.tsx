@@ -111,6 +111,20 @@ export default function EventDetailPage() {
         setIsRsvped(false);
       }
     } else {
+      // First check current capacity
+      const { data: currentRsvps } = await supabase
+        .from('event_rsvps')
+        .select('guest_count')
+        .eq('event_id', params.id);
+
+      const totalGuests = (currentRsvps?.reduce((sum, rsvp) => sum + rsvp.guest_count, 0) || 0) + guestCount;
+      
+      if (totalGuests > (event?.capacity || 0)) {
+        toast.error(`Cannot RSVP: Only ${(event?.capacity || 0) - (currentRsvps?.reduce((sum, rsvp) => sum + rsvp.guest_count, 0) || 0)} spots remaining`);
+        setIsSubmitting(false);
+        return;
+      }
+
       const { error } = await supabase.from('event_rsvps').insert([
         {
           event_id: params.id,

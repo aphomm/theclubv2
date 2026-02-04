@@ -1,4 +1,4 @@
-# THE CLUB - Premium Membership Platform
+# ICWT - Premium Membership Platform
 ## Setup & Configuration Guide
 
 ### What Has Been Built (Phase 1)
