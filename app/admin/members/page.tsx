@@ -27,12 +27,16 @@ export default function MembersPage() {
   const fetchMembers = async () => {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseUrl || !supabaseKey) return;
 
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Use service role if available to bypass RLS
+    const client = serviceKey 
+      ? createClient(supabaseUrl, serviceKey)
+      : createClient(supabaseUrl, supabaseKey);
 
-    let query = supabase.from('users').select('*');
+    let query = client.from('users').select('*');
 
     if (filterTier !== 'all') {
       query = query.eq('tier', filterTier);
@@ -50,6 +54,7 @@ export default function MembersPage() {
       );
     }
 
+    console.log('Members fetched:', filtered.length, 'with service role:', !!serviceKey);
     setMembers(filtered);
     setIsLoading(false);
   };
@@ -92,18 +97,28 @@ export default function MembersPage() {
   const updateMemberStatus = async (userId: string, newStatus: string) => {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     
     if (!supabaseUrl || !supabaseKey) return;
     
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Use service role if available to bypass RLS
+    const client = serviceKey 
+      ? createClient(supabaseUrl, serviceKey)
+      : createClient(supabaseUrl, supabaseKey);
     
-    const { error } = await supabase
+    console.log('Updating member status:', userId, 'to:', newStatus);
+    
+    const { error } = await client
       .from('users')
-      .update({ status: newStatus })
+      .update({ 
+        status: newStatus,
+        updated_at: new Date().toISOString()
+      })
       .eq('id', userId);
     
     if (error) {
       toast.error('Failed to update member status');
+      console.error('Member status update error:', error);
     } else {
       toast.success(`Member ${newStatus === 'active' ? 'activated' : 'suspended'}`);
       fetchMembers();
@@ -122,18 +137,28 @@ export default function MembersPage() {
     
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     
     if (!supabaseUrl || !supabaseKey) return;
     
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Use service role if available to bypass RLS
+    const client = serviceKey 
+      ? createClient(supabaseUrl, serviceKey)
+      : createClient(supabaseUrl, supabaseKey);
     
-    const { error } = await supabase
+    console.log('Upgrading member tier:', member.id, 'from:', member.tier, 'to:', nextTier);
+    
+    const { error } = await client
       .from('users')
-      .update({ tier: nextTier })
+      .update({ 
+        tier: nextTier,
+        updated_at: new Date().toISOString()
+      })
       .eq('id', member.id);
     
     if (error) {
       toast.error('Failed to upgrade member tier');
+      console.error('Tier upgrade error:', error);
     } else {
       toast.success(`Member upgraded to ${nextTier}`);
       fetchMembers();
