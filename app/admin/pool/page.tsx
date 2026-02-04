@@ -99,8 +99,14 @@ export default function AdminPoolPage() {
       console.error('Status update error:', error);
     } else {
       toast.success(`Project ${newStatus === 'active' ? 'approved and now live' : newStatus}`);
-      // Refetch to ensure UI is in sync with database
-      await fetchProjects();
+      // Immediately update local state
+      setProjects(prev =>
+        prev.map(p => (p.id === projectId ? { ...p, status: newStatus } : p))
+      );
+      // Then refetch to ensure database sync
+      setTimeout(async () => {
+        await fetchProjects();
+      }, 1000);
       setShowDetailModal(false);
     }
   };
