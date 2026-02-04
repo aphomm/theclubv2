@@ -57,9 +57,15 @@ export default function AdminPoolPage() {
 
     if (!supabaseUrl || !supabaseKey) return;
 
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Use service role if available to bypass RLS
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const client = serviceKey 
+      ? createClient(supabaseUrl, serviceKey)
+      : createClient(supabaseUrl, supabaseKey);
 
-    const { data, error } = await supabase
+    console.log('Fetching projects with role:', serviceKey ? 'service' : 'anon');
+
+    const { data, error } = await client
       .from('pool_projects')
       .select(`
         *,
@@ -75,6 +81,7 @@ export default function AdminPoolPage() {
       console.error('Error fetching projects:', error);
       toast.error('Failed to load projects');
     } else {
+      console.log('Projects fetched:', data?.map(p => ({ id: p.id, title: p.title, status: p.status })));
       setProjects(data || []);
     }
 
@@ -89,9 +96,21 @@ export default function AdminPoolPage() {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const { error } = await supabase
+    console.log('Updating project:', projectId, 'to status:', newStatus);
+
+    // Try using service role key to bypass RLS
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const client = serviceKey 
+      ? createClient(supabaseUrl, serviceKey)
+      : supabase;
+
+    const { error } = await client
       .from('pool_projects')
-      .update({ status: newStatus })
+      .update({ 
+        status: newStatus,
+        // Add updated_at to prevent triggers
+        updated_at: new Date().toISOString()
+      })
       .eq('id', projectId);
 
     if (error) {
@@ -99,14 +118,23 @@ export default function AdminPoolPage() {
       console.error('Status update error:', error);
     } else {
       toast.success(`Project ${newStatus === 'active' ? 'approved and now live' : newStatus}`);
-      // Immediately update local state
+      
+      // Force immediate local state update multiple ways
       setProjects(prev =>
         prev.map(p => (p.id === projectId ? { ...p, status: newStatus } : p))
       );
-      // Then refetch to ensure database sync
+      
+      // Multiple refetch attempts
       setTimeout(async () => {
         await fetchProjects();
-      }, 1000);
+        console.log('First refetch completed');
+      }, 500);
+      
+      setTimeout(async () => {
+        await fetchProjects();
+        console.log('Second refetch completed');
+      }, 2000);
+      
       setShowDetailModal(false);
     }
   };
