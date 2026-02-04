@@ -49,6 +49,19 @@ export default function AdminResourcesPage() {
     fetchResources();
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.actions-menu')) {
+        setActiveMenu(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const fetchResources = async () => {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -457,7 +470,7 @@ export default function AdminResourcesPage() {
                       {new Date(resource.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4">
-                      <div className="relative">
+                      <div className="relative actions-menu">
                         <button
                           onClick={() => setActiveMenu(activeMenu === resource.id ? null : resource.id)}
                           className="text-stone-400 hover:text-amber-600 transition-colors"
@@ -466,7 +479,7 @@ export default function AdminResourcesPage() {
                         </button>
 
                         {activeMenu === resource.id && (
-                          <div className="absolute right-0 top-8 z-10 bg-stone-900 border border-stone-800 shadow-lg py-2 min-w-[150px]">
+                          <div className="absolute right-0 top-8 z-50 bg-stone-900 border border-stone-800 shadow-lg py-2 min-w-[150px]">
                             <button
                               onClick={() => toggleFeatured(resource)}
                               className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-stone-800 flex items-center gap-2"
