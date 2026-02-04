@@ -20,6 +20,7 @@ interface Event {
   instructor_title?: string;
   instructor_bio?: string;
   agenda?: any[];
+  image_url?: string;
 }
 
 export default function EventDetailPage() {
@@ -192,6 +193,17 @@ export default function EventDetailPage() {
       </div>
 
       <h1 className="text-4xl font-light mb-6">{event.title}</h1>
+
+      {/* Event Image */}
+      {event.image_url && (
+        <div className="mb-8">
+          <img 
+            src={event.image_url} 
+            alt={event.title}
+            className="w-full h-96 object-cover rounded"
+          />
+        </div>
+      )}
 
       {/* Event Details Grid */}
       <div className="grid md:grid-cols-2 gap-6 mb-12 py-8 border-y border-stone-800">

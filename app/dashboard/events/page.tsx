@@ -29,6 +29,7 @@ interface Event {
   capacity: number;
   instructor_name?: string;
   external_rsvp_url?: string;
+  image_url?: string;
 }
 
 export default function EventsPage() {
@@ -48,14 +49,14 @@ export default function EventsPage() {
       // Use PST date for comparison (consistent with other pages)
       const today = formatDatePST(getPSTDate());
 
-      const query = supabase
+      let query = supabase
         .from('events')
         .select('*')
         .gte('date', today)
         .order('date');
 
       if (filter !== 'all') {
-        query.eq('event_type', filter);
+        query = query.eq('event_type', filter);
       }
 
       const { data } = await query;
@@ -94,7 +95,11 @@ export default function EventsPage() {
       {isLoading ? (
         <div className="space-y-6">
           {[1, 2, 3].map(i => (
-            <div key={i} className="h-32 bg-stone-900 animate-pulse border border-stone-800" />
+            <div key={i} className="border border-stone-800 p-8">
+              <div className="h-6 bg-stone-900 rounded w-1/4 mb-4 animate-pulse" />
+              <div className="h-8 bg-stone-900 rounded w-1/2 mb-4 animate-pulse" />
+              <div className="h-4 bg-stone-900 rounded w-3/4 animate-pulse" />
+            </div>
           ))}
         </div>
       ) : events.length === 0 ? (
@@ -105,56 +110,69 @@ export default function EventsPage() {
         <div className="space-y-6">
           {events.map(event => (
             <Link key={event.id} href={`/dashboard/events/${event.id}`}>
-              <div className="border border-stone-800 p-8 hover:border-amber-600 transition-colors cursor-pointer hover:bg-stone-900/50">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase tracking-wide">
-                        {event.event_type}
-                      </span>
+              <div className="border border-stone-800 hover:border-amber-600 transition-colors cursor-pointer hover:bg-stone-900/50">
+                {/* Event Image */}
+                {event.image_url && (
+                  <div className="relative h-48 w-full overflow-hidden">
+                    <img 
+                      src={event.image_url} 
+                      alt={event.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                
+                <div className="p-8">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-3">
+                        <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase tracking-wide">
+                          {event.event_type}
+                        </span>
+                      </div>
+                      <h3 className="text-2xl font-light mb-2">{event.title}</h3>
+                      <p className="text-stone-400 font-light line-clamp-2">{event.description}</p>
                     </div>
-                    <h3 className="text-2xl font-light mb-2">{event.title}</h3>
-                    <p className="text-stone-400 font-light line-clamp-2">{event.description}</p>
                   </div>
-                </div>
 
-                <div className="grid md:grid-cols-3 gap-6 mb-4 pt-4 border-t border-stone-900">
-                  <div className="flex items-center gap-2 text-sm text-stone-300 font-light">
-                    <Calendar className="w-4 h-4 text-amber-600" />
-                    {new Date(event.date).toLocaleDateString('en-US', {
-                      weekday: 'short',
-                      month: 'short',
-                      day: 'numeric',
-                    })}
-                    {' at '}
-                    {event.time}
+                  <div className="grid md:grid-cols-3 gap-6 mb-4 pt-4 border-t border-stone-900">
+                    <div className="flex items-center gap-2 text-sm text-stone-300 font-light">
+                      <Calendar className="w-4 h-4 text-amber-600" />
+                      {new Date(event.date).toLocaleDateString('en-US', {
+                        weekday: 'short',
+                        month: 'short',
+                        day: 'numeric',
+                      })}
+                      {' at '}
+                      {event.time}
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-stone-300 font-light">
+                      <MapPin className="w-4 h-4 text-amber-600" />
+                      {event.location}
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-stone-300 font-light">
+                      <Users className="w-4 h-4 text-amber-600" />
+                      {event.capacity} spots available
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-stone-300 font-light">
-                    <MapPin className="w-4 h-4 text-amber-600" />
-                    {event.location}
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-stone-300 font-light">
-                    <Users className="w-4 h-4 text-amber-600" />
-                    {event.capacity} spots available
-                  </div>
-                </div>
 
-                <div className="flex items-center justify-between">
-                  {event.instructor_name && (
-                    <div className="text-sm text-amber-600 font-light">Hosted by {event.instructor_name}</div>
-                  )}
-                  {event.external_rsvp_url && (
-                    <a
-                      href={event.external_rsvp_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="flex items-center gap-1 text-xs text-amber-600 hover:underline"
-                    >
-                      <ExternalLink className="w-3 h-3" />
-                      External RSVP
-                    </a>
-                  )}
+                  <div className="flex items-center justify-between">
+                    {event.instructor_name && (
+                      <div className="text-sm text-amber-600 font-light">Hosted by {event.instructor_name}</div>
+                    )}
+                    {event.external_rsvp_url && (
+                      <a
+                        href={event.external_rsvp_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center gap-1 text-xs text-amber-600 hover:underline"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        External RSVP
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </Link>

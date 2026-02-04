@@ -39,6 +39,24 @@ interface Investment {
   signature_timestamp?: string;
 }
 
+interface ProjectEarnings {
+  total_revenue: number;
+  total_expenses: number;
+  net_profit: number;
+  distributed_amount: number;
+  remaining_amount: number;
+  last_updated: string;
+}
+
+interface ContributorEarnings {
+  user_id: string;
+  total_invested: number;
+  equity_percentage: number;
+  total_earned: number;
+  pending_payout: number;
+  total_payouts: number;
+}
+
 interface Creator {
   id: string;
   name: string;
@@ -113,6 +131,8 @@ export default function ProjectDetailPage() {
   const [creator, setCreator] = useState<Creator | null>(null);
   const [investments, setInvestments] = useState<Investment[]>([]);
   const [myInvestment, setMyInvestment] = useState<Investment | null>(null);
+  const [projectEarnings, setProjectEarnings] = useState<ProjectEarnings | null>(null);
+  const [contributorEarnings, setContributorEarnings] = useState<ContributorEarnings | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showInvestModal, setShowInvestModal] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -187,6 +207,30 @@ export default function ProjectDetailPage() {
         if (userInvestment) {
           setMyInvestment(userInvestment);
         }
+      }
+
+      // Fetch project earnings (mock data for now)
+      const mockEarnings: ProjectEarnings = {
+        total_revenue: project?.funding_raised ? project.funding_raised * 1.5 : 0, // Mock: 150% of funding raised
+        total_expenses: project?.funding_raised ? project.funding_raised * 0.3 : 0, // Mock: 30% expenses
+        net_profit: project?.funding_raised ? project.funding_raised * 1.2 : 0, // Mock: 120% net profit
+        distributed_amount: project?.funding_raised ? project.funding_raised * 0.8 : 0, // Mock: 80% distributed
+        remaining_amount: project?.funding_raised ? project.funding_raised * 0.4 : 0, // Mock: 40% remaining
+        last_updated: new Date().toISOString(),
+      };
+      setProjectEarnings(mockEarnings);
+
+      // Calculate current user's earnings if they're an investor
+      if (user && myInvestment) {
+        const userEarnings: ContributorEarnings = {
+          user_id: user.id,
+          total_invested: myInvestment.amount,
+          equity_percentage: myInvestment.equity_percentage,
+          total_earned: (mockEarnings.distributed_amount * myInvestment.equity_percentage) / 100,
+          pending_payout: (mockEarnings.remaining_amount * myInvestment.equity_percentage) / 100,
+          total_payouts: (mockEarnings.distributed_amount * myInvestment.equity_percentage) / 100,
+        };
+        setContributorEarnings(userEarnings);
       }
 
       setIsLoading(false);
@@ -436,6 +480,89 @@ export default function ProjectDetailPage() {
             style={{ width: `${percentFunded}%` }}
           />
         </div>
+
+        {/* Project Earnings Overview (for creator) */}
+        {projectEarnings && currentUserId === project.creator_id && project.status !== 'pending' && (
+          <div className="border border-stone-800 p-8 mb-8">
+            <h3 className="text-xl font-light mb-6">Project Financial Overview</h3>
+            <div className="grid md:grid-cols-4 gap-6 mb-6">
+              <div>
+                <div className="text-xs text-stone-400 font-light tracking-wide mb-1">TOTAL REVENUE</div>
+                <div className="text-xl font-light text-green-500">
+                  ${projectEarnings.total_revenue.toLocaleString()}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-stone-400 font-light tracking-wide mb-1">TOTAL EXPENSES</div>
+                <div className="text-xl font-light text-red-500">
+                  ${projectEarnings.total_expenses.toLocaleString()}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-stone-400 font-light tracking-wide mb-1">NET PROFIT</div>
+                <div className="text-xl font-light">
+                  ${projectEarnings.net_profit.toLocaleString()}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-stone-400 font-light tracking-wide mb-1">REMAINING</div>
+                <div className="text-xl font-light text-amber-600">
+                  ${projectEarnings.remaining_amount.toLocaleString()}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Earnings Section (for investors) */}
+        {contributorEarnings && project.status === 'completed' && (
+          <div className="border border-stone-800 p-8 mb-8">
+            <h3 className="text-xl font-light mb-6 text-amber-600">Your Investment Earnings</h3>
+            <div className="grid md:grid-cols-4 gap-6 mb-6">
+              <div>
+                <div className="text-xs text-stone-400 font-light tracking-wide mb-1">TOTAL INVESTED</div>
+                <div className="text-xl font-light">
+                  ${contributorEarnings.total_invested.toLocaleString()}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-stone-400 font-light tracking-wide mb-1">EQUITY SHARE</div>
+                <div className="text-xl font-light text-amber-600">
+                  {contributorEarnings.equity_percentage.toFixed(2)}%
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-stone-400 font-light tracking-wide mb-1">TOTAL EARNED</div>
+                <div className="text-xl font-light text-green-500">
+                  ${contributorEarnings.total_earned.toLocaleString()}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-stone-400 font-light tracking-wide mb-1">PENDING PAYOUT</div>
+                <div className="text-xl font-light text-blue-500">
+                  ${contributorEarnings.pending_payout.toLocaleString()}
+                </div>
+              </div>
+            </div>
+            
+            {contributorEarnings.pending_payout > 0 && (
+              <div className="border border-stone-700 bg-stone-900/50 p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-light text-stone-300">Available for withdrawal</div>
+                    <div className="text-xs text-stone-500">Payment processing will be available soon</div>
+                  </div>
+                  <button 
+                    disabled
+                    className="px-4 py-2 bg-stone-800 text-stone-500 font-light text-sm border border-stone-700 cursor-not-allowed"
+                  >
+                    Request Payout (Coming Soon)
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Investment CTA */}
         {project.status === 'active' && (
