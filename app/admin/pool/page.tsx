@@ -57,13 +57,7 @@ export default function AdminPoolPage() {
 
     if (!supabaseUrl || !supabaseKey) return;
 
-    // Use service role if available to bypass RLS
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    const client = serviceKey 
-      ? createClient(supabaseUrl, serviceKey)
-      : createClient(supabaseUrl, supabaseKey);
-
-    console.log('Fetching projects with role:', serviceKey ? 'service' : 'anon');
+    const client = createClient(supabaseUrl, supabaseKey);
 
     const { data, error } = await client
       .from('pool_projects')
@@ -94,21 +88,12 @@ export default function AdminPoolPage() {
 
     if (!supabaseUrl || !supabaseKey) return;
 
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    console.log('Updating project:', projectId, 'to status:', newStatus);
-
-    // Try using service role key to bypass RLS
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    const client = serviceKey 
-      ? createClient(supabaseUrl, serviceKey)
-      : supabase;
+    const client = createClient(supabaseUrl, supabaseKey);
 
     const { error } = await client
       .from('pool_projects')
-      .update({ 
+      .update({
         status: newStatus,
-        // Add updated_at to prevent triggers
         updated_at: new Date().toISOString()
       })
       .eq('id', projectId);
