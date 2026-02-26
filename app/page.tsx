@@ -177,6 +177,9 @@ export default function LandingPage() {
       {/* Features Grid */}
       <section id="features" className="py-32 px-6 border-t border-white/5">
         <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16" data-reveal>
+            <p className="text-xs tracking-extra-wide text-amber-600 mb-0 font-light">WHAT YOU GET</p>
+          </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5">
             {[
               {
@@ -319,6 +322,7 @@ export default function LandingPage() {
       <section id="membership" className="py-32 px-6 border-t border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20" data-reveal>
+            <p className="text-xs tracking-extra-wide text-amber-600 mb-4 font-light">MEMBERSHIP</p>
             <h2 className="text-4xl md:text-5xl font-light mb-6">Choose Your Level</h2>
             <p className="text-xl text-stone-400 font-light">
               Three tiers designed for different stages of your creative journey
@@ -334,7 +338,7 @@ export default function LandingPage() {
             >
               <div className="mb-8">
                 <h3 className="text-2xl font-light mb-2">Creator</h3>
-                <div className="text-5xl font-light text-amber-600 mb-4">$500<span className="text-xl text-stone-400">/mo</span></div>
+                <div className="font-serif text-5xl font-light text-amber-600 mb-4">$500<span className="text-xl text-stone-400">/mo</span></div>
                 <p className="text-stone-400 font-light">For emerging artists and producers</p>
               </div>
               <ul className="space-y-4 mb-10">
@@ -368,7 +372,7 @@ export default function LandingPage() {
               </div>
               <div className="mb-8">
                 <h3 className="text-2xl font-light mb-2">Professional</h3>
-                <div className="text-5xl font-light text-amber-600 mb-4">$1,200<span className="text-xl text-stone-400">/mo</span></div>
+                <div className="font-serif text-5xl font-light text-amber-600 mb-4">$1,200<span className="text-xl text-stone-400">/mo</span></div>
                 <p className="text-stone-400 font-light">For established professionals</p>
               </div>
               <ul className="space-y-4 mb-10">
@@ -400,7 +404,7 @@ export default function LandingPage() {
             >
               <div className="mb-8">
                 <h3 className="text-2xl font-light mb-2">Executive</h3>
-                <div className="text-5xl font-light text-amber-600 mb-4">$2,500<span className="text-xl text-stone-400">/mo</span></div>
+                <div className="font-serif text-5xl font-light text-amber-600 mb-4">$2,500<span className="text-xl text-stone-400">/mo</span></div>
                 <p className="text-stone-400 font-light">For industry executives</p>
               </div>
               <ul className="space-y-4 mb-10">
@@ -494,6 +498,10 @@ export default function LandingPage() {
       {/* Testimonials */}
       <section className="py-32 px-6 border-t border-white/5">
         <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16" data-reveal>
+            <p className="text-xs tracking-extra-wide text-amber-600 mb-4 font-light">VOICES</p>
+            <h2 className="text-4xl md:text-5xl font-light">In their words</h2>
+          </div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
