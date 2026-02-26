@@ -198,9 +198,19 @@ export default function ThePoolPage() {
       </div>
 
       {/* Your Investments */}
-      {userInvestments.length > 0 && (
-        <div className="mt-16">
-          <h2 className="text-2xl font-light mb-8">Your Investments ({userInvestments.length})</h2>
+      <div className="mt-16">
+        <h2 className="text-2xl font-light mb-8">
+          Your Investments{userInvestments.length > 0 ? ` (${userInvestments.length})` : ''}
+        </h2>
+        {userInvestments.length === 0 ? (
+          <div className="border border-stone-800 p-12 text-center">
+            <TrendingUp className="w-10 h-10 text-amber-600/40 mx-auto mb-4" />
+            <p className="text-stone-300 font-light mb-1">No investments yet</p>
+            <p className="text-sm text-stone-500 font-light">
+              Browse projects above to make your first investment
+            </p>
+          </div>
+        ) : (
           <div className="border border-stone-800 p-8">
             <div className="space-y-4">
               {userInvestments.slice(0, 3).map((inv, idx) => (
@@ -219,8 +229,8 @@ export default function ThePoolPage() {
               ))}
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

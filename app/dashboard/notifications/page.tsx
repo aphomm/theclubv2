@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { Bell, MessageCircle, Megaphone, Check, ExternalLink, Circle } from 'lucide-react';
+import { Bell, MessageCircle, Megaphone, Check, ExternalLink, Circle, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
@@ -40,6 +40,7 @@ export default function NotificationsPage() {
   const [platformNotifications, setPlatformNotifications] = useState<PlatformNotification[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [markingId, setMarkingId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchNotifications();
@@ -167,6 +168,7 @@ export default function NotificationsPage() {
 
     if (!supabaseUrl || !supabaseKey || !currentUserId) return;
 
+    setMarkingId(notificationId);
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     const { error } = await supabase
@@ -178,6 +180,7 @@ export default function NotificationsPage() {
         prev.map(n => n.id === notificationId ? { ...n, isRead: true } : n)
       );
     }
+    setMarkingId(null);
   };
 
   const markAllPlatformAsRead = async () => {
@@ -397,9 +400,14 @@ export default function NotificationsPage() {
                           {!notif.isRead && (
                             <button
                               onClick={() => markNotificationAsRead(notif.id)}
-                              className="flex items-center gap-1 text-xs text-stone-500 hover:text-amber-600 transition-colors"
+                              disabled={markingId === notif.id}
+                              className="flex items-center gap-1 text-xs text-stone-500 hover:text-amber-600 transition-colors disabled:opacity-50"
                             >
-                              <Check className="w-3 h-3" />
+                              {markingId === notif.id ? (
+                                <Loader2 className="w-3 h-3 animate-spin" />
+                              ) : (
+                                <Check className="w-3 h-3" />
+                              )}
                               Mark as read
                             </button>
                           )}

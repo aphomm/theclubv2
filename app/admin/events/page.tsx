@@ -292,6 +292,9 @@ export default function EventsPage() {
                     Capacity
                   </th>
                   <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                    Tier Access
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
                     Actions
                   </th>
                 </tr>
@@ -310,6 +313,15 @@ export default function EventsPage() {
                     </td>
                     <td className="px-6 py-4 text-sm text-stone-400 font-light">{event.location}</td>
                     <td className="px-6 py-4 font-light">{event.capacity}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-wrap gap-1">
+                        {(event.tier_access || []).map(tier => (
+                          <span key={tier} className="text-xs bg-stone-800 text-stone-400 px-2 py-0.5 font-light">
+                            {tier}
+                          </span>
+                        ))}
+                      </div>
+                    </td>
                     <td className="px-6 py-4">
                       <div className="relative">
                         <button

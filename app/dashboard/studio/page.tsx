@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { ChevronLeft, ChevronRight, Clock, Music, CheckCircle, X, AlertCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Clock, Music, CheckCircle, X, AlertCircle, AlertTriangle, CalendarPlus } from 'lucide-react';
 import { toast } from 'sonner';
 
 // Monthly studio hour allocation per tier
@@ -40,6 +40,23 @@ const formatTimeRange = (start: string, end: string) => {
   return `${formatTime12Hour(start)} - ${formatTime12Hour(end)}`;
 };
 
+// Generate Google Calendar "Add to Calendar" link (no auth needed)
+const generateAddToCalendarLink = (booking: {
+  studioName: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  purpose?: string;
+}) => {
+  const dateStr = booking.date.replace(/-/g, '');
+  const startStr = `${dateStr}T${booking.startTime.replace(':', '')}00`;
+  const endStr = `${dateStr}T${booking.endTime.replace(':', '')}00`;
+  const title = encodeURIComponent(`Studio: ${booking.studioName} - ICWT`);
+  const details = encodeURIComponent(booking.purpose || 'Recording session at WePlay Studios');
+  const location = encodeURIComponent('WePlay Studios, Inglewood, CA');
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startStr}/${endStr}&details=${details}&location=${location}&ctz=America/Los_Angeles`;
+};
+
 interface Booking {
   id: string;
   user_id: string;
@@ -56,6 +73,12 @@ interface TimeSlot {
   end: string;
   available: boolean;
 }
+
+type CancelState = {
+  bookingId: string;
+  booking: Booking;
+  hoursUntil: number;
+} | null;
 
 const studios = [
   { id: 'studio-a', name: 'Studio A', description: 'Main recording studio with SSL console' },
@@ -86,6 +109,9 @@ export default function StudioBookingPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [userTier, setUserTier] = useState<string>('Creator');
+  const [cancelState, setCancelState] = useState<CancelState>(null);
+  const [isCancelling, setIsCancelling] = useState(false);
+  const [suspendedUntil, setSuspendedUntil] = useState<Date | null>(null);
 
   // Calculate remaining hours for the month based on tier
   const monthlyStudioHours = TIER_STUDIO_HOURS[userTier] || 0;
@@ -108,54 +134,51 @@ export default function StudioBookingPage() {
       if (!user) return;
       setUserId(user.id);
 
-      // Get user's tier
+      // Get user's tier and suspension status
       const { data: profile } = await supabase
         .from('users')
-        .select('tier')
+        .select('tier, booking_suspended_until')
         .eq('id', user.id)
         .maybeSingle();
 
-      if (profile?.tier) {
-        setUserTier(profile.tier);
+      if (profile?.tier) setUserTier(profile.tier);
+      if (profile?.booking_suspended_until) {
+        const suspDate = new Date(profile.booking_suspended_until);
+        if (suspDate > new Date()) setSuspendedUntil(suspDate);
       }
 
       // Get dates in PST
       const pstNow = getPSTDate();
       const startOfViewMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
       const endOfViewMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
-
-      // Current month for allocation tracking (always based on current PST date)
       const startOfCurrentMonth = new Date(pstNow.getFullYear(), pstNow.getMonth(), 1);
       const endOfCurrentMonth = new Date(pstNow.getFullYear(), pstNow.getMonth() + 1, 0);
 
       const [allBookingsResult, userBookingsResult, monthlyBookingsResult] = await Promise.all([
-        // Fetch all bookings for selected studio and viewed month
         supabase
           .from('studio_bookings')
           .select('*')
           .eq('studio_name', selectedStudio.name)
           .gte('date', formatDatePST(startOfViewMonth))
           .lte('date', formatDatePST(endOfViewMonth))
-          .neq('status', 'cancelled'),
+          .not('status', 'in', '("cancelled","cancelled_late")'),
 
-        // Fetch user's upcoming bookings
         supabase
           .from('studio_bookings')
           .select('*')
           .eq('user_id', user.id)
           .gte('date', formatDatePST(pstNow))
-          .neq('status', 'cancelled')
+          .not('status', 'in', '("cancelled","cancelled_late")')
           .order('date')
           .limit(5),
 
-        // Fetch user's bookings for CURRENT month (for allocation tracking)
         supabase
           .from('studio_bookings')
           .select('*')
           .eq('user_id', user.id)
           .gte('date', formatDatePST(startOfCurrentMonth))
           .lte('date', formatDatePST(endOfCurrentMonth))
-          .neq('status', 'cancelled'),
+          .not('status', 'in', '("cancelled","cancelled_late")'),
       ]);
 
       setBookings(allBookingsResult.data || []);
@@ -177,12 +200,10 @@ export default function StudioBookingPage() {
 
     const days: (Date | null)[] = [];
 
-    // Add empty slots for days before the first day of the month
     for (let i = 0; i < startingDay; i++) {
       days.push(null);
     }
 
-    // Add all days of the month
     for (let i = 1; i <= daysInMonth; i++) {
       days.push(new Date(year, month, i));
     }
@@ -205,6 +226,12 @@ export default function StudioBookingPage() {
   };
 
   const handleSlotClick = (slot: TimeSlot) => {
+    // Sunday closed
+    if (selectedDate.getDay() === 0) {
+      toast.error('Studio is closed on Sundays');
+      return;
+    }
+
     if (isSlotBooked(slot, selectedDate)) {
       if (isMyBooking(slot, selectedDate)) {
         toast.info('This is your booking');
@@ -224,7 +251,12 @@ export default function StudioBookingPage() {
       return;
     }
 
-    // Check if user has remaining hours this month
+    // Check suspension
+    if (suspendedUntil && suspendedUntil > new Date()) {
+      toast.error(`Bookings suspended until ${suspendedUntil.toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles', month: 'short', day: 'numeric' })}`);
+      return;
+    }
+
     if (hoursRemaining < HOURS_PER_BOOKING) {
       toast.error(`You've used all ${monthlyStudioHours} studio hours this month. Hours reset on the 1st.`);
       return;
@@ -237,7 +269,6 @@ export default function StudioBookingPage() {
   const handleBooking = async () => {
     if (!selectedSlot || !userId) return;
 
-    // Double-check allocation before booking
     if (hoursRemaining < HOURS_PER_BOOKING) {
       toast.error(`You've used all ${monthlyStudioHours} studio hours this month.`);
       return;
@@ -255,7 +286,6 @@ export default function StudioBookingPage() {
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
-
     const bookingDate = formatDatePST(selectedDate);
 
     const { data: newBooking, error } = await supabase.from('studio_bookings').insert([
@@ -275,18 +305,32 @@ export default function StudioBookingPage() {
       toast.error(`Failed to book studio: ${error.message || error.code || 'Unknown error'}`);
     } else {
       toast.success('Studio booked successfully!');
+
+      // Try to sync with Google Calendar (non-blocking)
+      if (newBooking) {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.access_token) {
+          fetch('/api/google-calendar/sync-booking', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${session.access_token}`,
+            },
+            body: JSON.stringify({ action: 'create', bookingId: newBooking.id }),
+          }).catch(() => {}); // Non-blocking, failures are silent
+        }
+      }
+
       setShowBookingModal(false);
       setSelectedSlot(null);
       setBookingPurpose('');
 
-      // Get PST dates for queries
       const pstNow = getPSTDate();
       const startOfViewMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
       const endOfViewMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
       const startOfCurrentMonth = new Date(pstNow.getFullYear(), pstNow.getMonth(), 1);
       const endOfCurrentMonth = new Date(pstNow.getFullYear(), pstNow.getMonth() + 1, 0);
 
-      // Refresh all bookings
       const [allBookingsResult, userBookingsResult, monthlyBookingsResult] = await Promise.all([
         supabase
           .from('studio_bookings')
@@ -294,14 +338,14 @@ export default function StudioBookingPage() {
           .eq('studio_name', selectedStudio.name)
           .gte('date', formatDatePST(startOfViewMonth))
           .lte('date', formatDatePST(endOfViewMonth))
-          .neq('status', 'cancelled'),
+          .not('status', 'in', '("cancelled","cancelled_late")'),
 
         supabase
           .from('studio_bookings')
           .select('*')
           .eq('user_id', userId)
           .gte('date', formatDatePST(pstNow))
-          .neq('status', 'cancelled')
+          .not('status', 'in', '("cancelled","cancelled_late")')
           .order('date')
           .limit(5),
 
@@ -311,7 +355,7 @@ export default function StudioBookingPage() {
           .eq('user_id', userId)
           .gte('date', formatDatePST(startOfCurrentMonth))
           .lte('date', formatDatePST(endOfCurrentMonth))
-          .neq('status', 'cancelled'),
+          .not('status', 'in', '("cancelled","cancelled_late")'),
       ]);
 
       setBookings(allBookingsResult.data || []);
@@ -322,28 +366,88 @@ export default function StudioBookingPage() {
     setIsSubmitting(false);
   };
 
-  const handleCancelBooking = async (bookingId: string) => {
+  const initiateCancelBooking = (booking: Booking) => {
+    // Calculate hours until booking
+    const pstNow = getPSTDate();
+    const bookingDateTime = new Date(`${booking.date}T${booking.start_time}:00`);
+    const hoursUntil = (bookingDateTime.getTime() - pstNow.getTime()) / (1000 * 60 * 60);
+
+    setCancelState({ bookingId: booking.id, booking, hoursUntil });
+  };
+
+  const confirmCancelBooking = async () => {
+    if (!cancelState || !userId) return;
+    setIsCancelling(true);
+
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    if (!supabaseUrl || !supabaseKey) return;
+    if (!supabaseUrl || !supabaseKey) {
+      setIsCancelling(false);
+      return;
+    }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
+    const { data: { session } } = await supabase.auth.getSession();
 
-    const { error } = await supabase
-      .from('studio_bookings')
-      .update({ status: 'cancelled' })
-      .eq('id', bookingId);
+    const res = await fetch('/api/cancel-booking', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+      },
+      body: JSON.stringify({ bookingId: cancelState.bookingId, userId }),
+    });
 
-    if (error) {
-      toast.error('Failed to cancel booking');
+    const result = await res.json();
+
+    if (!res.ok) {
+      toast.error(result.error || 'Failed to cancel booking');
     } else {
-      toast.success('Booking cancelled - hours restored to your monthly allocation');
-      setMyBookings(prev => prev.filter(b => b.id !== bookingId));
-      setBookings(prev => prev.filter(b => b.id !== bookingId));
-      // Also update monthly bookings to restore hours
-      setMonthlyBookings(prev => prev.filter(b => b.id !== bookingId));
+      if (result.hoursRestored) {
+        toast.success('Booking cancelled — hours restored to your monthly allocation');
+      } else if (result.strikeIssued) {
+        toast.warning(
+          `Booking cancelled (late notice). ${result.strikesTotal >= 3
+            ? 'Bookings suspended until end of month.'
+            : result.strikesTotal === 2
+            ? 'Bookings suspended for 7 days.'
+            : 'Warning: 2 more strikes may result in suspension.'
+          }`
+        );
+        // Refresh suspension status
+        const { data: profile } = await supabase
+          .from('users')
+          .select('booking_suspended_until')
+          .eq('id', userId)
+          .maybeSingle();
+        if (profile?.booking_suspended_until) {
+          const suspDate = new Date(profile.booking_suspended_until);
+          if (suspDate > new Date()) setSuspendedUntil(suspDate);
+        }
+      } else {
+        toast.success('Booking cancelled — hours not restored (less than 24h notice)');
+      }
+
+      setMyBookings(prev => prev.filter(b => b.id !== cancelState.bookingId));
+      setBookings(prev => prev.filter(b => b.id !== cancelState.bookingId));
+      setMonthlyBookings(prev => prev.filter(b => b.id !== cancelState.bookingId));
+
+      // Try to remove Google Calendar event (non-blocking)
+      if (session?.access_token) {
+        fetch('/api/google-calendar/sync-booking', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({ action: 'delete', bookingId: cancelState.bookingId }),
+        }).catch(() => {});
+      }
     }
+
+    setCancelState(null);
+    setIsCancelling(false);
   };
 
   const getBookingsForDate = (date: Date) => {
@@ -378,6 +482,19 @@ export default function StudioBookingPage() {
             <span className="text-xs text-stone-500">Resets on the 1st • All times in PST</span>
           </div>
         </div>
+
+        {/* Suspension Banner */}
+        {suspendedUntil && suspendedUntil > new Date() && (
+          <div className="mt-2 p-4 border border-red-600/50 bg-red-600/10">
+            <div className="flex items-center gap-3">
+              <AlertTriangle className="w-5 h-5 text-red-500" />
+              <span className="text-sm font-light">
+                <span className="text-red-500">Bookings suspended</span>
+                <span className="text-stone-400"> until {suspendedUntil.toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles', weekday: 'short', month: 'short', day: 'numeric' })}</span>
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Studio Selection */}
@@ -427,7 +544,7 @@ export default function StudioBookingPage() {
             {/* Day Headers */}
             <div className="grid grid-cols-7 gap-1 mb-2">
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                <div key={day} className="text-center text-xs text-stone-500 font-light py-2">
+                <div key={day} className={`text-center text-xs font-light py-2 ${day === 'Sun' ? 'text-stone-600' : 'text-stone-500'}`}>
                   {day}
                 </div>
               ))}
@@ -443,26 +560,29 @@ export default function StudioBookingPage() {
                 const isToday = day.toDateString() === new Date().toDateString();
                 const isSelected = day.toDateString() === selectedDate.toDateString();
                 const isPast = day < new Date(new Date().setHours(0, 0, 0, 0));
+                const isSunday = day.getDay() === 0;
                 const dayBookings = getBookingsForDate(day);
                 const hasBookings = dayBookings.length > 0;
 
                 return (
                   <button
                     key={idx}
-                    onClick={() => !isPast && setSelectedDate(day)}
-                    disabled={isPast}
+                    onClick={() => !isPast && !isSunday && setSelectedDate(day)}
+                    disabled={isPast || isSunday}
                     className={`aspect-square border p-1 flex flex-col items-center justify-center transition-colors relative ${
-                      isSelected
+                      isSelected && !isSunday
                         ? 'border-amber-600 bg-amber-600/20'
                         : isToday
                         ? 'border-amber-600/50'
+                        : isSunday
+                        ? 'border-stone-900 bg-stone-900/30'
                         : 'border-stone-800 hover:border-stone-700'
-                    } ${isPast ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}
+                    } ${isPast || isSunday ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
                   >
-                    <span className={`text-sm font-light ${isToday ? 'text-amber-600' : ''}`}>
+                    <span className={`text-sm font-light ${isToday && !isSunday ? 'text-amber-600' : ''}`}>
                       {day.getDate()}
                     </span>
-                    {hasBookings && (
+                    {hasBookings && !isSunday && (
                       <div className="absolute bottom-1 flex gap-0.5">
                         {dayBookings.slice(0, 3).map((_, i) => (
                           <div key={i} className="w-1 h-1 bg-amber-600 rounded-full" />
@@ -477,8 +597,8 @@ export default function StudioBookingPage() {
 
           {/* Time Slots */}
           <div className="border border-stone-800 p-6 mt-6">
-            <h3 className="text-lg font-light mb-4">
-              Available Times - {selectedDate.toLocaleDateString('en-US', {
+            <h3 className="text-lg font-light mb-1">
+              Available Times — {selectedDate.toLocaleDateString('en-US', {
                 timeZone: 'America/Los_Angeles',
                 weekday: 'long',
                 month: 'long',
@@ -486,14 +606,19 @@ export default function StudioBookingPage() {
               })}
             </h3>
 
-            {isLoading ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {selectedDate.getDay() === 0 ? (
+              <div className="flex items-center gap-2 py-8 text-stone-500">
+                <AlertCircle className="w-4 h-4" />
+                <span className="font-light text-sm">Studio is closed on Sundays</span>
+              </div>
+            ) : isLoading ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
                 {[1, 2, 3, 4, 5, 6].map(i => (
                   <div key={i} className="h-16 bg-stone-900 animate-pulse" />
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
                 {timeSlots.map(slot => {
                   const booked = isSlotBooked(slot, selectedDate);
                   const mine = isMyBooking(slot, selectedDate);
@@ -503,18 +628,19 @@ export default function StudioBookingPage() {
                   selectedDateStart.setHours(0, 0, 0, 0);
                   const isPastDate = selectedDateStart < pstToday;
                   const noHoursLeft = hoursRemaining < HOURS_PER_BOOKING && !mine;
+                  const isSuspended = suspendedUntil ? suspendedUntil > new Date() : false;
 
                   return (
                     <button
                       key={slot.start}
                       onClick={() => handleSlotClick(slot)}
-                      disabled={isPastDate || (noHoursLeft && !booked)}
+                      disabled={isPastDate || (noHoursLeft && !booked) || (isSuspended && !mine)}
                       className={`p-4 border transition-colors flex items-center justify-between ${
                         mine
                           ? 'border-green-600 bg-green-600/10 text-green-500'
                           : booked
                           ? 'border-stone-700 bg-stone-900 text-stone-500 cursor-not-allowed'
-                          : isPastDate || noHoursLeft
+                          : isPastDate || noHoursLeft || isSuspended
                           ? 'border-stone-800 text-stone-600 cursor-not-allowed'
                           : 'border-stone-800 hover:border-amber-600 hover:bg-amber-600/5'
                       }`}
@@ -564,32 +690,59 @@ export default function StudioBookingPage() {
                         </p>
                       </div>
                       <button
-                        onClick={() => handleCancelBooking(booking.id)}
+                        onClick={() => initiateCancelBooking(booking)}
                         className="text-stone-500 hover:text-red-500 transition-colors"
+                        title="Cancel booking"
                       >
                         <X className="w-4 h-4" />
                       </button>
                     </div>
-                    <div className="flex items-center gap-2 text-amber-600 text-sm font-light">
+                    <div className="flex items-center gap-2 text-amber-600 text-sm font-light mb-2">
                       <Clock className="w-4 h-4" />
                       {formatTimeRange(booking.start_time, booking.end_time)}
                     </div>
                     {booking.purpose && (
-                      <p className="text-xs text-stone-500 mt-2 font-light">{booking.purpose}</p>
+                      <p className="text-xs text-stone-500 mt-1 font-light">{booking.purpose}</p>
                     )}
+                    <a
+                      href={generateAddToCalendarLink({
+                        studioName: booking.studio_name,
+                        date: booking.date,
+                        startTime: booking.start_time,
+                        endTime: booking.end_time,
+                        purpose: booking.purpose,
+                      })}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-xs text-stone-500 hover:text-amber-600 transition-colors mt-2"
+                    >
+                      <CalendarPlus className="w-3 h-3" />
+                      Add to Calendar
+                    </a>
                   </div>
                 ))}
               </div>
             )}
+
+            {/* Cancellation Policy Notice */}
+            <div className="mt-6 pt-6 border-t border-stone-800">
+              <p className="text-xs text-stone-500 font-light leading-relaxed">
+                <span className="text-stone-400">Cancellation Policy:</span><br />
+                24h+ notice: hours restored<br />
+                6–24h notice: hours forfeited, no penalty<br />
+                Under 6h: hours forfeited + strike<br />
+                3 strikes = month suspension
+              </p>
+            </div>
           </div>
 
           {/* Studio Info */}
           <div className="border border-stone-800 p-6 mt-6">
             <h3 className="text-lg font-light mb-4">Studio Hours (PST)</h3>
             <div className="space-y-2 text-sm font-light text-stone-400">
-              <p>Monday - Friday: 9:00 AM - 9:00 PM</p>
-              <p>Saturday: 10:00 AM - 8:00 PM</p>
-              <p>Sunday: Closed</p>
+              <p>Monday – Friday: 9:00 AM – 9:00 PM</p>
+              <p>Saturday: 10:00 AM – 8:00 PM</p>
+              <p className="text-stone-600">Sunday: Closed</p>
             </div>
             <div className="border-t border-stone-800 mt-4 pt-4">
               <p className="text-xs text-stone-500 font-light">
@@ -599,6 +752,55 @@ export default function StudioBookingPage() {
           </div>
         </div>
       </div>
+
+      {/* Cancel Confirmation Dialog */}
+      {cancelState && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-stone-950 border border-stone-800 p-6 max-w-md w-full">
+            <div className="flex items-start gap-3 mb-4">
+              <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <h2 className="text-lg font-light mb-1">Cancel Booking?</h2>
+                <p className="text-stone-400 font-light text-sm">
+                  {cancelState.booking.studio_name} • {new Date(cancelState.booking.date + 'T12:00:00').toLocaleDateString('en-US', {
+                    timeZone: 'America/Los_Angeles', weekday: 'short', month: 'short', day: 'numeric'
+                  })} • {formatTimeRange(cancelState.booking.start_time, cancelState.booking.end_time)}
+                </p>
+              </div>
+            </div>
+
+            <div className={`p-3 mb-6 text-sm font-light border ${
+              cancelState.hoursUntil >= 24
+                ? 'border-green-600/30 bg-green-600/5 text-green-400'
+                : cancelState.hoursUntil >= 6
+                ? 'border-amber-600/30 bg-amber-600/5 text-amber-400'
+                : 'border-red-600/30 bg-red-600/5 text-red-400'
+            }`}>
+              {cancelState.hoursUntil >= 24
+                ? 'Good news: Your studio hours will be fully restored.'
+                : cancelState.hoursUntil >= 6
+                ? `Warning: Less than 24 hours notice. Your ${HOURS_PER_BOOKING}h will not be restored this month.`
+                : `Late cancellation: Less than 6 hours notice. Your ${HOURS_PER_BOOKING}h will not be restored and a strike will be issued.`}
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setCancelState(null)}
+                className="flex-1 border border-stone-700 py-2 text-sm font-light hover:bg-stone-900 transition-colors"
+              >
+                Keep Booking
+              </button>
+              <button
+                onClick={confirmCancelBooking}
+                disabled={isCancelling}
+                className="flex-1 bg-red-600 text-white py-2 text-sm font-light hover:bg-red-700 transition-colors disabled:opacity-50"
+              >
+                {isCancelling ? 'Cancelling...' : 'Yes, Cancel'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Booking Modal */}
       {showBookingModal && selectedSlot && (
@@ -643,7 +845,7 @@ export default function StudioBookingPage() {
                 <div className="text-sm text-stone-400 font-light mb-1">Hours</div>
                 <div className="font-light">
                   This booking uses <span className="text-amber-600">{HOURS_PER_BOOKING}h</span> of your monthly allocation
-                  <span className="text-stone-500 text-sm ml-2">({hoursRemaining}h remaining after this booking)</span>
+                  <span className="text-stone-500 text-sm ml-2">({hoursRemaining - HOURS_PER_BOOKING}h remaining after)</span>
                 </div>
               </div>
               <div>
@@ -658,6 +860,9 @@ export default function StudioBookingPage() {
                   className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
                 />
               </div>
+              <p className="text-xs text-stone-500 font-light">
+                Cancellations must be made 24+ hours in advance to restore hours.
+              </p>
             </div>
 
             <div className="flex gap-4">

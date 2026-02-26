@@ -31,6 +31,7 @@ export default function EventDetailPage() {
   const [guestCount, setGuestCount] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [remainingSpots, setRemainingSpots] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -53,6 +54,14 @@ export default function EventDetailPage() {
         const {
           data: { user },
         } = await supabase.auth.getUser();
+
+        // Fetch current RSVP count to compute remaining spots
+        const { data: currentRsvps } = await supabase
+          .from('event_rsvps')
+          .select('guest_count')
+          .eq('event_id', params.id);
+        const totalBooked = currentRsvps?.reduce((sum, r) => sum + (r.guest_count || 1), 0) || 0;
+        setRemainingSpots(Math.max(0, eventData.capacity - totalBooked));
 
         if (user) {
           const { data: rsvp } = await supabase
@@ -297,7 +306,9 @@ export default function EventDetailPage() {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <div className="font-light">Spots Available</div>
-                <div className="text-lg text-amber-600 font-light">{event.capacity} spots</div>
+                <div className={`text-lg font-light ${remainingSpots === 0 ? 'text-red-500' : 'text-amber-600'}`}>
+                  {remainingSpots === null ? `${event.capacity} spots` : remainingSpots === 0 ? 'Event Full' : `${remainingSpots} of ${event.capacity} spots`}
+                </div>
               </div>
               <div className="flex items-center gap-2">
                 <label className="text-sm font-light">Guests:</label>
@@ -316,10 +327,10 @@ export default function EventDetailPage() {
             </div>
             <button
               onClick={handleRsvp}
-              disabled={isSubmitting}
+              disabled={isSubmitting || remainingSpots === 0}
               className="w-full bg-amber-600 text-stone-950 py-4 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors disabled:opacity-50"
             >
-              {isSubmitting ? 'Confirming...' : 'Confirm RSVP'}
+              {isSubmitting ? 'Confirming...' : remainingSpots === 0 ? 'Event Full' : 'Confirm RSVP'}
             </button>
             <p className="text-xs text-stone-400 font-light mt-3 text-center">
               Free for members • Confirmation sent to your email

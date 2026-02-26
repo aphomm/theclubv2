@@ -56,6 +56,7 @@ export default function DashboardPage() {
   });
   const [upcomingEvents, setUpcomingEvents] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [profileName, setProfileName] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -96,8 +97,12 @@ export default function DashboardPage() {
           .lte('date', endOfMonth)
           .neq('status', 'cancelled'),
         // Fetch user's tier
-        supabase.from('users').select('tier').eq('id', user.id).maybeSingle(),
+        supabase.from('users').select('tier, name, full_name').eq('id', user.id).maybeSingle(),
       ]);
+
+      // Set profile name for personalized greeting
+      const displayName = userProfile.data?.name || userProfile.data?.full_name || null;
+      setProfileName(displayName);
 
       // Get monthly hours based on user's tier
       const userTier = userProfile.data?.tier || 'Creator';
@@ -136,7 +141,7 @@ export default function DashboardPage() {
   return (
     <div className="max-w-7xl">
       <div className="mb-12">
-        <h1 className="text-4xl font-light mb-2">Welcome back</h1>
+        <h1 className="text-4xl font-light mb-2">Welcome back{profileName ? `, ${profileName.split(' ')[0]}` : ''}</h1>
         <p className="text-stone-400 font-light">Here's what's happening at ICWT</p>
       </div>
 

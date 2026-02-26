@@ -47,7 +47,7 @@ export default function AdminPage() {
         professionalTier: professional.count || 0,
         executiveTier: executive.count || 0,
         totalEvents: events.count || 0,
-        totalRevenue: ((creator.count || 0) * 500 + (professional.count || 0) * 1200 + (executive.count || 0) * 2500) / 100,
+        totalRevenue: (creator.count || 0) * 500 + (professional.count || 0) * 1200 + (executive.count || 0) * 2500,
       });
 
       setIsLoading(false);

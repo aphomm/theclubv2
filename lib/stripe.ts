@@ -49,6 +49,13 @@ export const isStripeConfigured = (): boolean => {
 
 // Check if payment should be bypassed (for testing)
 // Set BYPASS_PAYMENT=true in .env.local to skip payment during development
+// This is NEVER active in production regardless of env var
 export const shouldBypassPayment = (): boolean => {
+  if (process.env.NODE_ENV === 'production') {
+    if (process.env.BYPASS_PAYMENT === 'true') {
+      console.warn('[SECURITY] BYPASS_PAYMENT ignored in production');
+    }
+    return false;
+  }
   return process.env.BYPASS_PAYMENT === 'true';
 };

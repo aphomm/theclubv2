@@ -118,7 +118,15 @@ export default function DirectoryPage() {
               <div className="border border-stone-800 p-6 hover:border-amber-600 transition-colors cursor-pointer hover:bg-stone-900/50 h-full flex flex-col">
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full" />
-                  <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase tracking-wide">
+                  <span className={`text-xs px-3 py-1 font-light uppercase tracking-wide ${
+                    member.tier === 'Executive'
+                      ? 'bg-purple-500/20 text-purple-400'
+                      : member.tier === 'Professional'
+                      ? 'bg-blue-500/20 text-blue-400'
+                      : member.tier === 'Admin'
+                      ? 'bg-red-500/20 text-red-400'
+                      : 'bg-amber-600/20 text-amber-600'
+                  }`}>
                     {member.tier}
                   </span>
                 </div>
