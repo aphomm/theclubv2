@@ -293,7 +293,7 @@ export default function EventDetailPage() {
       )}
 
       {/* RSVP Section */}
-      <div className="rounded-2xl border border-amber-600/30 bg-gradient-to-br from-amber-600/5 to-transparent p-8 sticky bottom-6">
+      <div className="rounded-2xl border border-amber-600/30 bg-gradient-to-br from-amber-600/5 to-transparent p-8 mt-8">
         {isRsvped ? (
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
