@@ -189,7 +189,7 @@ export default function MembersPage() {
             placeholder="Search by name or email..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-transparent border border-stone-700 pl-12 pr-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+            className="w-full bg-white/[0.04] border border-white/10 pl-12 pr-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-full"
           />
         </div>
 
@@ -198,10 +198,10 @@ export default function MembersPage() {
             <button
               key={tier}
               onClick={() => setFilterTier(tier)}
-              className={`px-4 py-2 text-sm font-light transition-colors border ${
+              className={`px-4 py-2 text-sm font-light transition-colors border rounded-full ${
                 filterTier === tier
                   ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-                  : 'border-stone-700 text-stone-400 hover:border-amber-600 hover:text-amber-600'
+                  : 'border-white/10 text-stone-400 hover:border-amber-600 hover:text-amber-600'
               }`}
             >
               {tier}
@@ -211,10 +211,10 @@ export default function MembersPage() {
       </div>
 
       {/* Members Table */}
-      <div className="border border-stone-800">
+      <div className="rounded-2xl border border-white/[0.08] overflow-hidden">
         {isLoading ? (
           <div className="p-8 text-center">
-            <div className="inline-block h-12 w-12 bg-stone-900 rounded-full animate-pulse" />
+            <div className="inline-block h-12 w-12 bg-white/[0.08] rounded-full animate-pulse" />
           </div>
         ) : members.length === 0 ? (
           <div className="p-12 text-center text-stone-400 font-light">No members found</div>
@@ -222,7 +222,7 @@ export default function MembersPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-stone-800">
+                <tr className="border-b border-white/[0.06]">
                   <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">Name</th>
                   <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">Email</th>
                   <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">Tier</th>
@@ -233,11 +233,11 @@ export default function MembersPage() {
               </thead>
               <tbody>
                 {members.map((member, idx) => (
-                  <tr key={member.id} className={idx !== members.length - 1 ? 'border-b border-stone-800' : ''}>
+                  <tr key={member.id} className={idx !== members.length - 1 ? 'border-b border-white/[0.06]' : ''}>
                     <td className="px-6 py-4 font-light">{member.name}</td>
                     <td className="px-6 py-4 text-sm text-stone-400 font-light">{member.email}</td>
                     <td className="px-6 py-4">
-                      <span className={`text-xs px-3 py-1 font-light uppercase ${
+                      <span className={`text-xs px-3 py-1 font-light uppercase rounded-full ${
                         member.tier === 'Executive' ? 'bg-purple-500/20 text-purple-400' :
                         member.tier === 'Professional' ? 'bg-blue-500/20 text-blue-400' :
                         member.tier === 'Admin' ? 'bg-red-500/20 text-red-400' :
@@ -247,7 +247,7 @@ export default function MembersPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`text-xs px-3 py-1 font-light uppercase ${
+                      <span className={`text-xs px-3 py-1 font-light uppercase rounded-full ${
                         member.status === 'active'
                           ? 'bg-green-600/20 text-green-500'
                           : member.status === 'admin'
@@ -270,17 +270,17 @@ export default function MembersPage() {
                         </button>
 
                         {activeMenu === member.id && (
-                          <div className="absolute right-0 top-full mt-1 w-48 bg-stone-900 border border-stone-700 rounded shadow-lg z-50">
+                          <div className="absolute right-0 top-full mt-1 w-48 bg-stone-900/95 border border-white/[0.08] rounded-xl shadow-xl z-50">
                             <button
                               onClick={() => handleMemberAction(member, 'edit')}
-                              className="w-full text-left px-4 py-2 text-sm text-stone-300 hover:bg-stone-800 flex items-center gap-2"
+                              className="w-full text-left px-4 py-2 text-sm text-stone-300 hover:bg-white/[0.06] rounded-lg flex items-center gap-2"
                             >
                               <Edit className="w-4 h-4" />
                               Edit Profile
                             </button>
                             <button
                               onClick={() => handleMemberAction(member, 'toggle_status')}
-                              className="w-full text-left px-4 py-2 text-sm text-stone-300 hover:bg-stone-800 flex items-center gap-2"
+                              className="w-full text-left px-4 py-2 text-sm text-stone-300 hover:bg-white/[0.06] rounded-lg flex items-center gap-2"
                             >
                               {member.status === 'active' ? (
                                 <><X className="w-4 h-4" />Suspend Member</>
@@ -291,7 +291,7 @@ export default function MembersPage() {
                             {!['Executive', 'Admin'].includes(member.tier) && (
                               <button
                                 onClick={() => handleMemberAction(member, 'upgrade_tier')}
-                                className="w-full text-left px-4 py-2 text-sm text-stone-300 hover:bg-stone-800 flex items-center gap-2"
+                                className="w-full text-left px-4 py-2 text-sm text-stone-300 hover:bg-white/[0.06] rounded-lg flex items-center gap-2"
                               >
                                 <Shield className="w-4 h-4" />
                                 Upgrade Tier
@@ -312,7 +312,7 @@ export default function MembersPage() {
       {/* Confirm Action Dialog */}
       {confirmAction && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-900 border border-stone-700 p-6 max-w-sm w-full">
+          <div className="bg-stone-900 rounded-2xl border border-white/[0.08] p-6 max-w-sm w-full">
             <div className="flex items-center gap-3 mb-4">
               <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0" />
               <h2 className="text-lg font-light">Confirm Action</h2>
@@ -325,17 +325,17 @@ export default function MembersPage() {
             <div className="flex gap-3">
               <button
                 onClick={() => setConfirmAction(null)}
-                className="flex-1 border border-stone-700 py-2 text-sm font-light hover:bg-stone-800 transition-colors"
+                className="flex-1 border border-white/10 py-2 text-sm font-light hover:bg-white/[0.06] transition-colors rounded-full"
               >
                 Cancel
               </button>
               <button
                 onClick={executeConfirmedAction}
                 disabled={isSubmitting}
-                className={`flex-1 py-2 text-sm font-light transition-colors disabled:opacity-50 ${
+                className={`flex-1 py-2 text-sm font-light transition-colors disabled:opacity-50 rounded-full ${
                   confirmAction.type === 'suspend'
                     ? 'bg-red-600 text-white hover:bg-red-700'
-                    : 'bg-amber-600 text-stone-950 hover:bg-amber-700'
+                    : 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 hover:opacity-90'
                 }`}
               >
                 {isSubmitting ? 'Processing...' : 'Confirm'}
@@ -348,7 +348,7 @@ export default function MembersPage() {
       {/* Edit Member Modal */}
       {showEditModal && editingMember && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-900 border border-stone-700 rounded p-6 max-w-md w-full">
+          <div className="bg-stone-900 rounded-2xl border border-white/[0.08] p-6 max-w-md w-full">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-light">Edit Member</h2>
               <button
@@ -365,7 +365,7 @@ export default function MembersPage() {
                 <input
                   name="name"
                   defaultValue={editingMember.name}
-                  className="w-full bg-transparent border border-stone-700 px-4 py-2 text-stone-100 focus:outline-none focus:border-amber-600"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-2 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
                   required
                 />
               </div>
@@ -375,7 +375,7 @@ export default function MembersPage() {
                 <input
                   value={editingMember.email}
                   disabled
-                  className="w-full bg-stone-800 border border-stone-700 px-4 py-2 text-stone-400 cursor-not-allowed"
+                  className="w-full bg-white/[0.04] border border-white/[0.06] px-4 py-2 text-stone-400 cursor-not-allowed rounded-xl opacity-60"
                 />
               </div>
 
@@ -384,7 +384,7 @@ export default function MembersPage() {
                 <select
                   name="tier"
                   defaultValue={editingMember.tier}
-                  className="w-full bg-stone-900 border border-stone-700 px-4 py-2 text-stone-100 focus:outline-none focus:border-amber-600"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-2 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
                 >
                   <option value="Creator">Creator</option>
                   <option value="Professional">Professional</option>
@@ -398,7 +398,7 @@ export default function MembersPage() {
                 <select
                   name="status"
                   defaultValue={editingMember.status}
-                  className="w-full bg-stone-900 border border-stone-700 px-4 py-2 text-stone-100 focus:outline-none focus:border-amber-600"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-2 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
                 >
                   <option value="active">Active</option>
                   <option value="suspended">Suspended</option>
@@ -409,14 +409,14 @@ export default function MembersPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 bg-amber-600 text-stone-100 py-2 hover:bg-amber-700 transition-colors disabled:opacity-50"
+                  className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-2 hover:opacity-90 transition-opacity disabled:opacity-50 rounded-full"
                 >
                   {isSubmitting ? 'Saving...' : 'Save Changes'}
                 </button>
                 <button
                   type="button"
                   onClick={() => { setShowEditModal(false); setEditingMember(null); }}
-                  className="flex-1 border border-stone-700 text-stone-300 py-2 hover:bg-stone-800 transition-colors"
+                  className="flex-1 border border-white/10 text-stone-300 py-2 hover:bg-white/[0.06] transition-colors rounded-full"
                 >
                   Cancel
                 </button>

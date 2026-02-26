@@ -430,23 +430,63 @@ export default function LandingPage() {
 
       {/* The Pool Feature */}
       <section className="py-32 px-6 border-t border-white/5">
-        <div className="max-w-5xl mx-auto" data-reveal>
-          <div className="rounded-2xl border border-amber-600/20 p-16 bg-gradient-to-br from-amber-600/8 to-transparent relative overflow-hidden">
+        <div className="max-w-6xl mx-auto" data-reveal>
+          <div className="rounded-2xl border border-amber-600/20 p-10 md:p-16 bg-gradient-to-br from-amber-600/8 to-transparent relative overflow-hidden">
             <div
               className="absolute top-0 right-0 w-80 h-80 rounded-full pointer-events-none"
               style={{ background: 'radial-gradient(circle, rgba(217,119,6,0.12) 0%, transparent 70%)' }}
             />
-            <div className="text-xs tracking-extra-wide text-amber-600 mb-6 relative z-10">INTRODUCING THE POOL</div>
-            <h2 className="text-4xl md:text-5xl font-light mb-6 relative z-10">Build. Fund. Own. Together.</h2>
-            <p className="text-xl text-stone-400 font-light max-w-2xl mb-10 leading-relaxed relative z-10">
-              A collaborative project platform where members pool resources to fund albums, tours, and ventures.
-              Contribute cash, time, or equipment in exchange for transparent equity ownership and profit sharing.
-            </p>
-            <a href="#membership" className="relative z-10">
-              <button className="border border-amber-600/60 text-amber-600 px-12 py-4 text-sm font-light tracking-wide hover:bg-amber-600 hover:text-stone-950 transition-colors rounded-full">
-                Learn More
-              </button>
-            </a>
+            <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
+              {/* Left: text */}
+              <div>
+                <div className="text-xs tracking-extra-wide text-amber-600 mb-6">INTRODUCING THE POOL</div>
+                <h2 className="text-4xl md:text-5xl font-light mb-6">Build. Fund. Own. Together.</h2>
+                <p className="text-lg text-stone-400 font-light mb-10 leading-relaxed">
+                  A collaborative project platform where members pool resources to fund albums, tours, and ventures.
+                  Contribute cash, time, or equipment in exchange for transparent equity ownership and profit sharing.
+                </p>
+                <a href="#membership">
+                  <button className="border border-amber-600/60 text-amber-600 px-12 py-4 text-sm font-light tracking-wide hover:bg-amber-600 hover:text-stone-950 transition-colors rounded-full">
+                    Learn More
+                  </button>
+                </a>
+              </div>
+
+              {/* Right: mock Pool visualization */}
+              <div className="rounded-xl border border-white/[0.08] bg-stone-950/80 overflow-hidden">
+                <div className="border-b border-white/[0.08] px-4 py-3 flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-amber-600/50" />
+                  <span className="text-[11px] text-stone-400 font-light tracking-wide">THE POOL — LIVE PROJECTS</span>
+                </div>
+                <div className="p-4 space-y-3">
+                  {[
+                    { title: 'Summer EP Campaign', category: 'Music', raised: 18, goal: 25, pct: 72 },
+                    { title: 'Inglewood Doc Series', category: 'Film', raised: 41, goal: 60, pct: 68 },
+                    { title: 'Producer Masterclass Tour', category: 'Education', raised: 9, goal: 15, pct: 60 },
+                  ].map((proj, i) => (
+                    <div key={i} className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-4">
+                      <div className="flex items-start justify-between mb-2">
+                        <div>
+                          <div className="text-xs text-stone-300 font-light mb-1.5">{proj.title}</div>
+                          <span className="text-[10px] bg-amber-600/15 text-amber-600 px-2 py-0.5 rounded-full font-light uppercase tracking-wide">{proj.category}</span>
+                        </div>
+                        <div className="text-right shrink-0 ml-3">
+                          <div className="text-[11px] text-amber-600 font-light">${proj.raised}K</div>
+                          <div className="text-[10px] text-stone-500">of ${proj.goal}K</div>
+                        </div>
+                      </div>
+                      <div className="w-full bg-white/[0.06] h-1.5 rounded-full mt-3">
+                        <div
+                          className="bg-gradient-to-r from-amber-500 to-amber-600 h-full rounded-full"
+                          style={{ width: `${proj.pct}%` }}
+                        />
+                      </div>
+                      <div className="text-[10px] text-stone-500 mt-1">{proj.pct}% funded</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

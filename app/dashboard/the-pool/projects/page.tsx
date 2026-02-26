@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link';
-import { ArrowLeft, Plus } from 'lucide-react';
+import { ArrowLeft, Plus, TrendingUp } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -13,6 +13,7 @@ interface Project {
   funding_goal: number;
   funding_raised: number;
   status: string;
+  image_url?: string;
 }
 
 export default function ProjectsListPage() {
@@ -104,38 +105,55 @@ export default function ProjectsListPage() {
 
             return (
               <Link key={project.id} href={`/dashboard/the-pool/projects/${project.id}`}>
-                <div className="rounded-2xl border border-white/[0.08] p-8 hover:border-amber-600/60 transition-colors cursor-pointer hover:bg-white/[0.03]">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-3">
-                        <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase tracking-wide">
-                          {project.category}
-                        </span>
-                        <span className="text-xs bg-green-600/20 text-green-500 px-3 py-1 font-light uppercase tracking-wide">
-                          {Math.round(percentFunded)}% Funded
-                        </span>
-                      </div>
-                      <h3 className="text-2xl font-light mb-2">{project.title}</h3>
-                      <p className="text-stone-400 font-light line-clamp-2">{project.description}</p>
+                <div className="rounded-2xl border border-white/[0.08] hover:border-amber-600/60 transition-colors cursor-pointer hover:bg-white/[0.03] flex overflow-hidden min-h-[160px]">
+                  {/* Left: main content */}
+                  <div className="flex-1 p-8">
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase tracking-wide rounded-full">
+                        {project.category}
+                      </span>
+                      <span className="text-xs bg-green-600/20 text-green-500 px-3 py-1 font-light uppercase tracking-wide rounded-full">
+                        {Math.round(percentFunded)}% Funded
+                      </span>
                     </div>
-                  </div>
+                    <h3 className="text-2xl font-light mb-2">{project.title}</h3>
+                    <p className="text-stone-400 font-light line-clamp-2 mb-6">{project.description}</p>
 
-                  <div className="grid md:grid-cols-3 gap-6 mt-6 pt-6 border-t border-white/5">
-                    <div>
+                    <div className="pt-4 border-t border-white/5">
                       <div className="text-xs text-stone-400 font-light mb-1">FUNDED</div>
-                      <div className="font-light">
+                      <div className="font-light mb-2">
                         ${(project.funding_raised / 1000).toFixed(0)}K /{' '}
                         <span className="text-stone-400">
                           ${(project.funding_goal / 1000).toFixed(0)}K
                         </span>
                       </div>
-                      <div className="w-full bg-white/[0.08] h-2 mt-2 rounded-full">
+                      <div className="w-full bg-white/[0.08] h-2 rounded-full">
                         <div
                           className="bg-gradient-to-r from-amber-500 to-amber-600 h-full rounded-full"
                           style={{ width: `${percentFunded}%` }}
                         />
                       </div>
                     </div>
+                  </div>
+
+                  {/* Right: thumbnail */}
+                  <div className="w-44 shrink-0 border-l border-white/[0.06] relative overflow-hidden">
+                    {project.image_url ? (
+                      <img
+                        src={project.image_url}
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-stone-900 to-stone-950 flex flex-col items-center justify-center gap-3">
+                        <div className="w-10 h-10 rounded-full border border-amber-600/20 flex items-center justify-center">
+                          <TrendingUp className="w-4 h-4 text-amber-600/40" />
+                        </div>
+                        <span className="text-xs text-stone-600 font-light text-center px-3 leading-relaxed">
+                          Project<br/>Visual
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </Link>
