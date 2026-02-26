@@ -110,32 +110,18 @@ export default function EventsPage() {
         <div className="space-y-6">
           {events.map(event => (
             <Link key={event.id} href={`/dashboard/events/${event.id}`}>
-              <div className="rounded-2xl border border-white/[0.08] hover:border-amber-600/60 transition-all cursor-pointer hover:bg-white/[0.03]">
-                {/* Event Image */}
-                {event.image_url && (
-                  <div className="relative h-48 w-full overflow-hidden">
-                    <img 
-                      src={event.image_url} 
-                      alt={event.title}
-                      className="w-full h-full object-cover"
-                    />
+              <div className="rounded-2xl border border-white/[0.08] hover:border-amber-600/60 transition-all cursor-pointer hover:bg-white/[0.03] flex overflow-hidden min-h-[160px]">
+                {/* Left: main content */}
+                <div className="flex-1 p-8">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase tracking-wide rounded-full">
+                      {event.event_type}
+                    </span>
                   </div>
-                )}
-                
-                <div className="p-8">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-3">
-                        <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase tracking-wide rounded-full">
-                          {event.event_type}
-                        </span>
-                      </div>
-                      <h3 className="text-2xl font-light mb-2">{event.title}</h3>
-                      <p className="text-stone-400 font-light line-clamp-2">{event.description}</p>
-                    </div>
-                  </div>
+                  <h3 className="text-2xl font-light mb-2">{event.title}</h3>
+                  <p className="text-stone-400 font-light line-clamp-2 mb-4">{event.description}</p>
 
-                  <div className="grid md:grid-cols-3 gap-6 mb-4 pt-4 border-t border-white/5">
+                  <div className="grid md:grid-cols-3 gap-6 pt-4 border-t border-white/5">
                     <div className="flex items-center gap-2 text-sm text-stone-300 font-light">
                       <Calendar className="w-4 h-4 text-amber-600" />
                       {new Date(event.date).toLocaleDateString('en-US', {
@@ -156,23 +142,45 @@ export default function EventsPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    {event.instructor_name && (
-                      <div className="text-sm text-amber-600 font-light">Hosted by {event.instructor_name}</div>
-                    )}
-                    {event.external_rsvp_url && (
-                      <a
-                        href={event.external_rsvp_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="flex items-center gap-1 text-xs text-amber-600 hover:underline"
-                      >
-                        <ExternalLink className="w-3 h-3" />
-                        External RSVP
-                      </a>
-                    )}
-                  </div>
+                  {(event.instructor_name || event.external_rsvp_url) && (
+                    <div className="flex items-center justify-between mt-4">
+                      {event.instructor_name && (
+                        <div className="text-sm text-amber-600 font-light">Hosted by {event.instructor_name}</div>
+                      )}
+                      {event.external_rsvp_url && (
+                        <a
+                          href={event.external_rsvp_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex items-center gap-1 text-xs text-amber-600 hover:underline"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          External RSVP
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Right: flyer thumbnail */}
+                <div className="w-44 shrink-0 border-l border-white/[0.06] relative overflow-hidden">
+                  {event.image_url ? (
+                    <img
+                      src={event.image_url}
+                      alt={`${event.title} flyer`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-stone-900 to-stone-950 flex flex-col items-center justify-center gap-3">
+                      <div className="w-10 h-10 rounded-full border border-amber-600/20 flex items-center justify-center">
+                        <Calendar className="w-4 h-4 text-amber-600/40" />
+                      </div>
+                      <span className="text-xs text-stone-600 font-light text-center px-3 leading-relaxed">
+                        Flyer<br/>Coming Soon
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             </Link>

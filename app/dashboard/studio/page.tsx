@@ -81,9 +81,27 @@ type CancelState = {
 } | null;
 
 const studios = [
-  { id: 'studio-a', name: 'Studio A', description: 'Main recording studio with SSL console' },
-  { id: 'studio-b', name: 'Studio B', description: 'Vocal booth and production suite' },
-  { id: 'studio-c', name: 'Studio C', description: 'Podcast and content creation studio' },
+  {
+    id: 'studio-a',
+    name: 'Studio A',
+    description: 'Main recording studio with SSL console',
+    image: '/images/studio-a.jpg',
+    placeholder: 'from-amber-950/40 to-stone-900',
+  },
+  {
+    id: 'studio-b',
+    name: 'Studio B',
+    description: 'Vocal booth and production suite',
+    image: '/images/studio-b.jpg',
+    placeholder: 'from-stone-800 to-stone-950',
+  },
+  {
+    id: 'studio-c',
+    name: 'Studio C',
+    description: 'Podcast and content creation studio',
+    image: '/images/studio-c.jpg',
+    placeholder: 'from-stone-700/40 to-stone-900',
+  },
 ];
 
 const timeSlots: TimeSlot[] = [
@@ -503,17 +521,37 @@ export default function StudioBookingPage() {
           <button
             key={studio.id}
             onClick={() => setSelectedStudio(studio)}
-            className={`rounded-2xl border p-6 text-left transition-colors ${
+            className={`rounded-2xl border text-left transition-colors overflow-hidden ${
               selectedStudio.id === studio.id
                 ? 'border-amber-600 bg-amber-600/10'
                 : 'border-white/[0.08] hover:border-amber-600/60'
             }`}
           >
-            <div className="flex items-center gap-3 mb-2">
-              <Music className="w-5 h-5 text-amber-600" />
-              <h3 className="font-light text-lg">{studio.name}</h3>
+            {/* Studio photo / placeholder */}
+            <div className="relative h-36 w-full overflow-hidden">
+              <img
+                src={studio.image}
+                alt={studio.name}
+                className="w-full h-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+              <div className={`absolute inset-0 bg-gradient-to-br ${studio.placeholder} flex items-center justify-center`}
+                style={{ display: 'flex' }}
+                aria-hidden="true"
+              >
+                <Music className="w-10 h-10 text-amber-600/25" />
+              </div>
+              {selectedStudio.id === studio.id && (
+                <div className="absolute inset-0 bg-amber-600/10 border-b border-amber-600/40" />
+              )}
             </div>
-            <p className="text-sm text-stone-400 font-light">{studio.description}</p>
+            <div className="p-5">
+              <div className="flex items-center gap-2 mb-1">
+                <Music className="w-4 h-4 text-amber-600" />
+                <h3 className="font-light text-lg">{studio.name}</h3>
+              </div>
+              <p className="text-sm text-stone-400 font-light">{studio.description}</p>
+            </div>
           </button>
         ))}
       </div>

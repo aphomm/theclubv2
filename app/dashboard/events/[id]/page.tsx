@@ -203,16 +203,28 @@ export default function EventDetailPage() {
 
       <h1 className="text-4xl font-light mb-6">{event.title}</h1>
 
-      {/* Event Image */}
-      {event.image_url && (
-        <div className="mb-8">
-          <img 
-            src={event.image_url} 
-            alt={event.title}
-            className="w-full h-96 object-cover rounded-2xl"
-          />
-        </div>
-      )}
+      {/* Event Flyer */}
+      <div className="flex justify-center mb-10">
+        {event.image_url ? (
+          <div className="w-64 md:w-80 rounded-2xl overflow-hidden border border-white/[0.08] shadow-2xl">
+            <img
+              src={event.image_url}
+              alt={`${event.title} flyer`}
+              className="w-full h-auto"
+            />
+          </div>
+        ) : (
+          <div className="w-64 md:w-80 h-96 rounded-2xl border border-white/[0.08] bg-gradient-to-br from-stone-900 to-stone-950 flex flex-col items-center justify-center gap-4">
+            <div className="w-16 h-16 rounded-full border border-amber-600/20 flex items-center justify-center">
+              <Calendar className="w-8 h-8 text-amber-600/40" />
+            </div>
+            <div className="text-center">
+              <p className="text-stone-500 font-light">Event Flyer</p>
+              <p className="text-stone-600 font-light text-sm">Coming Soon</p>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Event Details Grid */}
       <div className="grid md:grid-cols-2 gap-6 mb-12 py-8 border-y border-white/[0.08]">
