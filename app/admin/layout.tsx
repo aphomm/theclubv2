@@ -68,7 +68,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <h1 className="text-3xl font-light mb-4">Access Denied</h1>
           <p className="text-stone-400 font-light mb-8">You don't have permission to access the admin panel.</p>
           <div className="flex items-center justify-center gap-4">
-            <Link href="/dashboard" className="border border-amber-600 text-amber-600 px-8 py-3 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors">
+            <Link href="/dashboard" className="border border-amber-600 text-amber-600 px-8 py-3 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors rounded-full">
               Go to Dashboard
             </Link>
             <a href="mailto:support@icwt.com" className="text-sm text-stone-400 hover:text-amber-600 transition-colors font-light">
@@ -82,7 +82,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="min-h-screen bg-stone-950 text-stone-100">
-      <header className="border-b border-stone-800 bg-stone-950">
+      <header className="border-b border-white/10 bg-stone-950">
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
           <Link href="/admin">
             <div className="text-xl font-light tracking-extra-wide cursor-pointer hover:text-amber-600 transition-colors">
@@ -98,13 +98,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </header>
 
       <div className="flex">
-        <aside className="w-64 border-r border-stone-800 min-h-[calc(100vh-80px)]">
+        <aside className="w-64 border-r border-white/10 min-h-[calc(100vh-80px)]">
           <nav className="p-6 space-y-2">
             {adminNavItems.map(item => {
               const Icon = item.icon;
               return (
                 <Link key={item.href} href={item.href}>
-                  <div className="flex items-center gap-3 px-4 py-3 text-sm font-light text-stone-400 hover:text-amber-600 cursor-pointer transition-colors">
+                  <div className="flex items-center gap-3 px-4 py-3 text-sm font-light text-stone-400 hover:text-stone-100 hover:bg-white/[0.04] cursor-pointer transition-colors rounded-xl">
                     <Icon className="w-5 h-5" />
                     {item.label}
                   </div>

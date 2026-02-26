@@ -157,7 +157,7 @@ export default function EventDetailPage() {
   if (isLoading) {
     return (
       <div className="max-w-4xl">
-        <div className="h-96 bg-stone-900 animate-pulse border border-stone-800" />
+        <div className="h-96 bg-white/[0.06] animate-pulse rounded-2xl border border-white/[0.08]" />
       </div>
     );
   }
@@ -187,7 +187,7 @@ export default function EventDetailPage() {
 
       <div className="flex items-center justify-between mb-6">
         <div>
-          <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase tracking-wide">
+          <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase tracking-wide rounded-full">
             {event.event_type}
           </span>
         </div>
@@ -209,13 +209,13 @@ export default function EventDetailPage() {
           <img 
             src={event.image_url} 
             alt={event.title}
-            className="w-full h-96 object-cover rounded"
+            className="w-full h-96 object-cover rounded-2xl"
           />
         </div>
       )}
 
       {/* Event Details Grid */}
-      <div className="grid md:grid-cols-2 gap-6 mb-12 py-8 border-y border-stone-800">
+      <div className="grid md:grid-cols-2 gap-6 mb-12 py-8 border-y border-white/[0.08]">
         <div className="flex items-center gap-4">
           <Calendar className="w-6 h-6 text-amber-600" />
           <div>
@@ -242,7 +242,7 @@ export default function EventDetailPage() {
 
       {/* Instructor */}
       {event.instructor_name && (
-        <div className="border border-stone-800 p-8 mb-12">
+        <div className="rounded-2xl border border-white/[0.08] p-8 mb-12">
           <h3 className="text-lg font-light mb-4">Hosted By</h3>
           <div>
             <h4 className="text-xl font-light">{event.instructor_name}</h4>
@@ -266,7 +266,7 @@ export default function EventDetailPage() {
           <h2 className="text-2xl font-light mb-6">Agenda</h2>
           <div className="space-y-4">
             {event.agenda.map((item: any, idx: number) => (
-              <div key={idx} className="border border-stone-800 p-6">
+              <div key={idx} className="rounded-2xl border border-white/[0.08] p-6">
                 <div className="flex items-start gap-4">
                   <div className="text-lg font-light text-amber-600 w-20">{item.time}</div>
                   <div>
@@ -281,7 +281,7 @@ export default function EventDetailPage() {
       )}
 
       {/* RSVP Section */}
-      <div className="border border-amber-600/30 bg-gradient-to-br from-amber-600/5 to-transparent p-8 sticky bottom-6">
+      <div className="rounded-2xl border border-amber-600/30 bg-gradient-to-br from-amber-600/5 to-transparent p-8 sticky bottom-6">
         {isRsvped ? (
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -296,7 +296,7 @@ export default function EventDetailPage() {
             <button
               onClick={handleRsvp}
               disabled={isSubmitting}
-              className="border border-red-500 text-red-500 px-8 py-3 text-sm font-light hover:bg-red-500 hover:text-stone-950 transition-colors disabled:opacity-50"
+              className="border border-red-500 text-red-500 px-8 py-3 text-sm font-light hover:bg-red-500 hover:text-stone-950 transition-colors disabled:opacity-50 rounded-full"
             >
               {isSubmitting ? 'Cancelling...' : 'Cancel RSVP'}
             </button>
@@ -315,7 +315,7 @@ export default function EventDetailPage() {
                 <select
                   value={guestCount}
                   onChange={(e) => setGuestCount(parseInt(e.target.value))}
-                  className="bg-stone-900 border border-stone-700 px-3 py-2 text-sm font-light"
+                  className="bg-white/[0.06] border border-white/10 px-3 py-2 text-sm font-light rounded-lg"
                 >
                   {[1, 2, 3, 4, 5].map(i => (
                     <option key={i} value={i}>
@@ -328,7 +328,7 @@ export default function EventDetailPage() {
             <button
               onClick={handleRsvp}
               disabled={isSubmitting || remainingSpots === 0}
-              className="w-full bg-amber-600 text-stone-950 py-4 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors disabled:opacity-50"
+              className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-4 text-sm font-light tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 rounded-full"
             >
               {isSubmitting ? 'Confirming...' : remainingSpots === 0 ? 'Event Full' : 'Confirm RSVP'}
             </button>

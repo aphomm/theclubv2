@@ -130,7 +130,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <p className="text-stone-400 font-light mb-8">
             Your account has been suspended. Contact support to resolve this.
           </p>
-          <a href="mailto:support@icwt.com" className="inline-block border border-amber-600 text-amber-600 px-8 py-3 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors">
+          <a href="mailto:support@icwt.com" className="inline-block border border-amber-600 text-amber-600 px-8 py-3 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors rounded-full">
             Contact Support
           </a>
         </div>
@@ -140,7 +140,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="min-h-screen bg-stone-950 text-stone-100">
-      <header className="fixed top-0 left-0 right-0 z-40 border-b border-stone-800 bg-stone-950">
+      <header className="fixed top-0 left-0 right-0 z-40 border-b border-white/10 bg-stone-950/90 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="lg:hidden text-stone-400 hover:text-amber-600">
@@ -160,7 +160,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               if (input.value.trim()) router.push(`/dashboard/search?q=${encodeURIComponent(input.value.trim())}`);
             }} className="hidden md:block relative">
               <Search className="absolute left-3 top-2.5 w-4 h-4 text-stone-500" />
-              <input type="text" placeholder="Search members, events..." className="bg-stone-900 border border-stone-700 pl-9 pr-4 py-2 text-sm text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 w-64" />
+              <input type="text" placeholder="Search members, events..." className="bg-white/[0.04] border border-white/10 pl-9 pr-4 py-2 text-sm text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 w-64 rounded-full transition-colors" />
             </form>
             <Link href="/dashboard/notifications">
               <button className="relative text-stone-400 hover:text-amber-600">
@@ -184,7 +184,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </header>
 
       <div className="flex pt-20">
-        <aside className={`fixed left-0 top-20 bottom-0 w-64 border-r border-stone-800 bg-stone-950 transform transition-transform z-30 lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <aside className={`fixed left-0 top-20 bottom-0 w-64 border-r border-white/10 bg-stone-950 transform transition-transform z-30 lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
           <div className="flex flex-col h-full">
             <nav className="flex-1 p-6 space-y-2 overflow-y-auto">
               {navItems.map(item => {
@@ -192,7 +192,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 const isActive = pathname === item.href;
                 return (
                   <Link key={item.href} href={item.href} onClick={() => setIsSidebarOpen(false)}>
-                    <div className={`flex items-center gap-3 px-4 py-3 rounded text-sm font-light tracking-wide transition-colors cursor-pointer ${isActive ? 'bg-stone-900 text-amber-600 border-l-2 border-amber-600' : 'text-stone-400 hover:text-amber-600'}`}>
+                    <div className={`flex items-center gap-3 px-4 py-3 text-sm font-light tracking-wide transition-colors cursor-pointer rounded-xl ${isActive ? 'bg-amber-600/15 text-amber-600' : 'text-stone-400 hover:text-stone-100 hover:bg-white/[0.04]'}`}>
                       <Icon className="w-5 h-5" />
                       {item.label}
                     </div>
@@ -201,9 +201,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               })}
             </nav>
 
-            <div className="flex-shrink-0 p-6 space-y-2 border-t border-stone-800">
+            <div className="flex-shrink-0 p-6 space-y-2 border-t border-white/10">
               <Link href="/dashboard/settings" onClick={() => setIsSidebarOpen(false)}>
-                <div className="flex items-center gap-3 px-4 py-3 text-sm font-light text-stone-400 hover:text-amber-600 cursor-pointer transition-colors">
+                <div className="flex items-center gap-3 px-4 py-3 text-sm font-light text-stone-400 hover:text-stone-100 hover:bg-white/[0.04] cursor-pointer transition-colors rounded-xl">
                   <Settings className="w-5 h-5" />
                   Settings
                 </div>

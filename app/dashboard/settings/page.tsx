@@ -85,9 +85,9 @@ export default function SettingsPage() {
       </div>
 
       {isLoading ? (
-        <div className="h-96 bg-stone-900 animate-pulse border border-stone-800" />
+        <div className="h-96 bg-white/[0.04] animate-pulse rounded-2xl border border-white/[0.08]" />
       ) : (
-        <div className="border border-stone-800 p-8">
+        <div className="rounded-2xl border border-white/[0.08] p-8">
           <h2 className="text-2xl font-light mb-6">Profile Information</h2>
 
           <div className="space-y-6">
@@ -97,7 +97,7 @@ export default function SettingsPage() {
                 type="text"
                 value={profile?.name || ''}
                 onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 rounded-xl focus:outline-none focus:border-amber-600"
               />
             </div>
 
@@ -108,7 +108,7 @@ export default function SettingsPage() {
                 value={profile?.role || ''}
                 onChange={(e) => setProfile({ ...profile, role: e.target.value })}
                 placeholder="e.g., Producer, Artist, Executive"
-                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 rounded-xl placeholder:text-stone-600 focus:outline-none focus:border-amber-600"
               />
             </div>
 
@@ -119,7 +119,7 @@ export default function SettingsPage() {
                 value={profile?.location || ''}
                 onChange={(e) => setProfile({ ...profile, location: e.target.value })}
                 placeholder="City, State"
-                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 rounded-xl placeholder:text-stone-600 focus:outline-none focus:border-amber-600"
               />
             </div>
 
@@ -130,14 +130,14 @@ export default function SettingsPage() {
                 onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
                 placeholder="Tell us about yourself..."
                 rows={4}
-                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 rounded-xl placeholder:text-stone-600 focus:outline-none focus:border-amber-600"
               />
             </div>
 
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="bg-amber-600 text-stone-950 px-8 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50"
+              className="bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 px-8 py-3 text-sm font-light hover:opacity-90 transition-opacity disabled:opacity-50 rounded-full"
             >
               {isSaving ? 'Saving...' : 'Save Changes'}
             </button>

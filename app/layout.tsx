@@ -1,9 +1,15 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Cormorant_Garamond } from 'next/font/google';
 import { Toaster } from 'sonner';
 
-const inter = Inter({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
+const inter = Inter({ subsets: ['latin'], weight: ['300', '400', '500', '600'], variable: '--font-inter' });
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-cormorant',
+});
 
 export const metadata: Metadata = {
   title: 'ICWT - In Culture We Trust',
@@ -17,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${cormorant.variable} font-sans antialiased`}>
         {children}
         <Toaster position="top-right" theme="dark" />
       </body>

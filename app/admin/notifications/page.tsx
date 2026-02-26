@@ -217,7 +217,7 @@ export default function AdminNotificationsPage() {
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 border border-amber-600 text-amber-600 px-4 py-2 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors"
+          className="flex items-center gap-2 border border-amber-600 text-amber-600 px-4 py-2 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors rounded-full"
         >
           <Plus className="w-4 h-4" />
           New Notification
@@ -226,7 +226,7 @@ export default function AdminNotificationsPage() {
 
       {/* Create/Edit Form */}
       {showForm && (
-        <div className="border border-stone-800 p-6 mb-8">
+        <div className="rounded-2xl border border-white/[0.08] p-6 mb-8">
           <h2 className="text-xl font-light mb-6">
             {editingNotification ? 'Edit Notification' : 'Create Notification'}
           </h2>
@@ -239,7 +239,7 @@ export default function AdminNotificationsPage() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Notification title..."
-                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
               />
             </div>
 
@@ -250,7 +250,7 @@ export default function AdminNotificationsPage() {
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Notification message..."
                 rows={4}
-                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
               />
             </div>
 
@@ -263,10 +263,10 @@ export default function AdminNotificationsPage() {
                       key={type.value}
                       type="button"
                       onClick={() => setNotificationType(type.value as any)}
-                      className={`px-4 py-2 text-sm font-light transition-colors ${
+                      className={`px-4 py-2 text-sm font-light transition-colors rounded-full ${
                         notificationType === type.value
-                          ? 'bg-amber-600 text-stone-950'
-                          : 'border border-stone-700 text-stone-400 hover:border-amber-600'
+                          ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950'
+                          : 'border border-white/10 text-stone-400 hover:border-amber-600'
                       }`}
                     >
                       {type.label}
@@ -283,10 +283,10 @@ export default function AdminNotificationsPage() {
                       key={tier}
                       type="button"
                       onClick={() => toggleTier(tier)}
-                      className={`px-4 py-2 text-sm font-light transition-colors ${
+                      className={`px-4 py-2 text-sm font-light transition-colors rounded-full ${
                         targetTiers.includes(tier)
-                          ? 'bg-amber-600 text-stone-950'
-                          : 'border border-stone-700 text-stone-400 hover:border-amber-600'
+                          ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950'
+                          : 'border border-white/10 text-stone-400 hover:border-amber-600'
                       }`}
                     >
                       {tier}
@@ -304,7 +304,7 @@ export default function AdminNotificationsPage() {
                   value={actionUrl}
                   onChange={(e) => setActionUrl(e.target.value)}
                   placeholder="https://..."
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                 />
               </div>
 
@@ -323,14 +323,14 @@ export default function AdminNotificationsPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="border border-amber-600 text-amber-600 px-6 py-2 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors disabled:opacity-50"
+                className="border border-amber-600 text-amber-600 px-6 py-2 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors disabled:opacity-50 rounded-full"
               >
                 {isSubmitting ? 'Saving...' : (editingNotification ? 'Update' : 'Create')}
               </button>
               <button
                 type="button"
                 onClick={resetForm}
-                className="border border-stone-700 text-stone-400 px-6 py-2 text-sm font-light hover:border-stone-500 transition-colors"
+                className="border border-white/10 text-stone-400 px-6 py-2 text-sm font-light hover:border-white/20 transition-colors rounded-full"
               >
                 Cancel
               </button>
@@ -340,14 +340,14 @@ export default function AdminNotificationsPage() {
       )}
 
       {/* Notifications List */}
-      <div className="border border-stone-800">
+      <div className="rounded-2xl border border-white/[0.08] overflow-hidden">
         {isLoading ? (
-          <div className="divide-y divide-stone-800">
+          <div className="divide-y divide-white/[0.06]">
             {[1, 2, 3].map(i => (
               <div key={i} className="p-6">
-                <div className="h-5 bg-stone-800 rounded w-48 mb-3 animate-pulse" />
-                <div className="h-4 bg-stone-800 rounded w-full mb-2 animate-pulse" />
-                <div className="h-4 bg-stone-800 rounded w-2/3 animate-pulse" />
+                <div className="h-5 bg-white/[0.08] rounded w-48 mb-3 animate-pulse" />
+                <div className="h-4 bg-white/[0.08] rounded w-full mb-2 animate-pulse" />
+                <div className="h-4 bg-white/[0.08] rounded w-2/3 animate-pulse" />
               </div>
             ))}
           </div>
@@ -360,7 +360,7 @@ export default function AdminNotificationsPage() {
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-stone-800">
+          <div className="divide-y divide-white/[0.06]">
             {notifications.map(notif => {
               const typeConfig = getTypeConfig(notif.notification_type);
               const isExpired = notif.expires_at && new Date(notif.expires_at) < new Date();

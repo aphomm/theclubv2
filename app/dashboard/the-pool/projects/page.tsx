@@ -57,7 +57,7 @@ export default function ProjectsListPage() {
           <p className="text-stone-400 font-light">Browse and invest in community projects</p>
         </div>
         <Link href="/dashboard/the-pool/projects/new">
-          <button className="flex items-center gap-2 bg-amber-600 text-stone-950 px-6 py-3 text-sm font-light hover:bg-amber-700 transition-colors">
+          <button className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 px-6 py-3 text-sm font-light hover:opacity-90 transition-opacity rounded-full">
             <Plus className="w-5 h-5" />
             Start a Project
           </button>
@@ -65,7 +65,7 @@ export default function ProjectsListPage() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex gap-4 mb-10 border-b border-stone-800 pb-6">
+      <div className="flex gap-4 mb-10 border-b border-white/[0.08] pb-6">
         {[
           { value: 'active', label: 'Live' },
           { value: 'completed', label: 'Completed' },
@@ -88,11 +88,11 @@ export default function ProjectsListPage() {
       {isLoading ? (
         <div className="space-y-6">
           {[1, 2, 3].map(i => (
-            <div key={i} className="h-32 bg-stone-900 animate-pulse border border-stone-800" />
+            <div key={i} className="h-32 bg-white/[0.04] animate-pulse rounded-2xl border border-white/[0.08]" />
           ))}
         </div>
       ) : projects.length === 0 ? (
-        <div className="text-center py-20 border border-stone-800 p-12">
+        <div className="text-center py-20 rounded-2xl border border-white/[0.08] p-12">
           <p className="text-stone-400 font-light">
             No {filter === 'active' ? 'live' : filter} projects found
           </p>
@@ -104,7 +104,7 @@ export default function ProjectsListPage() {
 
             return (
               <Link key={project.id} href={`/dashboard/the-pool/projects/${project.id}`}>
-                <div className="border border-stone-800 p-8 hover:border-amber-600 transition-colors cursor-pointer hover:bg-stone-900/50">
+                <div className="rounded-2xl border border-white/[0.08] p-8 hover:border-amber-600/60 transition-colors cursor-pointer hover:bg-white/[0.03]">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-3">
@@ -120,7 +120,7 @@ export default function ProjectsListPage() {
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-3 gap-6 mt-6 pt-6 border-t border-stone-900">
+                  <div className="grid md:grid-cols-3 gap-6 mt-6 pt-6 border-t border-white/5">
                     <div>
                       <div className="text-xs text-stone-400 font-light mb-1">FUNDED</div>
                       <div className="font-light">
@@ -129,9 +129,9 @@ export default function ProjectsListPage() {
                           ${(project.funding_goal / 1000).toFixed(0)}K
                         </span>
                       </div>
-                      <div className="w-full bg-stone-900 h-2 mt-2">
+                      <div className="w-full bg-white/[0.08] h-2 mt-2 rounded-full">
                         <div
-                          className="bg-amber-600 h-full"
+                          className="bg-gradient-to-r from-amber-500 to-amber-600 h-full rounded-full"
                           style={{ width: `${percentFunded}%` }}
                         />
                       </div>

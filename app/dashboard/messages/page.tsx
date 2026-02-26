@@ -156,21 +156,21 @@ export default function MessagesPage() {
             placeholder="Search conversations..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-transparent border border-stone-700 pl-12 pr-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+            className="w-full bg-white/[0.04] border border-white/10 pl-12 pr-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-full"
           />
         </div>
       </div>
 
       {/* Conversations List */}
-      <div className="border border-stone-800">
+      <div className="rounded-2xl border border-white/[0.08] overflow-hidden">
         {isLoading ? (
-          <div className="divide-y divide-stone-800">
+          <div className="divide-y divide-white/[0.06]">
             {[1, 2, 3, 4, 5].map(i => (
               <div key={i} className="p-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-stone-800 rounded-full animate-pulse" />
+                  <div className="w-12 h-12 bg-white/[0.08] rounded-full animate-pulse" />
                   <div className="flex-1">
-                    <div className="h-4 bg-stone-800 rounded w-32 mb-2 animate-pulse" />
+                    <div className="h-4 bg-white/[0.06] rounded-full w-32 mb-2 animate-pulse" />
                     <div className="h-3 bg-stone-800 rounded w-48 animate-pulse" />
                   </div>
                 </div>
@@ -185,16 +185,16 @@ export default function MessagesPage() {
               Start a conversation from the member directory
             </p>
             <Link href="/dashboard/directory">
-              <button className="border border-amber-600 text-amber-600 px-6 py-2 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors">
+              <button className="border border-amber-600 text-amber-600 px-6 py-2 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors rounded-full">
                 Browse Members
               </button>
             </Link>
           </div>
         ) : (
-          <div className="divide-y divide-stone-800">
+          <div className="divide-y divide-white/[0.06]">
             {filteredConversations.map(conv => (
               <Link key={conv.id} href={`/dashboard/messages/${conv.id}`}>
-                <div className="p-6 hover:bg-stone-900/50 transition-colors cursor-pointer flex items-center gap-4">
+                <div className="p-6 hover:bg-white/[0.04] transition-colors cursor-pointer flex items-center gap-4">
                   <div className="relative">
                     <div className="w-12 h-12 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center">
                       <span className="text-stone-950 font-light text-lg">

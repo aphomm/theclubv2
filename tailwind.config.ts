@@ -11,7 +11,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        serif: ['Georgia', 'serif'],
+        serif: ['var(--font-cormorant)', 'Georgia', 'serif'],
       },
       letterSpacing: {
         'extra-wide': '0.1em',

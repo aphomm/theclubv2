@@ -57,7 +57,7 @@ export default function AdminPage() {
   }, []);
 
   const StatCard = ({ icon: Icon, label, value }: any) => (
-    <div className="border border-stone-800 p-6">
+    <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6">
       <div className="flex items-center justify-between">
         <div>
           <div className="text-xs text-stone-400 font-light tracking-wide mb-2">{label}</div>
@@ -78,7 +78,7 @@ export default function AdminPage() {
       {isLoading ? (
         <div className="grid lg:grid-cols-2 gap-6">
           {[1, 2, 3, 4, 5, 6].map(i => (
-            <div key={i} className="h-24 bg-stone-900 animate-pulse border border-stone-800" />
+            <div key={i} className="h-24 bg-white/[0.04] animate-pulse rounded-2xl border border-white/[0.08]" />
           ))}
         </div>
       ) : (
@@ -94,21 +94,21 @@ export default function AdminPage() {
 
           <div className="grid lg:grid-cols-2 gap-6">
             {/* Quick Actions */}
-            <div className="border border-stone-800 p-8">
+            <div className="rounded-2xl border border-white/[0.08] p-8">
               <h2 className="text-2xl font-light mb-6">Quick Actions</h2>
               <div className="space-y-4">
                 <a href="/admin/members">
-                  <button className="w-full border border-stone-700 py-3 px-4 text-sm font-light hover:border-amber-600 hover:text-amber-600 transition-colors text-left">
+                  <button className="w-full border border-white/10 py-3 px-4 text-sm font-light hover:border-amber-600/60 hover:text-amber-600 transition-colors text-left rounded-xl">
                     Manage Members →
                   </button>
                 </a>
                 <a href="/admin/events">
-                  <button className="w-full border border-stone-700 py-3 px-4 text-sm font-light hover:border-amber-600 hover:text-amber-600 transition-colors text-left">
+                  <button className="w-full border border-white/10 py-3 px-4 text-sm font-light hover:border-amber-600/60 hover:text-amber-600 transition-colors text-left rounded-xl">
                     Manage Events →
                   </button>
                 </a>
                 <a href="/admin/resources">
-                  <button className="w-full border border-stone-700 py-3 px-4 text-sm font-light hover:border-amber-600 hover:text-amber-600 transition-colors text-left">
+                  <button className="w-full border border-white/10 py-3 px-4 text-sm font-light hover:border-amber-600/60 hover:text-amber-600 transition-colors text-left rounded-xl">
                     Manage Resources →
                   </button>
                 </a>
@@ -116,20 +116,20 @@ export default function AdminPage() {
             </div>
 
             {/* Recent Activity */}
-            <div className="border border-stone-800 p-8">
+            <div className="rounded-2xl border border-white/[0.08] p-8">
               <h2 className="text-2xl font-light mb-6">System Status</h2>
               <div className="space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-stone-800">
+                <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
                   <span className="text-sm font-light">Database</span>
-                  <span className="text-xs bg-green-600/20 text-green-500 px-3 py-1 font-light">Connected</span>
+                  <span className="text-xs bg-green-600/20 text-green-500 px-3 py-1 font-light rounded-full">Connected</span>
                 </div>
-                <div className="flex items-center justify-between pb-3 border-b border-stone-800">
+                <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
                   <span className="text-sm font-light">API</span>
-                  <span className="text-xs bg-green-600/20 text-green-500 px-3 py-1 font-light">Operational</span>
+                  <span className="text-xs bg-green-600/20 text-green-500 px-3 py-1 font-light rounded-full">Operational</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-light">Auth</span>
-                  <span className="text-xs bg-green-600/20 text-green-500 px-3 py-1 font-light">Enabled</span>
+                  <span className="text-xs bg-green-600/20 text-green-500 px-3 py-1 font-light rounded-full">Enabled</span>
                 </div>
               </div>
             </div>

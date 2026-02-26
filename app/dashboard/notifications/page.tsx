@@ -255,10 +255,10 @@ export default function NotificationsPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 text-sm font-light transition-colors flex items-center gap-2 ${
+              className={`px-4 py-2 text-sm font-light transition-colors flex items-center gap-2 rounded-full ${
                 activeTab === tab.id
-                  ? 'bg-amber-600 text-stone-950'
-                  : 'border border-stone-700 text-stone-400 hover:border-amber-600'
+                  ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950'
+                  : 'border border-white/10 text-stone-400 hover:border-amber-600/50'
               }`}
             >
               {tab.label}
@@ -285,26 +285,26 @@ export default function NotificationsPage() {
       </div>
 
       {isLoading ? (
-        <div className="border border-stone-800 divide-y divide-stone-800">
+        <div className="rounded-2xl border border-white/[0.08] divide-y divide-white/[0.06] overflow-hidden">
           {[1, 2, 3, 4, 5].map(i => (
             <div key={i} className="p-6">
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-stone-800 rounded-full animate-pulse" />
+                <div className="w-10 h-10 bg-white/[0.08] rounded-full animate-pulse" />
                 <div className="flex-1">
                   <div className="h-4 bg-stone-800 rounded w-32 mb-2 animate-pulse" />
-                  <div className="h-3 bg-stone-800 rounded w-48 animate-pulse" />
+                  <div className="h-3 bg-white/[0.06] rounded-full w-48 animate-pulse" />
                 </div>
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <div className="border border-stone-800 divide-y divide-stone-800">
+        <div className="rounded-2xl border border-white/[0.08] divide-y divide-white/[0.06] overflow-hidden">
           {/* Messages Section */}
           {showMessages && conversations.length > 0 && (
             <>
               {activeTab === 'all' && (
-                <div className="px-6 py-3 bg-stone-900/50">
+                <div className="px-6 py-3 bg-white/[0.03]">
                   <div className="flex items-center gap-2 text-xs text-stone-400 uppercase tracking-wider">
                     <MessageCircle className="w-3 h-3" />
                     Messages
@@ -313,7 +313,7 @@ export default function NotificationsPage() {
               )}
               {conversations.map(conv => (
                 <Link key={conv.id} href={`/dashboard/messages/${conv.id}`}>
-                  <div className="p-6 hover:bg-stone-900/50 transition-colors cursor-pointer flex items-center gap-4">
+                  <div className="p-6 hover:bg-white/[0.03] transition-colors cursor-pointer flex items-center gap-4">
                     <div className="relative">
                       <div className="w-10 h-10 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center">
                         <span className="text-stone-950 font-light">
@@ -349,7 +349,7 @@ export default function NotificationsPage() {
           {showAnnouncements && platformNotifications.length > 0 && (
             <>
               {activeTab === 'all' && (
-                <div className="px-6 py-3 bg-stone-900/50">
+                <div className="px-6 py-3 bg-white/[0.03]">
                   <div className="flex items-center gap-2 text-xs text-stone-400 uppercase tracking-wider">
                     <Megaphone className="w-3 h-3" />
                     Announcements
@@ -362,7 +362,7 @@ export default function NotificationsPage() {
                 return (
                   <div
                     key={notif.id}
-                    className={`p-6 transition-colors ${notif.isRead ? 'opacity-60' : 'hover:bg-stone-900/50'}`}
+                    className={`p-6 transition-colors ${notif.isRead ? 'opacity-60' : 'hover:bg-white/[0.03]'}`}
                   >
                     <div className="flex items-start gap-4">
                       <div className={`w-10 h-10 ${typeConfig.color} rounded-full flex items-center justify-center flex-shrink-0`}>

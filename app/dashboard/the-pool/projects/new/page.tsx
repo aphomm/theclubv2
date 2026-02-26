@@ -171,10 +171,10 @@ export default function CreateProjectPage() {
       <div className="flex items-center gap-4 mb-12">
         <button
           onClick={() => setCurrentStep(1)}
-          className={`flex items-center gap-2 px-4 py-2 text-sm font-light border transition-colors ${
+          className={`flex items-center gap-2 px-4 py-2 text-sm font-light border transition-colors rounded-full ${
             currentStep === 1
               ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-              : 'border-stone-700 text-stone-400'
+              : 'border-white/10 text-stone-400'
           }`}
         >
           <span className="w-6 h-6 border border-current rounded-full flex items-center justify-center text-xs">
@@ -182,13 +182,13 @@ export default function CreateProjectPage() {
           </span>
           Basics
         </button>
-        <div className="h-px w-8 bg-stone-800" />
+        <div className="h-px w-8 bg-white/[0.08]" />
         <button
           onClick={() => validateStep1() && setCurrentStep(2)}
-          className={`flex items-center gap-2 px-4 py-2 text-sm font-light border transition-colors ${
+          className={`flex items-center gap-2 px-4 py-2 text-sm font-light border transition-colors rounded-full ${
             currentStep === 2
               ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-              : 'border-stone-700 text-stone-400'
+              : 'border-white/10 text-stone-400'
           }`}
         >
           <span className="w-6 h-6 border border-current rounded-full flex items-center justify-center text-xs">
@@ -196,13 +196,13 @@ export default function CreateProjectPage() {
           </span>
           Details
         </button>
-        <div className="h-px w-8 bg-stone-800" />
+        <div className="h-px w-8 bg-white/[0.08]" />
         <button
           onClick={() => validateStep1() && setCurrentStep(3)}
-          className={`flex items-center gap-2 px-4 py-2 text-sm font-light border transition-colors ${
+          className={`flex items-center gap-2 px-4 py-2 text-sm font-light border transition-colors rounded-full ${
             currentStep === 3
               ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-              : 'border-stone-700 text-stone-400'
+              : 'border-white/10 text-stone-400'
           }`}
         >
           <span className="w-6 h-6 border border-current rounded-full flex items-center justify-center text-xs">
@@ -215,7 +215,7 @@ export default function CreateProjectPage() {
       {/* Step 1: Basics */}
       {currentStep === 1 && (
         <div className="space-y-8">
-          <div className="border border-stone-800 p-8">
+          <div className="rounded-2xl border border-white/[0.08] p-8">
             <h2 className="text-xl font-light mb-6 flex items-center gap-3">
               <Target className="w-5 h-5 text-amber-600" />
               Project Basics
@@ -232,7 +232,7 @@ export default function CreateProjectPage() {
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="e.g., Debut Album: Midnight Sessions"
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                 />
               </div>
 
@@ -247,7 +247,7 @@ export default function CreateProjectPage() {
                   onChange={handleInputChange}
                   placeholder="A short, catchy description (optional)"
                   maxLength={100}
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                 />
                 <p className="text-xs text-stone-500 mt-1">{formData.tagline.length}/100</p>
               </div>
@@ -260,7 +260,7 @@ export default function CreateProjectPage() {
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
                 >
                   {categories.map(cat => (
                     <option key={cat} value={cat}>{cat}</option>
@@ -278,7 +278,7 @@ export default function CreateProjectPage() {
                   onChange={handleInputChange}
                   placeholder="Tell potential investors about your project. What is it? Why should they invest? What makes it special?"
                   rows={6}
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
                 />
               </div>
 
@@ -296,7 +296,7 @@ export default function CreateProjectPage() {
                     onChange={handleInputChange}
                     placeholder="50,000"
                     min="1000"
-                    className="w-full bg-transparent border border-stone-700 pl-8 pr-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                    className="w-full bg-white/[0.04] border border-white/10 pl-8 pr-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                   />
                 </div>
                 <p className="text-xs text-stone-500 mt-1">Minimum $1,000</p>
@@ -307,7 +307,7 @@ export default function CreateProjectPage() {
           <div className="flex justify-end">
             <button
               onClick={() => validateStep1() && setCurrentStep(2)}
-              className="bg-amber-600 text-stone-950 px-8 py-3 text-sm font-light hover:bg-amber-700 transition-colors"
+              className="bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 px-8 py-3 text-sm font-light hover:opacity-90 transition-opacity rounded-full"
             >
               Continue to Details
             </button>
@@ -318,7 +318,7 @@ export default function CreateProjectPage() {
       {/* Step 2: Details */}
       {currentStep === 2 && (
         <div className="space-y-8">
-          <div className="border border-stone-800 p-8">
+          <div className="rounded-2xl border border-white/[0.08] p-8">
             <h2 className="text-xl font-light mb-6">Additional Details</h2>
             <p className="text-stone-400 font-light text-sm mb-8">
               These fields are optional but help investors understand your project better.
@@ -335,7 +335,7 @@ export default function CreateProjectPage() {
                   name="expected_completion"
                   value={formData.expected_completion}
                   onChange={handleInputChange}
-                  className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
                 />
               </div>
 
@@ -350,7 +350,7 @@ export default function CreateProjectPage() {
                   value={formData.location}
                   onChange={handleInputChange}
                   placeholder="e.g., Los Angeles, CA"
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                 />
               </div>
 
@@ -365,7 +365,7 @@ export default function CreateProjectPage() {
                   value={formData.video_url}
                   onChange={handleInputChange}
                   placeholder="https://youtube.com/watch?v=... or https://vimeo.com/..."
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                 />
                 <p className="text-xs text-stone-500 mt-1">
                   A pitch video can significantly increase investment interest
@@ -377,13 +377,13 @@ export default function CreateProjectPage() {
           <div className="flex justify-between">
             <button
               onClick={() => setCurrentStep(1)}
-              className="border border-stone-700 px-8 py-3 text-sm font-light hover:border-stone-600 transition-colors"
+              className="border border-white/10 px-8 py-3 text-sm font-light hover:border-white/20 transition-colors rounded-full"
             >
               Back
             </button>
             <button
               onClick={() => setCurrentStep(3)}
-              className="bg-amber-600 text-stone-950 px-8 py-3 text-sm font-light hover:bg-amber-700 transition-colors"
+              className="bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 px-8 py-3 text-sm font-light hover:opacity-90 transition-opacity rounded-full"
             >
               Continue to Milestones
             </button>
@@ -394,7 +394,7 @@ export default function CreateProjectPage() {
       {/* Step 3: Milestones */}
       {currentStep === 3 && (
         <div className="space-y-8">
-          <div className="border border-stone-800 p-8">
+          <div className="rounded-2xl border border-white/[0.08] p-8">
             <h2 className="text-xl font-light mb-2">Project Milestones</h2>
             <p className="text-stone-400 font-light text-sm mb-8">
               Break your project into milestones to show investors how you'll use their funding.
@@ -403,7 +403,7 @@ export default function CreateProjectPage() {
 
             <div className="space-y-6">
               {milestones.map((milestone, index) => (
-                <div key={index} className="border border-stone-800 p-6 relative">
+                <div key={index} className="rounded-xl border border-white/[0.08] p-6 relative">
                   {milestones.length > 1 && (
                     <button
                       onClick={() => removeMilestone(index)}
@@ -426,20 +426,20 @@ export default function CreateProjectPage() {
                       value={milestone.title}
                       onChange={(e) => handleMilestoneChange(index, 'title', e.target.value)}
                       placeholder="Milestone title (e.g., Pre-production complete)"
-                      className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                      className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                     />
                     <textarea
                       value={milestone.description}
                       onChange={(e) => handleMilestoneChange(index, 'description', e.target.value)}
                       placeholder="Brief description of what this milestone includes..."
                       rows={2}
-                      className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                      className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
                     />
                     <input
                       type="date"
                       value={milestone.date}
                       onChange={(e) => handleMilestoneChange(index, 'date', e.target.value)}
-                      className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                      className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
                     />
                   </div>
                 </div>
@@ -448,7 +448,7 @@ export default function CreateProjectPage() {
               {milestones.length < 10 && (
                 <button
                   onClick={addMilestone}
-                  className="w-full border border-dashed border-stone-700 py-4 text-sm font-light text-stone-400 hover:border-amber-600 hover:text-amber-600 transition-colors flex items-center justify-center gap-2"
+                  className="w-full border border-dashed border-white/10 py-4 text-sm font-light text-stone-400 hover:border-amber-600 hover:text-amber-600 transition-colors flex items-center justify-center gap-2 rounded-xl"
                 >
                   <Plus className="w-4 h-4" />
                   Add Milestone
@@ -458,7 +458,7 @@ export default function CreateProjectPage() {
           </div>
 
           {/* Preview Summary */}
-          <div className="border border-amber-600/30 bg-amber-600/5 p-8">
+          <div className="rounded-2xl border border-amber-600/30 bg-amber-600/5 p-8">
             <h3 className="text-lg font-light mb-4">Project Summary</h3>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
@@ -482,7 +482,7 @@ export default function CreateProjectPage() {
             </div>
           </div>
 
-          <div className="border border-stone-800 p-6">
+          <div className="rounded-2xl border border-white/[0.08] p-6">
             <p className="text-xs text-stone-500 font-light">
               By submitting this project, you agree to ICWT's project guidelines and investment terms.
               Your project will be reviewed before being published to the community. Projects typically
@@ -493,14 +493,14 @@ export default function CreateProjectPage() {
           <div className="flex justify-between">
             <button
               onClick={() => setCurrentStep(2)}
-              className="border border-stone-700 px-8 py-3 text-sm font-light hover:border-stone-600 transition-colors"
+              className="border border-white/10 px-8 py-3 text-sm font-light hover:border-white/20 transition-colors rounded-full"
             >
               Back
             </button>
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="bg-amber-600 text-stone-950 px-12 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 px-12 py-3 text-sm font-light hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed rounded-full"
             >
               {isSubmitting ? 'Submitting...' : 'Submit Project'}
             </button>

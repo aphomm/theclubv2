@@ -75,7 +75,7 @@ export default function EventsPage() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex gap-4 mb-10 border-b border-stone-800 pb-6">
+      <div className="flex gap-4 mb-10 border-b border-white/10 pb-6">
         {['all', 'Masterclass', 'Networking', 'Studio Session'].map(f => (
           <button
             key={f}
@@ -95,22 +95,22 @@ export default function EventsPage() {
       {isLoading ? (
         <div className="space-y-6">
           {[1, 2, 3].map(i => (
-            <div key={i} className="border border-stone-800 p-8">
-              <div className="h-6 bg-stone-900 rounded w-1/4 mb-4 animate-pulse" />
-              <div className="h-8 bg-stone-900 rounded w-1/2 mb-4 animate-pulse" />
-              <div className="h-4 bg-stone-900 rounded w-3/4 animate-pulse" />
+            <div key={i} className="rounded-2xl border border-white/[0.08] p-8">
+              <div className="h-6 bg-white/[0.06] rounded-full w-1/4 mb-4 animate-pulse" />
+              <div className="h-8 bg-white/[0.06] rounded-full w-1/2 mb-4 animate-pulse" />
+              <div className="h-4 bg-white/[0.06] rounded-full w-3/4 animate-pulse" />
             </div>
           ))}
         </div>
       ) : events.length === 0 ? (
-        <div className="text-center py-20 border border-stone-800 p-12">
+        <div className="text-center py-20 rounded-2xl border border-white/[0.08] p-12">
           <p className="text-stone-400 font-light text-lg">No events found</p>
         </div>
       ) : (
         <div className="space-y-6">
           {events.map(event => (
             <Link key={event.id} href={`/dashboard/events/${event.id}`}>
-              <div className="border border-stone-800 hover:border-amber-600 transition-colors cursor-pointer hover:bg-stone-900/50">
+              <div className="rounded-2xl border border-white/[0.08] hover:border-amber-600/60 transition-all cursor-pointer hover:bg-white/[0.03]">
                 {/* Event Image */}
                 {event.image_url && (
                   <div className="relative h-48 w-full overflow-hidden">
@@ -126,7 +126,7 @@ export default function EventsPage() {
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-3">
-                        <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase tracking-wide">
+                        <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase tracking-wide rounded-full">
                           {event.event_type}
                         </span>
                       </div>
@@ -135,7 +135,7 @@ export default function EventsPage() {
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-3 gap-6 mb-4 pt-4 border-t border-stone-900">
+                  <div className="grid md:grid-cols-3 gap-6 mb-4 pt-4 border-t border-white/5">
                     <div className="flex items-center gap-2 text-sm text-stone-300 font-light">
                       <Calendar className="w-4 h-4 text-amber-600" />
                       {new Date(event.date).toLocaleDateString('en-US', {

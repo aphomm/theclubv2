@@ -62,7 +62,7 @@ export default function ForgotPasswordPage() {
           </p>
         </div>
 
-        <div className="bg-stone-900 border border-stone-800 p-6 rounded mb-8">
+        <div className="bg-white/[0.04] border border-white/[0.08] p-6 rounded-xl mb-8">
           <p className="text-stone-300 text-sm font-light leading-relaxed">
             Click the link in the email to reset your password. If you don't see the email,
             check your spam folder or request a new link.
@@ -75,7 +75,7 @@ export default function ForgotPasswordPage() {
               setSubmitted(false);
               setEmail('');
             }}
-            className="w-full border border-stone-700 py-3 text-sm font-light tracking-wide hover:border-amber-600 hover:text-amber-600 transition-colors"
+            className="w-full border border-white/10 py-3 text-sm font-light tracking-wide hover:border-amber-600 hover:text-amber-600 transition-colors rounded-full"
           >
             Try Another Email
           </button>
@@ -108,14 +108,14 @@ export default function ForgotPasswordPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your@email.com"
-            className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
           />
         </div>
 
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-amber-600 text-stone-950 py-3 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed rounded-full"
         >
           {isLoading ? 'Sending...' : 'Send Reset Link'}
         </button>

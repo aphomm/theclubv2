@@ -222,8 +222,8 @@ export default function ConversationPage() {
   if (isLoading) {
     return (
       <div className="max-w-4xl h-[calc(100vh-180px)] flex flex-col">
-        <div className="h-20 bg-stone-900 animate-pulse" />
-        <div className="flex-1 bg-stone-900/50 animate-pulse" />
+        <div className="h-20 bg-white/[0.04] animate-pulse rounded-t-2xl" />
+        <div className="flex-1 bg-white/[0.02] animate-pulse" />
       </div>
     );
   }
@@ -235,7 +235,7 @@ export default function ConversationPage() {
   return (
     <div className="max-w-4xl h-[calc(100vh-180px)] flex flex-col">
       {/* Header */}
-      <div className="border border-stone-800 p-4 flex items-center justify-between">
+      <div className="rounded-t-2xl border border-white/[0.08] p-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/dashboard/messages">
             <button className="text-stone-400 hover:text-amber-600 transition-colors">
@@ -264,7 +264,7 @@ export default function ConversationPage() {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto border-x border-stone-800 p-6 space-y-6">
+      <div className="flex-1 overflow-y-auto border-x border-white/[0.08] p-6 space-y-6">
         {messages.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-stone-400 font-light">No messages yet</p>
@@ -277,11 +277,11 @@ export default function ConversationPage() {
             <div key={groupIdx}>
               {/* Date Divider */}
               <div className="flex items-center justify-center mb-6">
-                <div className="h-px bg-stone-800 flex-1" />
+                <div className="h-px bg-white/[0.06] flex-1" />
                 <span className="px-4 text-xs text-stone-500 font-light">
                   {formatDate(group.date)}
                 </span>
-                <div className="h-px bg-stone-800 flex-1" />
+                <div className="h-px bg-white/[0.06] flex-1" />
               </div>
 
               {/* Messages for this date */}
@@ -297,8 +297,8 @@ export default function ConversationPage() {
                       <div
                         className={`max-w-[70%] ${
                           isMine
-                            ? 'bg-amber-600 text-stone-950'
-                            : 'bg-stone-900 border border-stone-800'
+                            ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 rounded-2xl rounded-br-sm'
+                            : 'bg-white/[0.06] border border-white/[0.08] rounded-2xl rounded-bl-sm'
                         } px-4 py-3`}
                       >
                         <p className="font-light text-sm whitespace-pre-wrap">{msg.content}</p>
@@ -321,19 +321,19 @@ export default function ConversationPage() {
       </div>
 
       {/* Message Input */}
-      <form onSubmit={handleSendMessage} className="border border-stone-800 p-4">
+      <form onSubmit={handleSendMessage} className="rounded-b-2xl border border-white/[0.08] p-4">
         <div className="flex items-center gap-4">
           <input
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type a message..."
-            className="flex-1 bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+            className="flex-1 bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-full"
           />
           <button
             type="submit"
             disabled={!newMessage.trim() || isSending}
-            className="bg-amber-600 text-stone-950 p-3 hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 p-3 hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed rounded-full"
           >
             <Send className="w-5 h-5" />
           </button>

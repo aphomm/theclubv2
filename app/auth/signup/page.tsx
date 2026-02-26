@@ -193,7 +193,7 @@ export default function SignupPage() {
           <p className="text-amber-600 font-light mt-1">{signupEmail}</p>
         </div>
 
-        <div className="border border-stone-800 p-6 text-left mb-6">
+        <div className="rounded-xl border border-white/[0.08] p-6 text-left mb-6">
           <h3 className="font-light mb-3">Next Steps:</h3>
           <ol className="space-y-2 text-sm text-stone-400 font-light">
             <li className="flex items-start gap-2">
@@ -243,7 +243,7 @@ export default function SignupPage() {
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Your full legal name"
-            className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
           />
         </div>
 
@@ -255,7 +255,7 @@ export default function SignupPage() {
             value={formData.email}
             onChange={handleInputChange}
             placeholder="your@email.com"
-            className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
           />
         </div>
 
@@ -267,7 +267,7 @@ export default function SignupPage() {
             value={formData.phone}
             onChange={handleInputChange}
             placeholder="+1 (555) 000-0000"
-            className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
           />
         </div>
 
@@ -279,12 +279,12 @@ export default function SignupPage() {
             value={formData.company}
             onChange={handleInputChange}
             placeholder="Your company or label"
-            className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
           />
         </div>
 
         {/* Address Section */}
-        <div className="border-t border-stone-800 pt-6">
+        <div className="border-t border-white/[0.06] pt-6">
           <h3 className="text-sm font-light text-stone-400 mb-4">Address (Optional)</h3>
           <div className="space-y-4">
             <div>
@@ -294,7 +294,7 @@ export default function SignupPage() {
                 value={formData.address_line1}
                 onChange={handleInputChange}
                 placeholder="Street address"
-                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
               />
             </div>
             <div>
@@ -304,7 +304,7 @@ export default function SignupPage() {
                 value={formData.address_line2}
                 onChange={handleInputChange}
                 placeholder="Apt, suite, unit (optional)"
-                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -314,7 +314,7 @@ export default function SignupPage() {
                 value={formData.city}
                 onChange={handleInputChange}
                 placeholder="City"
-                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
               />
               <input
                 type="text"
@@ -322,7 +322,7 @@ export default function SignupPage() {
                 value={formData.state}
                 onChange={handleInputChange}
                 placeholder="State"
-                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
               />
             </div>
             <div>
@@ -332,14 +332,14 @@ export default function SignupPage() {
                 value={formData.postal_code}
                 onChange={handleInputChange}
                 placeholder="ZIP / Postal code"
-                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
               />
             </div>
           </div>
         </div>
 
         {/* Password Section */}
-        <div className="border-t border-stone-800 pt-6">
+        <div className="border-t border-white/[0.06] pt-6">
           <h3 className="text-sm font-light text-stone-400 mb-4">Set Your Password</h3>
         </div>
 
@@ -352,7 +352,7 @@ export default function SignupPage() {
               value={formData.password}
               onChange={handleInputChange}
               placeholder="••••••••"
-              className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+              className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
             />
             <button
               type="button"
@@ -372,14 +372,14 @@ export default function SignupPage() {
             value={formData.confirmPassword}
             onChange={handleInputChange}
             placeholder="••••••••"
-            className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
           />
         </div>
 
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-amber-600 text-stone-950 py-3 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed rounded-full"
         >
           {isLoading ? 'Creating Account...' : 'Create Account'}
         </button>

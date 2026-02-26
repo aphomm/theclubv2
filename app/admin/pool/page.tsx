@@ -145,7 +145,7 @@ export default function AdminPoolPage() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex gap-4 mb-8 border-b border-stone-800 pb-4">
+      <div className="flex gap-4 mb-8 border-b border-white/[0.08] pb-4">
         {['all', 'pending', 'active', 'completed', 'rejected'].map(status => (
           <button
             key={status}
@@ -167,10 +167,10 @@ export default function AdminPoolPage() {
       </div>
 
       {/* Projects Table */}
-      <div className="border border-stone-800">
+      <div className="rounded-2xl border border-white/[0.08] overflow-hidden">
         {isLoading ? (
           <div className="p-8 text-center">
-            <div className="inline-block h-12 w-12 bg-stone-900 rounded-full animate-pulse" />
+            <div className="inline-block h-12 w-12 bg-white/[0.08] rounded-full animate-pulse" />
           </div>
         ) : filteredProjects.length === 0 ? (
           <div className="p-12 text-center text-stone-400 font-light">
@@ -180,7 +180,7 @@ export default function AdminPoolPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-stone-800">
+                <tr className="border-b border-white/[0.06]">
                   <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
                     Project
                   </th>
@@ -205,7 +205,7 @@ export default function AdminPoolPage() {
                 {filteredProjects.map((project, idx) => (
                   <tr
                     key={project.id}
-                    className={idx !== filteredProjects.length - 1 ? 'border-b border-stone-800' : ''}
+                    className={idx !== filteredProjects.length - 1 ? 'border-b border-white/[0.06]' : ''}
                   >
                     <td className="px-6 py-4">
                       <div className="max-w-xs">
@@ -218,7 +218,7 @@ export default function AdminPoolPage() {
                       <div className="text-xs text-stone-500">{project.creator?.tier}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-light">
+                      <span className="text-xs bg-white/[0.08] text-stone-300 px-3 py-1 font-light rounded-full">
                         {project.category}
                       </span>
                     </td>
@@ -273,7 +273,7 @@ export default function AdminPoolPage() {
       {/* Project Detail Modal */}
       {showDetailModal && selectedProject && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-950 border border-stone-800 p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-stone-950 rounded-2xl border border-white/[0.08] p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-light">Project Details</h2>
               <button
@@ -296,7 +296,7 @@ export default function AdminPoolPage() {
                 <p className="text-amber-600 font-light">{selectedProject.tagline}</p>
               </div>
 
-              <div className="border border-stone-800 p-4">
+              <div className="rounded-xl border border-white/[0.08] p-4">
                 <h4 className="text-sm text-stone-400 font-light mb-2">Creator</h4>
                 <div className="font-light">{selectedProject.creator?.name}</div>
                 <div className="text-sm text-stone-500">{selectedProject.creator?.email}</div>
@@ -304,19 +304,19 @@ export default function AdminPoolPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="border border-stone-800 p-4">
+                <div className="rounded-xl border border-white/[0.08] p-4">
                   <h4 className="text-sm text-stone-400 font-light mb-2">Funding Goal</h4>
                   <div className="text-xl font-light text-amber-600">
                     ${selectedProject.funding_goal?.toLocaleString()}
                   </div>
                 </div>
-                <div className="border border-stone-800 p-4">
+                <div className="rounded-xl border border-white/[0.08] p-4">
                   <h4 className="text-sm text-stone-400 font-light mb-2">Category</h4>
                   <div className="font-light">{selectedProject.category}</div>
                 </div>
               </div>
 
-              <div className="border border-stone-800 p-4">
+              <div className="rounded-xl border border-white/[0.08] p-4">
                 <h4 className="text-sm text-stone-400 font-light mb-2">Description</h4>
                 <p className="font-light text-stone-300 whitespace-pre-wrap">
                   {selectedProject.description}
@@ -324,7 +324,7 @@ export default function AdminPoolPage() {
               </div>
 
               {selectedProject.expected_completion && (
-                <div className="border border-stone-800 p-4">
+                <div className="rounded-xl border border-white/[0.08] p-4">
                   <h4 className="text-sm text-stone-400 font-light mb-2">Expected Completion</h4>
                   <div className="font-light">
                     {new Date(selectedProject.expected_completion).toLocaleDateString('en-US', {
@@ -347,17 +347,17 @@ export default function AdminPoolPage() {
 
               {/* Action Buttons */}
               {selectedProject.status === 'pending' && (
-                <div className="flex gap-4 pt-4 border-t border-stone-800">
+                <div className="flex gap-4 pt-4 border-t border-white/[0.08]">
                   <button
                     onClick={() => updateProjectStatus(selectedProject.id, 'active')}
-                    className="flex-1 bg-green-600 text-white py-3 text-sm font-light hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 bg-green-600 text-white py-3 text-sm font-light hover:bg-green-700 transition-colors flex items-center justify-center gap-2 rounded-full"
                   >
                     <Check className="w-4 h-4" />
                     Approve & Make Live
                   </button>
                   <button
                     onClick={() => updateProjectStatus(selectedProject.id, 'rejected')}
-                    className="flex-1 border border-red-600 text-red-500 py-3 text-sm font-light hover:bg-red-600 hover:text-white transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 border border-red-600 text-red-500 py-3 text-sm font-light hover:bg-red-600 hover:text-white transition-colors flex items-center justify-center gap-2 rounded-full"
                   >
                     <X className="w-4 h-4" />
                     Reject
@@ -366,9 +366,9 @@ export default function AdminPoolPage() {
               )}
 
               {selectedProject.status === 'active' && (
-                <div className="pt-4 border-t border-stone-800">
+                <div className="pt-4 border-t border-white/[0.08]">
                   <Link href={`/dashboard/the-pool/projects/${selectedProject.id}`}>
-                    <button className="w-full bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors">
+                    <button className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light hover:opacity-90 transition-opacity rounded-full">
                       View Public Project Page
                     </button>
                   </Link>

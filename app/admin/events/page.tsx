@@ -254,7 +254,7 @@ export default function EventsPage() {
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-2 bg-amber-600 text-stone-950 px-6 py-3 text-sm font-light hover:bg-amber-700 transition-colors"
+          className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 px-6 py-3 text-sm font-light hover:opacity-90 transition-opacity rounded-full"
         >
           <Plus className="w-5 h-5" />
           New Event
@@ -262,10 +262,10 @@ export default function EventsPage() {
       </div>
 
       {/* Events Table */}
-      <div className="border border-stone-800">
+      <div className="rounded-2xl border border-white/[0.08] overflow-hidden">
         {isLoading ? (
           <div className="p-8 text-center">
-            <div className="inline-block h-12 w-12 bg-stone-900 rounded-full animate-pulse" />
+            <div className="inline-block h-12 w-12 bg-white/[0.08] rounded-full animate-pulse" />
           </div>
         ) : events.length === 0 ? (
           <div className="p-12 text-center text-stone-400 font-light">
@@ -275,7 +275,7 @@ export default function EventsPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-stone-800">
+                <tr className="border-b border-white/[0.06]">
                   <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
                     Title
                   </th>
@@ -301,10 +301,10 @@ export default function EventsPage() {
               </thead>
               <tbody>
                 {events.map((event, idx) => (
-                  <tr key={event.id} className={idx !== events.length - 1 ? 'border-b border-stone-800' : ''}>
+                  <tr key={event.id} className={idx !== events.length - 1 ? 'border-b border-white/[0.06]' : ''}>
                     <td className="px-6 py-4 font-light max-w-sm truncate">{event.title}</td>
                     <td className="px-6 py-4">
-                      <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase">
+                      <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase rounded-full">
                         {event.event_type}
                       </span>
                     </td>
@@ -316,7 +316,7 @@ export default function EventsPage() {
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-1">
                         {(event.tier_access || []).map(tier => (
-                          <span key={tier} className="text-xs bg-stone-800 text-stone-400 px-2 py-0.5 font-light">
+                          <span key={tier} className="text-xs bg-white/[0.08] text-stone-400 px-2 py-0.5 font-light rounded-full">
                             {tier}
                           </span>
                         ))}
@@ -332,23 +332,23 @@ export default function EventsPage() {
                         </button>
 
                         {activeMenu === event.id && (
-                          <div className="absolute right-0 top-8 z-10 bg-stone-900 border border-stone-800 shadow-lg py-2 min-w-[150px]">
+                          <div className="absolute right-0 top-8 z-10 bg-stone-900/95 rounded-xl border border-white/[0.08] shadow-xl py-2 min-w-[150px]">
                             <Link href={`/dashboard/events/${event.id}`}>
-                              <button className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-stone-800 flex items-center gap-2">
+                              <button className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg">
                                 <Eye className="w-4 h-4" />
                                 View
                               </button>
                             </Link>
                             <button
                               onClick={() => openEditModal(event)}
-                              className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-stone-800 flex items-center gap-2"
+                              className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
                             >
                               <Edit className="w-4 h-4" />
                               Edit
                             </button>
                             <button
                               onClick={() => handleDeleteEvent(event.id)}
-                              className="w-full px-4 py-2 text-left text-sm font-light text-red-500 hover:bg-stone-800 flex items-center gap-2"
+                              className="w-full px-4 py-2 text-left text-sm font-light text-red-500 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
                             >
                               <Trash2 className="w-4 h-4" />
                               Delete
@@ -368,7 +368,7 @@ export default function EventsPage() {
       {/* Create Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-950 border border-stone-800 p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-stone-950 rounded-2xl border border-white/[0.08] p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-light">Create New Event</h2>
               <button
@@ -390,7 +390,7 @@ export default function EventsPage() {
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="e.g., Songwriting Masterclass"
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                   required
                 />
               </div>
@@ -402,7 +402,7 @@ export default function EventsPage() {
                     name="event_type"
                     value={formData.event_type}
                     onChange={handleInputChange}
-                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
                   >
                     {eventTypes.map(type => (
                       <option key={type} value={type}>{type}</option>
@@ -417,7 +417,7 @@ export default function EventsPage() {
                     value={formData.capacity}
                     onChange={handleInputChange}
                     min="1"
-                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 transition-colors"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                     required
                   />
                 </div>
@@ -431,7 +431,7 @@ export default function EventsPage() {
                     name="date"
                     value={formData.date}
                     onChange={handleInputChange}
-                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
                     required
                   />
                 </div>
@@ -442,7 +442,7 @@ export default function EventsPage() {
                     name="time"
                     value={formData.time}
                     onChange={handleInputChange}
-                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
                     required
                   />
                 </div>
@@ -456,7 +456,7 @@ export default function EventsPage() {
                   value={formData.location}
                   onChange={handleInputChange}
                   placeholder="e.g., WePlay Studios - Main Room"
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                   required
                 />
               </div>
@@ -469,7 +469,7 @@ export default function EventsPage() {
                   value={formData.external_rsvp_url}
                   onChange={handleInputChange}
                   placeholder="e.g., https://eventbrite.com/your-event"
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                 />
                 <p className="text-xs text-stone-500 mt-1">If set, users will be redirected here for RSVP</p>
               </div>
@@ -482,7 +482,7 @@ export default function EventsPage() {
                   onChange={handleInputChange}
                   placeholder="Describe the event..."
                   rows={4}
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
                 />
               </div>
 
@@ -494,10 +494,10 @@ export default function EventsPage() {
                       key={tier}
                       type="button"
                       onClick={() => handleTierToggle(tier)}
-                      className={`px-4 py-2 text-sm font-light border transition-colors ${
+                      className={`px-4 py-2 text-sm font-light border transition-colors rounded-full ${
                         formData.tier_access.includes(tier)
                           ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-                          : 'border-stone-700 text-stone-400 hover:border-stone-600'
+                          : 'border-white/10 text-stone-400 hover:border-white/20'
                       }`}
                     >
                       {tier}
@@ -506,7 +506,7 @@ export default function EventsPage() {
                 </div>
               </div>
 
-              <div className="border-t border-stone-800 pt-6">
+              <div className="border-t border-white/[0.06] pt-6">
                 <h4 className="text-sm text-stone-400 font-light mb-4">Instructor Details (Optional)</h4>
                 <div className="space-y-4">
                   <input
@@ -515,7 +515,7 @@ export default function EventsPage() {
                     value={formData.instructor_name}
                     onChange={handleInputChange}
                     placeholder="Instructor name"
-                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                   />
                   <input
                     type="text"
@@ -523,7 +523,7 @@ export default function EventsPage() {
                     value={formData.instructor_title}
                     onChange={handleInputChange}
                     placeholder="Instructor title (e.g., Grammy-winning Producer)"
-                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                   />
                   <textarea
                     name="instructor_bio"
@@ -531,7 +531,7 @@ export default function EventsPage() {
                     onChange={handleInputChange}
                     placeholder="Brief bio..."
                     rows={2}
-                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
                   />
                 </div>
               </div>
@@ -543,14 +543,14 @@ export default function EventsPage() {
                     setShowCreateModal(false);
                     resetForm();
                   }}
-                  className="flex-1 border border-stone-700 py-3 text-sm font-light hover:border-stone-600 transition-colors"
+                  className="flex-1 border border-white/10 py-3 text-sm font-light hover:border-white/20 transition-colors rounded-full"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50"
+                  className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light hover:opacity-90 transition-opacity disabled:opacity-50 rounded-full"
                 >
                   {isSubmitting ? 'Saving...' : 'Create Event'}
                 </button>
@@ -563,7 +563,7 @@ export default function EventsPage() {
       {/* Edit Modal */}
       {showEditModal && editingEvent && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-950 border border-stone-800 p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-stone-950 rounded-2xl border border-white/[0.08] p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-light">Edit Event</h2>
               <button
@@ -586,7 +586,7 @@ export default function EventsPage() {
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="e.g., Songwriting Masterclass"
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                   required
                 />
               </div>
@@ -598,7 +598,7 @@ export default function EventsPage() {
                     name="event_type"
                     value={formData.event_type}
                     onChange={handleInputChange}
-                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
                   >
                     {eventTypes.map(type => (
                       <option key={type} value={type}>{type}</option>
@@ -613,7 +613,7 @@ export default function EventsPage() {
                     value={formData.capacity}
                     onChange={handleInputChange}
                     min="1"
-                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 transition-colors"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                     required
                   />
                 </div>
@@ -627,7 +627,7 @@ export default function EventsPage() {
                     name="date"
                     value={formData.date}
                     onChange={handleInputChange}
-                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
                     required
                   />
                 </div>
@@ -638,7 +638,7 @@ export default function EventsPage() {
                     name="time"
                     value={formData.time}
                     onChange={handleInputChange}
-                    className="w-full bg-stone-950 border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
                     required
                   />
                 </div>
@@ -652,7 +652,7 @@ export default function EventsPage() {
                   value={formData.location}
                   onChange={handleInputChange}
                   placeholder="e.g., WePlay Studios - Main Room"
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                   required
                 />
               </div>
@@ -665,7 +665,7 @@ export default function EventsPage() {
                   value={formData.external_rsvp_url}
                   onChange={handleInputChange}
                   placeholder="e.g., https://eventbrite.com/your-event"
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                 />
                 <p className="text-xs text-stone-500 mt-1">If set, users will be redirected here for RSVP</p>
               </div>
@@ -678,7 +678,7 @@ export default function EventsPage() {
                   onChange={handleInputChange}
                   placeholder="Describe the event..."
                   rows={4}
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
                 />
               </div>
 
@@ -690,10 +690,10 @@ export default function EventsPage() {
                       key={tier}
                       type="button"
                       onClick={() => handleTierToggle(tier)}
-                      className={`px-4 py-2 text-sm font-light border transition-colors ${
+                      className={`px-4 py-2 text-sm font-light border transition-colors rounded-full ${
                         formData.tier_access.includes(tier)
                           ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-                          : 'border-stone-700 text-stone-400 hover:border-stone-600'
+                          : 'border-white/10 text-stone-400 hover:border-white/20'
                       }`}
                     >
                       {tier}
@@ -702,7 +702,7 @@ export default function EventsPage() {
                 </div>
               </div>
 
-              <div className="border-t border-stone-800 pt-6">
+              <div className="border-t border-white/[0.06] pt-6">
                 <h4 className="text-sm text-stone-400 font-light mb-4">Instructor Details (Optional)</h4>
                 <div className="space-y-4">
                   <input
@@ -711,7 +711,7 @@ export default function EventsPage() {
                     value={formData.instructor_name}
                     onChange={handleInputChange}
                     placeholder="Instructor name"
-                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                   />
                   <input
                     type="text"
@@ -719,7 +719,7 @@ export default function EventsPage() {
                     value={formData.instructor_title}
                     onChange={handleInputChange}
                     placeholder="Instructor title (e.g., Grammy-winning Producer)"
-                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                   />
                   <textarea
                     name="instructor_bio"
@@ -727,7 +727,7 @@ export default function EventsPage() {
                     onChange={handleInputChange}
                     placeholder="Brief bio..."
                     rows={2}
-                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
                   />
                 </div>
               </div>
@@ -740,14 +740,14 @@ export default function EventsPage() {
                     setEditingEvent(null);
                     resetForm();
                   }}
-                  className="flex-1 border border-stone-700 py-3 text-sm font-light hover:border-stone-600 transition-colors"
+                  className="flex-1 border border-white/10 py-3 text-sm font-light hover:border-white/20 transition-colors rounded-full"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50"
+                  className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light hover:opacity-90 transition-opacity disabled:opacity-50 rounded-full"
                 >
                   {isSubmitting ? 'Saving...' : 'Update Event'}
                 </button>

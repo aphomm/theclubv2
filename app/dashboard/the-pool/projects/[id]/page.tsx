@@ -346,7 +346,7 @@ export default function ProjectDetailPage() {
   if (isLoading) {
     return (
       <div className="max-w-4xl">
-        <div className="h-96 bg-stone-900 animate-pulse border border-stone-800" />
+        <div className="h-96 bg-white/[0.04] animate-pulse rounded-2xl border border-white/[0.08]" />
       </div>
     );
   }
@@ -391,7 +391,7 @@ export default function ProjectDetailPage() {
 
       {/* Video Embed */}
       {project.video_url && (
-        <div className="border border-stone-800 aspect-video mb-8 overflow-hidden bg-stone-900">
+        <div className="rounded-2xl border border-white/[0.08] aspect-video mb-8 overflow-hidden bg-stone-950">
           {(() => {
             const url = project.video_url;
             // YouTube embed
@@ -438,7 +438,7 @@ export default function ProjectDetailPage() {
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full h-full flex flex-col items-center justify-center gap-4 hover:bg-stone-800/50 transition-colors"
+                className="w-full h-full flex flex-col items-center justify-center gap-4 hover:bg-white/[0.04] transition-colors"
               >
                 <div className="w-16 h-16 border-2 border-amber-600 rounded-full flex items-center justify-center text-amber-600">
                   <Play className="w-8 h-8 ml-1" />
@@ -451,7 +451,7 @@ export default function ProjectDetailPage() {
       )}
 
       {/* Funding Progress */}
-      <div className="border border-stone-800 p-8 mb-8">
+      <div className="rounded-2xl border border-white/[0.08] p-8 mb-8">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
             <div className="text-xs text-stone-400 font-light tracking-wide mb-1">RAISED</div>
@@ -474,16 +474,16 @@ export default function ProjectDetailPage() {
           </div>
         </div>
 
-        <div className="w-full bg-stone-900 h-3 mb-6">
+        <div className="w-full bg-white/[0.08] h-3 mb-6 rounded-full">
           <div
-            className="bg-amber-600 h-full transition-all"
+            className="bg-gradient-to-r from-amber-500 to-amber-600 h-full transition-all rounded-full"
             style={{ width: `${percentFunded}%` }}
           />
         </div>
 
         {/* Project Earnings Overview (for creator) */}
         {projectEarnings && currentUserId === project.creator_id && project.status !== 'pending' && (
-          <div className="border border-stone-800 p-8 mb-8">
+          <div className="rounded-2xl border border-white/[0.08] p-8 mb-8">
             <h3 className="text-xl font-light mb-6">Project Financial Overview</h3>
             <div className="grid md:grid-cols-4 gap-6 mb-6">
               <div>
@@ -516,7 +516,7 @@ export default function ProjectDetailPage() {
 
         {/* Earnings Section (for investors) */}
         {contributorEarnings && project.status === 'completed' && (
-          <div className="border border-stone-800 p-8 mb-8">
+          <div className="rounded-2xl border border-white/[0.08] p-8 mb-8">
             <h3 className="text-xl font-light mb-6 text-amber-600">Your Investment Earnings</h3>
             <div className="grid md:grid-cols-4 gap-6 mb-6">
               <div>
@@ -546,7 +546,7 @@ export default function ProjectDetailPage() {
             </div>
             
             {contributorEarnings.pending_payout > 0 && (
-              <div className="border border-stone-700 bg-stone-900/50 p-4">
+              <div className="rounded-xl border border-white/[0.08] bg-white/[0.04] p-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-sm font-light text-stone-300">Available for withdrawal</div>
@@ -554,7 +554,7 @@ export default function ProjectDetailPage() {
                   </div>
                   <button 
                     disabled
-                    className="px-4 py-2 bg-stone-800 text-stone-500 font-light text-sm border border-stone-700 cursor-not-allowed"
+                    className="px-4 py-2 bg-white/[0.08] text-stone-500 font-light text-sm border border-white/10 cursor-not-allowed rounded-full"
                   >
                     Request Payout (Coming Soon)
                   </button>
@@ -568,7 +568,7 @@ export default function ProjectDetailPage() {
         {project.status === 'active' && (
           <div>
             {currentUserId === project.creator_id ? (
-              <div className="border border-stone-700 bg-stone-900/50 p-6">
+              <div className="rounded-xl border border-white/[0.08] bg-white/[0.04] p-6">
                 <div className="flex items-center gap-3">
                   <Users className="w-5 h-5 text-amber-600" />
                   <span className="font-light text-stone-300">This is your project</span>
@@ -578,7 +578,7 @@ export default function ProjectDetailPage() {
                 </p>
               </div>
             ) : myInvestment ? (
-              <div className="border border-green-600/30 bg-green-600/5 p-6">
+              <div className="rounded-xl border border-green-600/30 bg-green-600/5 p-6">
                 <div className="flex items-center gap-3 mb-3">
                   <Check className="w-5 h-5 text-green-500" />
                   <span className="font-light text-green-500">You're an investor in this project</span>
@@ -609,7 +609,7 @@ export default function ProjectDetailPage() {
             ) : (
               <button
                 onClick={() => setShowInvestModal(true)}
-                className="w-full bg-amber-600 text-stone-950 py-4 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-4 text-sm font-light tracking-wide hover:opacity-90 transition-opacity flex items-center justify-center gap-2 rounded-full"
               >
                 <DollarSign className="w-5 h-5" />
                 Invest in This Project
@@ -622,7 +622,7 @@ export default function ProjectDetailPage() {
       {/* Project Details Grid */}
       <div className="grid md:grid-cols-2 gap-6 mb-8">
         {project.expected_completion && (
-          <div className="border border-stone-800 p-6 flex items-center gap-4">
+          <div className="rounded-xl border border-white/[0.08] p-6 flex items-center gap-4">
             <Calendar className="w-6 h-6 text-amber-600" />
             <div>
               <div className="text-sm text-stone-400 font-light">Expected Completion</div>
@@ -636,7 +636,7 @@ export default function ProjectDetailPage() {
           </div>
         )}
         {project.location && (
-          <div className="border border-stone-800 p-6 flex items-center gap-4">
+          <div className="rounded-xl border border-white/[0.08] p-6 flex items-center gap-4">
             <MapPin className="w-6 h-6 text-amber-600" />
             <div>
               <div className="text-sm text-stone-400 font-light">Location</div>
@@ -648,7 +648,7 @@ export default function ProjectDetailPage() {
 
       {/* Creator Info */}
       {creator && (
-        <div className="border border-stone-800 p-8 mb-8">
+        <div className="rounded-2xl border border-white/[0.08] p-8 mb-8">
           <h3 className="text-lg font-light mb-4">Project Creator</h3>
           <Link href={`/dashboard/directory/${creator.id}`}>
             <div className="flex items-center gap-4 hover:opacity-80 transition-opacity">
@@ -672,7 +672,7 @@ export default function ProjectDetailPage() {
       )}
 
       {/* Description */}
-      <div className="border border-stone-800 p-8 mb-8">
+      <div className="rounded-2xl border border-white/[0.08] p-8 mb-8">
         <h2 className="text-2xl font-light mb-4">About This Project</h2>
         <p className="text-stone-300 font-light leading-relaxed whitespace-pre-line">
           {project.description}
@@ -681,15 +681,15 @@ export default function ProjectDetailPage() {
 
       {/* Milestones */}
       {project.milestones && project.milestones.length > 0 && (
-        <div className="border border-stone-800 p-8 mb-8">
+        <div className="rounded-2xl border border-white/[0.08] p-8 mb-8">
           <h2 className="text-2xl font-light mb-6">Project Milestones</h2>
           <div className="space-y-4">
             {project.milestones.map((milestone, idx) => (
-              <div key={idx} className="border border-stone-800 p-6 flex items-start gap-4">
+              <div key={idx} className="rounded-xl border border-white/[0.08] p-6 flex items-start gap-4">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                   milestone.completed
                     ? 'bg-green-600 text-stone-950'
-                    : 'border border-stone-700 text-stone-500'
+                    : 'border border-white/10 text-stone-500'
                 }`}>
                   {milestone.completed ? (
                     <Check className="w-4 h-4" />
@@ -714,11 +714,11 @@ export default function ProjectDetailPage() {
 
       {/* Investors List */}
       {investments.length > 0 && (
-        <div className="border border-stone-800 p-8">
+        <div className="rounded-2xl border border-white/[0.08] p-8">
           <h2 className="text-2xl font-light mb-6">Contributors ({investments.length})</h2>
           <div className="space-y-3">
             {investments.slice(0, 10).map((inv, idx) => (
-              <div key={inv.id} className="flex items-center justify-between py-3 border-b border-stone-800 last:border-b-0">
+              <div key={inv.id} className="flex items-center justify-between py-3 border-b border-white/[0.06] last:border-b-0">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center">
                     <span className="text-stone-950 text-xs font-light">{idx + 1}</span>
@@ -747,7 +747,7 @@ export default function ProjectDetailPage() {
       {/* Investment Modal - Two Step Flow */}
       {showInvestModal && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-950 border border-stone-800 p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-stone-950 rounded-2xl border border-white/[0.08] p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <div>
@@ -755,8 +755,8 @@ export default function ProjectDetailPage() {
                   {investmentStep === 1 ? 'Contribute to Project' : 'Review & Sign Agreement'}
                 </h2>
                 <div className="flex items-center gap-2 mt-2">
-                  <div className={`w-8 h-1 ${investmentStep >= 1 ? 'bg-amber-600' : 'bg-stone-700'}`} />
-                  <div className={`w-8 h-1 ${investmentStep >= 2 ? 'bg-amber-600' : 'bg-stone-700'}`} />
+                  <div className={`w-8 h-1 rounded-full ${investmentStep >= 1 ? 'bg-amber-600' : 'bg-white/[0.08]'}`} />
+                  <div className={`w-8 h-1 rounded-full ${investmentStep >= 2 ? 'bg-amber-600' : 'bg-white/[0.08]'}`} />
                   <span className="text-xs text-stone-500 ml-2">Step {investmentStep} of 2</span>
                 </div>
               </div>
@@ -790,10 +790,10 @@ export default function ProjectDetailPage() {
                       <button
                         key={type.value}
                         onClick={() => setContributionType(type.value)}
-                        className={`p-4 border text-left transition-colors ${
+                        className={`p-4 border text-left transition-colors rounded-xl ${
                           contributionType === type.value
                             ? 'border-amber-600 bg-amber-600/10'
-                            : 'border-stone-800 hover:border-stone-700'
+                            : 'border-white/[0.08] hover:border-amber-600/40'
                         }`}
                       >
                         <div className="font-light text-sm mb-1">{type.label}</div>
@@ -817,11 +817,11 @@ export default function ProjectDetailPage() {
                         onChange={(e) => setInvestmentAmount(e.target.value)}
                         placeholder="5,000"
                         min="100"
-                        className="w-full bg-transparent border border-stone-700 pl-8 pr-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                        className="w-full bg-white/[0.04] border border-white/10 pl-8 pr-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                       />
                     </div>
                     {investmentAmount && parseFloat(investmentAmount) > 0 && (
-                      <div className="mt-3 p-4 border border-amber-600/30 bg-amber-600/5">
+                      <div className="mt-3 p-4 border border-amber-600/30 bg-amber-600/5 rounded-xl">
                         <div className="flex items-center gap-2 text-amber-600 text-sm font-light">
                           <TrendingUp className="w-4 h-4" />
                           <span>
@@ -835,7 +835,7 @@ export default function ProjectDetailPage() {
                         <button
                           key={amount}
                           onClick={() => setInvestmentAmount(amount.toString())}
-                          className="flex-1 border border-stone-800 py-2 text-xs font-light hover:border-amber-600 hover:text-amber-600 transition-colors"
+                          className="flex-1 border border-white/[0.08] py-2 text-xs font-light hover:border-amber-600 hover:text-amber-600 transition-colors rounded-full"
                         >
                           ${(amount / 1000).toFixed(0)}K
                         </button>
@@ -862,25 +862,25 @@ export default function ProjectDetailPage() {
                         : 'e.g., Social media marketing campaign, legal review...'
                     }
                     rows={3}
-                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
                   />
                 </div>
 
-                <div className="border-t border-stone-800 pt-6">
+                <div className="border-t border-white/[0.08] pt-6">
                   <div className="flex gap-4">
                     <button
                       onClick={() => {
                         setShowInvestModal(false);
                         resetForm();
                       }}
-                      className="flex-1 border border-stone-700 py-3 text-sm font-light hover:border-stone-600 transition-colors"
+                      className="flex-1 border border-white/10 py-3 text-sm font-light hover:border-white/20 transition-colors rounded-full"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={() => setInvestmentStep(2)}
                       disabled={contributionType === 'cash' && (!investmentAmount || parseFloat(investmentAmount) <= 0)}
-                      className="flex-1 bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 rounded-full"
                     >
                       Continue to Agreement
                       <ChevronRight className="w-4 h-4" />
@@ -894,7 +894,7 @@ export default function ProjectDetailPage() {
             {investmentStep === 2 && (
               <>
                 {/* Investment Summary */}
-                <div className="border border-stone-800 p-4 mb-6 bg-stone-900/50">
+                <div className="rounded-xl border border-white/[0.08] p-4 mb-6 bg-white/[0.03]">
                   <h4 className="text-sm text-stone-400 font-light mb-2">Your Contribution</h4>
                   <div className="flex items-center justify-between">
                     <span className="font-light capitalize">{contributionType}</span>
@@ -926,7 +926,7 @@ export default function ProjectDetailPage() {
                   </div>
                   <div
                     onScroll={handleTermsScroll}
-                    className="border border-stone-700 bg-stone-950 p-4 h-64 overflow-y-auto text-xs text-stone-400 font-light leading-relaxed whitespace-pre-wrap"
+                    className="rounded-xl border border-white/[0.08] bg-stone-950 p-4 h-64 overflow-y-auto text-xs text-stone-400 font-light leading-relaxed whitespace-pre-wrap"
                   >
                     {INVESTMENT_TERMS}
                   </div>
@@ -947,10 +947,10 @@ export default function ProjectDetailPage() {
                     value={signatureName}
                     onChange={(e) => setSignatureName(e.target.value)}
                     placeholder="Your Full Legal Name"
-                    className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors font-serif text-lg italic"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors font-serif text-lg italic rounded-xl"
                   />
                   {signatureName && (
-                    <div className="mt-3 p-4 border border-stone-800 bg-stone-900/30">
+                    <div className="mt-3 p-4 border border-white/[0.08] bg-white/[0.04] rounded-xl">
                       <p className="text-xs text-stone-500 mb-1">Signature Preview:</p>
                       <p className="font-serif text-xl italic text-stone-100">{signatureName}</p>
                     </div>
@@ -965,7 +965,7 @@ export default function ProjectDetailPage() {
                       checked={agreedToTerms}
                       onChange={(e) => setAgreedToTerms(e.target.checked)}
                       disabled={!hasScrolledTerms}
-                      className="mt-1 w-5 h-5 bg-transparent border border-stone-600 rounded-sm checked:bg-amber-600 checked:border-amber-600 focus:ring-amber-600 focus:ring-offset-stone-950 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="mt-1 w-5 h-5 bg-white/[0.04] border border-white/10 rounded-sm checked:bg-amber-600 checked:border-amber-600 focus:ring-amber-600 focus:ring-offset-stone-950 disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                     <span className={`text-sm font-light ${hasScrolledTerms ? 'text-stone-300' : 'text-stone-500'}`}>
                       I have read and agree to the Investment Agreement terms and conditions. I understand that investments carry risk and returns are not guaranteed. I confirm that my typed signature above constitutes my legal electronic signature.
@@ -973,7 +973,7 @@ export default function ProjectDetailPage() {
                   </label>
                 </div>
 
-                <div className="border-t border-stone-800 pt-6">
+                <div className="border-t border-white/[0.08] pt-6">
                   <p className="text-xs text-stone-500 font-light mb-4 text-center">
                     By clicking "Sign & Submit", you are electronically signing this agreement.
                     <br />
@@ -982,7 +982,7 @@ export default function ProjectDetailPage() {
                   <div className="flex gap-4">
                     <button
                       onClick={() => setInvestmentStep(1)}
-                      className="flex-1 border border-stone-700 py-3 text-sm font-light hover:border-stone-600 transition-colors flex items-center justify-center gap-2"
+                      className="flex-1 border border-white/10 py-3 text-sm font-light hover:border-white/20 transition-colors flex items-center justify-center gap-2 rounded-full"
                     >
                       <ChevronLeft className="w-4 h-4" />
                       Back
@@ -990,7 +990,7 @@ export default function ProjectDetailPage() {
                     <button
                       onClick={handleInvest}
                       disabled={isSubmitting || !signatureName.trim() || !agreedToTerms || !hasScrolledTerms}
-                      className="flex-1 bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 rounded-full"
                     >
                       {isSubmitting ? 'Submitting...' : (
                         <>
