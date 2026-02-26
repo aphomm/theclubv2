@@ -129,7 +129,7 @@ export default function DashboardPage() {
   }, []);
 
   const StatCard = ({ icon: Icon, label, value }: any) => (
-    <div className="border border-stone-800 p-6 hover:border-amber-600 transition-colors">
+    <div className="rounded-2xl border border-white/[0.08] p-6 hover:border-amber-600/40 hover:bg-white/[0.02] transition-colors">
       <div className="flex items-start justify-between mb-4">
         <Icon className="w-6 h-6 text-amber-600" />
         <div className="text-3xl font-light text-amber-600">{value}</div>
@@ -154,7 +154,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Upcoming Events */}
-      <div className="border border-stone-800 p-8">
+      <div className="rounded-2xl border border-white/[0.08] p-8">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-light">Upcoming Events</h2>
           <a href="/dashboard/events" className="text-sm text-amber-600 hover:underline font-light">
@@ -165,7 +165,7 @@ export default function DashboardPage() {
         {isLoading ? (
           <div className="space-y-4">
             {[1, 2, 3].map(i => (
-              <div key={i} className="h-20 bg-stone-900 animate-pulse" />
+              <div key={i} className="h-20 bg-white/[0.04] animate-pulse rounded-xl" />
             ))}
           </div>
         ) : upcomingEvents.length === 0 ? (
@@ -180,7 +180,7 @@ export default function DashboardPage() {
             {upcomingEvents.map(event => (
               <div
                 key={event.id}
-                className="border border-stone-800 p-4 hover:border-amber-600 transition-colors flex items-center justify-between"
+                className="rounded-xl border border-white/[0.08] p-4 hover:border-amber-600/60 hover:bg-white/[0.02] transition-colors flex items-center justify-between"
               >
                 <div>
                   <h3 className="font-light text-lg">{event.title}</h3>
@@ -199,7 +199,7 @@ export default function DashboardPage() {
                     <div className="text-xs text-stone-400">Available</div>
                   </div>
                   <a href={`/dashboard/events/${event.id}`}>
-                    <button className="border border-amber-600 text-amber-600 px-6 py-2 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors">
+                    <button className="border border-amber-600 text-amber-600 px-6 py-2 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors rounded-full">
                       RSVP
                     </button>
                   </a>
@@ -212,7 +212,7 @@ export default function DashboardPage() {
 
       {/* Studio Bookings Preview */}
       <div className="grid md:grid-cols-2 gap-8 mt-12">
-        <div className="border border-stone-800 p-8">
+        <div className="rounded-2xl border border-white/[0.08] p-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-light">Studio Bookings</h2>
             <a href="/dashboard/studio" className="text-sm text-amber-600 hover:underline font-light">
@@ -227,7 +227,7 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="border border-stone-800 p-8">
+        <div className="rounded-2xl border border-white/[0.08] p-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-light">The Pool</h2>
             <a href="/dashboard/the-pool" className="text-sm text-amber-600 hover:underline font-light">

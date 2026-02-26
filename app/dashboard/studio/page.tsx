@@ -465,7 +465,7 @@ export default function StudioBookingPage() {
           Book recording time at WePlay Studios
         </p>
         {/* Monthly Allocation Banner */}
-        <div className={`mt-4 p-4 border ${hoursRemaining > 0 ? 'border-amber-600/50 bg-amber-600/10' : 'border-red-600/50 bg-red-600/10'}`}>
+        <div className={`mt-4 p-4 border rounded-xl ${hoursRemaining > 0 ? 'border-amber-600/50 bg-amber-600/10' : 'border-red-600/50 bg-red-600/10'}`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {hoursRemaining > 0 ? (
@@ -485,7 +485,7 @@ export default function StudioBookingPage() {
 
         {/* Suspension Banner */}
         {suspendedUntil && suspendedUntil > new Date() && (
-          <div className="mt-2 p-4 border border-red-600/50 bg-red-600/10">
+          <div className="mt-2 p-4 border border-red-600/50 bg-red-600/10 rounded-xl">
             <div className="flex items-center gap-3">
               <AlertTriangle className="w-5 h-5 text-red-500" />
               <span className="text-sm font-light">
@@ -503,10 +503,10 @@ export default function StudioBookingPage() {
           <button
             key={studio.id}
             onClick={() => setSelectedStudio(studio)}
-            className={`border p-6 text-left transition-colors ${
+            className={`rounded-2xl border p-6 text-left transition-colors ${
               selectedStudio.id === studio.id
                 ? 'border-amber-600 bg-amber-600/10'
-                : 'border-stone-800 hover:border-amber-600'
+                : 'border-white/[0.08] hover:border-amber-600/60'
             }`}
           >
             <div className="flex items-center gap-3 mb-2">
@@ -521,7 +521,7 @@ export default function StudioBookingPage() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Calendar */}
         <div className="lg:col-span-2">
-          <div className="border border-stone-800 p-6">
+          <div className="rounded-2xl border border-white/[0.08] p-6">
             {/* Month Navigation */}
             <div className="flex items-center justify-between mb-6">
               <button
@@ -575,8 +575,8 @@ export default function StudioBookingPage() {
                         : isToday
                         ? 'border-amber-600/50'
                         : isSunday
-                        ? 'border-stone-900 bg-stone-900/30'
-                        : 'border-stone-800 hover:border-stone-700'
+                        ? 'border-white/5 bg-white/[0.02]'
+                        : 'border-white/[0.08] hover:border-amber-600/40'
                     } ${isPast || isSunday ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
                   >
                     <span className={`text-sm font-light ${isToday && !isSunday ? 'text-amber-600' : ''}`}>
@@ -596,7 +596,7 @@ export default function StudioBookingPage() {
           </div>
 
           {/* Time Slots */}
-          <div className="border border-stone-800 p-6 mt-6">
+          <div className="rounded-2xl border border-white/[0.08] p-6 mt-6">
             <h3 className="text-lg font-light mb-1">
               Available Times — {selectedDate.toLocaleDateString('en-US', {
                 timeZone: 'America/Los_Angeles',
@@ -614,7 +614,7 @@ export default function StudioBookingPage() {
             ) : isLoading ? (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
                 {[1, 2, 3, 4, 5, 6].map(i => (
-                  <div key={i} className="h-16 bg-stone-900 animate-pulse" />
+                  <div key={i} className="h-16 bg-white/[0.04] animate-pulse rounded-xl" />
                 ))}
               </div>
             ) : (
@@ -635,14 +635,14 @@ export default function StudioBookingPage() {
                       key={slot.start}
                       onClick={() => handleSlotClick(slot)}
                       disabled={isPastDate || (noHoursLeft && !booked) || (isSuspended && !mine)}
-                      className={`p-4 border transition-colors flex items-center justify-between ${
+                      className={`p-4 border rounded-xl transition-colors flex items-center justify-between ${
                         mine
                           ? 'border-green-600 bg-green-600/10 text-green-500'
                           : booked
-                          ? 'border-stone-700 bg-stone-900 text-stone-500 cursor-not-allowed'
+                          ? 'border-white/[0.06] bg-white/[0.02] text-stone-500 cursor-not-allowed'
                           : isPastDate || noHoursLeft || isSuspended
-                          ? 'border-stone-800 text-stone-600 cursor-not-allowed'
-                          : 'border-stone-800 hover:border-amber-600 hover:bg-amber-600/5'
+                          ? 'border-white/[0.06] text-stone-600 cursor-not-allowed'
+                          : 'border-white/[0.08] hover:border-amber-600 hover:bg-amber-600/5'
                       }`}
                     >
                       <div className="flex items-center gap-2">
@@ -668,7 +668,7 @@ export default function StudioBookingPage() {
 
         {/* My Bookings Sidebar */}
         <div>
-          <div className="border border-stone-800 p-6">
+          <div className="rounded-2xl border border-white/[0.08] p-6">
             <h3 className="text-lg font-light mb-6">Your Upcoming Bookings</h3>
 
             {myBookings.length === 0 ? (
@@ -676,7 +676,7 @@ export default function StudioBookingPage() {
             ) : (
               <div className="space-y-4">
                 {myBookings.map(booking => (
-                  <div key={booking.id} className="border border-stone-800 p-4">
+                  <div key={booking.id} className="rounded-xl border border-white/[0.08] p-4">
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <h4 className="font-light">{booking.studio_name}</h4>
@@ -725,7 +725,7 @@ export default function StudioBookingPage() {
             )}
 
             {/* Cancellation Policy Notice */}
-            <div className="mt-6 pt-6 border-t border-stone-800">
+            <div className="mt-6 pt-6 border-t border-white/[0.08]">
               <p className="text-xs text-stone-500 font-light leading-relaxed">
                 <span className="text-stone-400">Cancellation Policy:</span><br />
                 24h+ notice: hours restored<br />
@@ -737,14 +737,14 @@ export default function StudioBookingPage() {
           </div>
 
           {/* Studio Info */}
-          <div className="border border-stone-800 p-6 mt-6">
+          <div className="rounded-2xl border border-white/[0.08] p-6 mt-6">
             <h3 className="text-lg font-light mb-4">Studio Hours (PST)</h3>
             <div className="space-y-2 text-sm font-light text-stone-400">
               <p>Monday – Friday: 9:00 AM – 9:00 PM</p>
               <p>Saturday: 10:00 AM – 8:00 PM</p>
               <p className="text-stone-600">Sunday: Closed</p>
             </div>
-            <div className="border-t border-stone-800 mt-4 pt-4">
+            <div className="border-t border-white/[0.08] mt-4 pt-4">
               <p className="text-xs text-stone-500 font-light">
                 2-hour booking slots • {monthlyStudioHours}h/month allocation • Resets on the 1st
               </p>
@@ -756,7 +756,7 @@ export default function StudioBookingPage() {
       {/* Cancel Confirmation Dialog */}
       {cancelState && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-950 border border-stone-800 p-6 max-w-md w-full">
+          <div className="bg-stone-950 rounded-2xl border border-white/[0.08] p-6 max-w-md w-full">
             <div className="flex items-start gap-3 mb-4">
               <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
               <div>
@@ -769,7 +769,7 @@ export default function StudioBookingPage() {
               </div>
             </div>
 
-            <div className={`p-3 mb-6 text-sm font-light border ${
+            <div className={`p-3 mb-6 text-sm font-light border rounded-xl ${
               cancelState.hoursUntil >= 24
                 ? 'border-green-600/30 bg-green-600/5 text-green-400'
                 : cancelState.hoursUntil >= 6
@@ -786,14 +786,14 @@ export default function StudioBookingPage() {
             <div className="flex gap-3">
               <button
                 onClick={() => setCancelState(null)}
-                className="flex-1 border border-stone-700 py-2 text-sm font-light hover:bg-stone-900 transition-colors"
+                className="flex-1 border border-white/10 py-2 text-sm font-light hover:bg-white/[0.06] transition-colors rounded-full"
               >
                 Keep Booking
               </button>
               <button
                 onClick={confirmCancelBooking}
                 disabled={isCancelling}
-                className="flex-1 bg-red-600 text-white py-2 text-sm font-light hover:bg-red-700 transition-colors disabled:opacity-50"
+                className="flex-1 bg-red-600 text-white py-2 text-sm font-light hover:bg-red-700 transition-colors disabled:opacity-50 rounded-full"
               >
                 {isCancelling ? 'Cancelling...' : 'Yes, Cancel'}
               </button>
@@ -805,7 +805,7 @@ export default function StudioBookingPage() {
       {/* Booking Modal */}
       {showBookingModal && selectedSlot && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-950 border border-stone-800 p-8 max-w-md w-full">
+          <div className="bg-stone-950 rounded-2xl border border-white/[0.08] p-8 max-w-md w-full">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-light">Confirm Booking</h2>
               <button
@@ -821,11 +821,11 @@ export default function StudioBookingPage() {
             </div>
 
             <div className="space-y-4 mb-8">
-              <div className="border border-stone-800 p-4">
+              <div className="rounded-xl border border-white/[0.08] p-4">
                 <div className="text-sm text-stone-400 font-light mb-1">Studio</div>
                 <div className="font-light">{selectedStudio.name}</div>
               </div>
-              <div className="border border-stone-800 p-4">
+              <div className="rounded-xl border border-white/[0.08] p-4">
                 <div className="text-sm text-stone-400 font-light mb-1">Date</div>
                 <div className="font-light">
                   {selectedDate.toLocaleDateString('en-US', {
@@ -837,11 +837,11 @@ export default function StudioBookingPage() {
                   })}
                 </div>
               </div>
-              <div className="border border-stone-800 p-4">
+              <div className="rounded-xl border border-white/[0.08] p-4">
                 <div className="text-sm text-stone-400 font-light mb-1">Time (PST)</div>
                 <div className="font-light">{formatTimeRange(selectedSlot.start, selectedSlot.end)}</div>
               </div>
-              <div className="border border-stone-800 p-4">
+              <div className="rounded-xl border border-white/[0.08] p-4">
                 <div className="text-sm text-stone-400 font-light mb-1">Hours</div>
                 <div className="font-light">
                   This booking uses <span className="text-amber-600">{HOURS_PER_BOOKING}h</span> of your monthly allocation
@@ -857,7 +857,7 @@ export default function StudioBookingPage() {
                   value={bookingPurpose}
                   onChange={(e) => setBookingPurpose(e.target.value)}
                   placeholder="Recording session, mixing, etc."
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                 />
               </div>
               <p className="text-xs text-stone-500 font-light">
@@ -872,14 +872,14 @@ export default function StudioBookingPage() {
                   setSelectedSlot(null);
                   setBookingPurpose('');
                 }}
-                className="flex-1 border border-stone-700 py-3 text-sm font-light hover:border-stone-600 transition-colors"
+                className="flex-1 border border-white/10 py-3 text-sm font-light hover:border-white/20 transition-colors rounded-full"
               >
                 Cancel
               </button>
               <button
                 onClick={handleBooking}
                 disabled={isSubmitting}
-                className="flex-1 bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50"
+                className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light hover:opacity-90 transition-opacity disabled:opacity-50 rounded-full"
               >
                 {isSubmitting ? 'Booking...' : 'Confirm Booking'}
               </button>

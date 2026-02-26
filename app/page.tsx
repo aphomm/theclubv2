@@ -70,11 +70,18 @@ export default function LandingPage() {
             <a href="#membership" className="hover:text-amber-600 transition-colors">Membership</a>
             <a href="#features" className="hover:text-amber-600 transition-colors">Features</a>
           </div>
-          <a href="#membership">
-            <button className="bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 px-8 py-3 text-sm font-light tracking-wide hover:opacity-90 transition-opacity rounded-full">
-              Apply
-            </button>
-          </a>
+          <div className="flex items-center gap-3">
+            <a href="/auth/login">
+              <button className="border border-white/20 text-stone-100 px-6 py-3 text-sm font-light tracking-wide hover:border-amber-600 hover:text-amber-600 transition-colors rounded-full">
+                Sign In
+              </button>
+            </a>
+            <a href="#membership">
+              <button className="bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 px-8 py-3 text-sm font-light tracking-wide hover:opacity-90 transition-opacity rounded-full">
+                Apply
+              </button>
+            </a>
+          </div>
         </nav>
       </header>
 
@@ -435,9 +442,11 @@ export default function LandingPage() {
               A collaborative project platform where members pool resources to fund albums, tours, and ventures.
               Contribute cash, time, or equipment in exchange for transparent equity ownership and profit sharing.
             </p>
-            <button className="border border-amber-600/60 text-amber-600 px-12 py-4 text-sm font-light tracking-wide hover:bg-amber-600 hover:text-stone-950 transition-colors rounded-full relative z-10">
-              Learn More
-            </button>
+            <a href="#membership" className="relative z-10">
+              <button className="border border-amber-600/60 text-amber-600 px-12 py-4 text-sm font-light tracking-wide hover:bg-amber-600 hover:text-stone-950 transition-colors rounded-full">
+                Learn More
+              </button>
+            </a>
           </div>
         </div>
       </section>
@@ -497,9 +506,11 @@ export default function LandingPage() {
               Our 15,000 sq ft facility features three recording studios, a conference center,
               an executive lounge, and collaborative workspaces designed for creativity.
             </p>
-            <button className="border border-white/20 px-12 py-4 text-sm font-light tracking-wide hover:border-amber-600 hover:text-amber-600 transition-colors rounded-full">
-              Tour the Space
-            </button>
+            <a href="#membership">
+              <button className="border border-white/20 px-12 py-4 text-sm font-light tracking-wide hover:border-amber-600 hover:text-amber-600 transition-colors rounded-full">
+                Tour the Space
+              </button>
+            </a>
           </div>
           <div
             className="aspect-[4/3] overflow-hidden rounded-2xl border border-white/[0.08]"
