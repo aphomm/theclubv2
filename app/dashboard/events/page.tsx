@@ -126,8 +126,14 @@ export default function EventsPage() {
           ))}
         </div>
       ) : events.length === 0 ? (
-        <div className="text-center py-20 rounded-2xl border border-white/[0.08] p-12">
-          <p className="text-stone-400 font-light text-lg">No events found</p>
+        <div className="text-center py-20 rounded-2xl border border-amber-600/20 bg-amber-600/[0.03] p-12">
+          <div className="w-16 h-16 rounded-full border border-amber-600/20 flex items-center justify-center mx-auto mb-6">
+            <Calendar className="w-7 h-7 text-amber-600/40" />
+          </div>
+          <h3 className="text-xl font-light font-serif mb-3">No Events Scheduled</h3>
+          <p className="text-stone-500 font-light text-sm max-w-xs mx-auto">
+            Exclusive masterclasses, studio sessions, and networking events are added regularly. Check back soon.
+          </p>
         </div>
       ) : (
         <div className="space-y-6">

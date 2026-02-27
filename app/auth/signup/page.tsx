@@ -253,7 +253,7 @@ export default function SignupPage() {
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Your full legal name"
-            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
           />
         </div>
 
@@ -265,7 +265,7 @@ export default function SignupPage() {
             value={formData.email}
             onChange={handleInputChange}
             placeholder="your@email.com"
-            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
           />
         </div>
 
@@ -277,7 +277,7 @@ export default function SignupPage() {
             value={formData.phone}
             onChange={handleInputChange}
             placeholder="+1 (555) 000-0000"
-            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
           />
         </div>
 
@@ -289,7 +289,7 @@ export default function SignupPage() {
             value={formData.company}
             onChange={handleInputChange}
             placeholder="Your company or label"
-            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
           />
         </div>
 
@@ -304,7 +304,7 @@ export default function SignupPage() {
                 value={formData.address_line1}
                 onChange={handleInputChange}
                 placeholder="Street address"
-                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
               />
             </div>
             <div>
@@ -314,7 +314,7 @@ export default function SignupPage() {
                 value={formData.address_line2}
                 onChange={handleInputChange}
                 placeholder="Apt, suite, unit (optional)"
-                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -324,7 +324,7 @@ export default function SignupPage() {
                 value={formData.city}
                 onChange={handleInputChange}
                 placeholder="City"
-                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
               />
               <input
                 type="text"
@@ -332,7 +332,7 @@ export default function SignupPage() {
                 value={formData.state}
                 onChange={handleInputChange}
                 placeholder="State"
-                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
               />
             </div>
             <div>
@@ -342,7 +342,7 @@ export default function SignupPage() {
                 value={formData.postal_code}
                 onChange={handleInputChange}
                 placeholder="ZIP / Postal code"
-                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
               />
             </div>
           </div>
@@ -362,7 +362,7 @@ export default function SignupPage() {
               value={formData.password}
               onChange={handleInputChange}
               placeholder="••••••••"
-              className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+              className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
             />
             <button
               type="button"
@@ -382,7 +382,7 @@ export default function SignupPage() {
             value={formData.confirmPassword}
             onChange={handleInputChange}
             placeholder="••••••••"
-            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
           />
         </div>
 

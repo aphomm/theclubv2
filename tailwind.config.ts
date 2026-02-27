@@ -26,6 +26,10 @@ const config: Config = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      boxShadow: {
+        'card': '0 10px 40px 0 rgba(217, 119, 6, 0.08)',
+        'premium': '0 20px 60px 0 rgba(217, 119, 6, 0.15)',
+      },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
