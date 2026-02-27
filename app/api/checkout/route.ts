@@ -21,6 +21,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Verify the authenticated user matches the userId being checked out
+    const authHeader = request.headers.get('Authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const token = authHeader.replace('Bearer ', '');
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (supabaseUrl && supabaseServiceKey) {
+      const authClient = createClient(supabaseUrl, supabaseServiceKey);
+      const { data: { user: authUser }, error: authError } = await authClient.auth.getUser(token);
+      if (authError || !authUser || authUser.id !== userId) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+    }
+
     // If payment bypass is enabled, skip Stripe and activate membership directly
     if (shouldBypassPayment()) {
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

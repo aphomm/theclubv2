@@ -156,12 +156,6 @@ export default function DirectoryPage() {
                     <MessageCircle className="w-4 h-4" />
                     Message
                   </Link>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); e.preventDefault(); toast('Connection requests coming soon'); }}
-                    className="flex-1 border border-white/10 py-2 text-xs font-light text-stone-400 hover:border-amber-600/60 hover:text-amber-600 transition-colors rounded-full"
-                  >
-                    Connect
-                  </button>
                 </div>
               </div>
             </Link>

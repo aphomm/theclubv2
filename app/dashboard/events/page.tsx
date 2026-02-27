@@ -203,9 +203,6 @@ export default function EventsPage() {
                       <div className="w-10 h-10 rounded-full border border-amber-600/20 flex items-center justify-center">
                         <Calendar className="w-4 h-4 text-amber-600/40" />
                       </div>
-                      <span className="text-xs text-stone-600 font-light text-center px-3 leading-relaxed">
-                        Flyer<br/>Coming Soon
-                      </span>
                     </div>
                   )}
                 </div>

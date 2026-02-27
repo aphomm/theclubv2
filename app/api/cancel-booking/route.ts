@@ -17,6 +17,17 @@ export async function POST(req: NextRequest) {
 
   const supabase = createClient(supabaseUrl, serviceRoleKey);
 
+  // Verify the authenticated user matches the userId in the request
+  const authHeader = req.headers.get('Authorization');
+  if (!authHeader?.startsWith('Bearer ')) {
+    return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+  }
+  const token = authHeader.replace('Bearer ', '');
+  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+  if (authError || !user || user.id !== userId) {
+    return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+  }
+
   const { data: booking, error: bookingError } = await supabase
     .from('studio_bookings')
     .select('*')

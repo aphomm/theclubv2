@@ -166,7 +166,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <button className="relative text-stone-400 hover:text-amber-600">
                 <Bell className="w-5 h-5" />
                 {unreadCount > 0 && (
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-amber-500 rounded-full flex items-center justify-center">
                     <span className="text-[10px] text-white font-medium">{unreadCount > 9 ? '9+' : unreadCount}</span>
                   </div>
                 )}
@@ -177,7 +177,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <div className="text-sm font-light">{userProfile?.name || 'Member'}</div>
                 <div className="text-xs text-amber-600 capitalize">{userProfile?.tier || 'Creator'}</div>
               </div>
-              <div className="w-8 h-8 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full" />
+              <div className="w-8 h-8 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center">
+                <span className="text-xs font-medium text-stone-950">
+                  {(userProfile?.name || 'M').charAt(0).toUpperCase()}
+                </span>
+              </div>
             </div>
           </div>
         </div>

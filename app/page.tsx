@@ -653,7 +653,11 @@ export default function LandingPage() {
           </div>
           <div className="text-stone-500 text-sm font-light text-center">
             <div>Inglewood, California</div>
-            <div>© 2025 In Culture We Trust. All rights reserved.</div>
+            <div>© 2026 In Culture We Trust. All rights reserved.</div>
+          </div>
+          <div className="flex gap-6 text-stone-500 text-xs font-light">
+            <a href="/legal/terms" className="hover:text-amber-600 transition-colors">Terms of Service</a>
+            <a href="/legal/privacy" className="hover:text-amber-600 transition-colors">Privacy Policy</a>
           </div>
         </div>
       </footer>

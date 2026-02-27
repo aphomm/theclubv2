@@ -121,9 +121,17 @@ export default function CheckoutPage() {
     setIsProcessing(true);
 
     try {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      const supabase = createClient(supabaseUrl!, supabaseKey!);
+      const { data: { session } } = await supabase.auth.getSession();
+
       const response = await fetch('/api/checkout', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+        },
         body: JSON.stringify({
           userId: user.id,
           tier: user.tier,

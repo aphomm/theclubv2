@@ -545,22 +545,6 @@ export default function ProjectDetailPage() {
               </div>
             </div>
             
-            {contributorEarnings.pending_payout > 0 && (
-              <div className="rounded-xl border border-white/[0.08] bg-white/[0.04] p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm font-light text-stone-300">Available for withdrawal</div>
-                    <div className="text-xs text-stone-500">Payment processing will be available soon</div>
-                  </div>
-                  <button 
-                    disabled
-                    className="px-4 py-2 bg-white/[0.08] text-stone-500 font-light text-sm border border-white/10 cursor-not-allowed rounded-full"
-                  >
-                    Request Payout (Coming Soon)
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
         )}
 
