@@ -20,6 +20,7 @@ interface Event {
   instructor_bio?: string;
   tier_access: string[];
   external_rsvp_url?: string;
+  image_url?: string;
   created_at: string;
 }
 
@@ -49,6 +50,7 @@ export default function EventsPage() {
     instructor_bio: '',
     tier_access: ['Creator', 'Professional', 'Executive'],
     external_rsvp_url: '',
+    image_url: '',
   });
 
   useEffect(() => {
@@ -86,6 +88,7 @@ export default function EventsPage() {
       instructor_bio: '',
       tier_access: ['Creator', 'Professional', 'Executive'],
       external_rsvp_url: '',
+      image_url: '',
     });
   };
 
@@ -137,6 +140,7 @@ export default function EventsPage() {
       instructor_bio: formData.instructor_bio || null,
       tier_access: formData.tier_access,
       external_rsvp_url: formData.external_rsvp_url || null,
+      image_url: formData.image_url || null,
     }]);
 
     if (error) {
@@ -184,6 +188,7 @@ export default function EventsPage() {
         instructor_bio: formData.instructor_bio || null,
         tier_access: formData.tier_access,
         external_rsvp_url: formData.external_rsvp_url || null,
+        image_url: formData.image_url || null,
       })
       .eq('id', editingEvent.id);
 
@@ -240,6 +245,7 @@ export default function EventsPage() {
       instructor_bio: event.instructor_bio || '',
       tier_access: event.tier_access || ['Creator', 'Professional', 'Executive'],
       external_rsvp_url: event.external_rsvp_url || '',
+      image_url: event.image_url || '',
     });
     setShowEditModal(true);
     setActiveMenu(null);
@@ -262,7 +268,7 @@ export default function EventsPage() {
       </div>
 
       {/* Events Table */}
-      <div className="rounded-2xl border border-white/[0.08] overflow-hidden">
+      <div className="rounded-2xl border border-white/[0.08]">
         {isLoading ? (
           <div className="p-8 text-center">
             <div className="inline-block h-12 w-12 bg-white/[0.08] rounded-full animate-pulse" />
@@ -481,6 +487,23 @@ export default function EventsPage() {
               </div>
 
               <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">Event Flyer / Image URL (Optional)</label>
+                <input
+                  type="url"
+                  name="image_url"
+                  value={formData.image_url}
+                  onChange={handleInputChange}
+                  placeholder="e.g., https://your-storage.com/flyer.jpg"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                />
+                {formData.image_url && (
+                  <div className="mt-3 w-32 rounded-xl overflow-hidden border border-white/[0.08]">
+                    <img src={formData.image_url} alt="Flyer preview" className="w-full h-auto" />
+                  </div>
+                )}
+              </div>
+
+              <div>
                 <label className="text-sm text-stone-400 font-light mb-2 block">Description</label>
                 <textarea
                   name="description"
@@ -674,6 +697,23 @@ export default function EventsPage() {
                   className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
                 />
                 <p className="text-xs text-stone-500 mt-1">If set, users will be redirected here for RSVP</p>
+              </div>
+
+              <div>
+                <label className="text-sm text-stone-400 font-light mb-2 block">Event Flyer / Image URL (Optional)</label>
+                <input
+                  type="url"
+                  name="image_url"
+                  value={formData.image_url}
+                  onChange={handleInputChange}
+                  placeholder="e.g., https://your-storage.com/flyer.jpg"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                />
+                {formData.image_url && (
+                  <div className="mt-3 w-32 rounded-xl overflow-hidden border border-white/[0.08]">
+                    <img src={formData.image_url} alt="Flyer preview" className="w-full h-auto" />
+                  </div>
+                )}
               </div>
 
               <div>
