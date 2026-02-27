@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { Search, MapPin, MessageCircle, Users } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 interface User {
   id: string;
@@ -155,7 +156,10 @@ export default function DirectoryPage() {
                     <MessageCircle className="w-4 h-4" />
                     Message
                   </Link>
-                  <button className="flex-1 border border-white/10 py-2 text-xs font-light text-stone-400 hover:border-amber-600/60 hover:text-amber-600 transition-colors rounded-full">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); e.preventDefault(); toast('Connection requests coming soon'); }}
+                    className="flex-1 border border-white/10 py-2 text-xs font-light text-stone-400 hover:border-amber-600/60 hover:text-amber-600 transition-colors rounded-full"
+                  >
                     Connect
                   </button>
                 </div>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
-import { ArrowLeft, Calendar, MapPin, Users, Heart, Share2, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Calendar, MapPin, Users, Share2, CheckCircle, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
@@ -21,6 +21,7 @@ interface Event {
   instructor_bio?: string;
   agenda?: any[];
   image_url?: string;
+  external_rsvp_url?: string;
 }
 
 export default function EventDetailPage() {
@@ -192,10 +193,18 @@ export default function EventDetailPage() {
           </span>
         </div>
         <div className="flex items-center gap-4">
-          <button className="text-stone-400 hover:text-red-500 transition-colors">
-            <Heart className="w-6 h-6" />
-          </button>
-          <button className="text-stone-400 hover:text-amber-600 transition-colors">
+          <button
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({ title: event.title, url: window.location.href });
+              } else {
+                navigator.clipboard.writeText(window.location.href);
+                toast.success('Link copied to clipboard');
+              }
+            }}
+            className="text-stone-400 hover:text-amber-600 transition-colors"
+            title="Share event"
+          >
             <Share2 className="w-6 h-6" />
           </button>
         </div>
@@ -294,7 +303,23 @@ export default function EventDetailPage() {
 
       {/* RSVP Section */}
       <div className="rounded-2xl border border-amber-600/30 bg-gradient-to-br from-amber-600/5 to-transparent p-8 mt-8">
-        {isRsvped ? (
+        {event.external_rsvp_url ? (
+          <div>
+            <div className="font-light mb-2">RSVP via external link</div>
+            <p className="text-sm text-stone-400 font-light mb-6">
+              This event is managed through an external ticketing platform.
+            </p>
+            <a
+              href={event.external_rsvp_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-4 text-sm font-light tracking-wide hover:opacity-90 transition-opacity rounded-full flex items-center justify-center gap-2"
+            >
+              RSVP Now
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+        ) : isRsvped ? (
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <CheckCircle className="w-6 h-6 text-green-500" />
