@@ -397,7 +397,7 @@ export default function AdminResourcesPage() {
       </div>
 
       {/* Resources Table */}
-      <div className="rounded-2xl border border-white/[0.08] overflow-hidden">
+      <div className="rounded-2xl border border-white/[0.08]">
         {isLoading ? (
           <div className="p-8 text-center">
             <div className="inline-block h-12 w-12 bg-white/[0.08] rounded-full animate-pulse" />

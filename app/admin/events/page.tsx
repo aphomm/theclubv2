@@ -35,6 +35,8 @@ export default function EventsPage() {
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [menuPosition, setMenuPosition] = useState<{ x: number; y: number } | null>(null);
+  const [activeEvent, setActiveEvent] = useState<Event | null>(null);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -228,6 +230,8 @@ export default function EventsPage() {
     }
 
     setActiveMenu(null);
+    setMenuPosition(null);
+    setActiveEvent(null);
   };
 
   const openEditModal = (event: Event) => {
@@ -249,6 +253,8 @@ export default function EventsPage() {
     });
     setShowEditModal(true);
     setActiveMenu(null);
+    setMenuPosition(null);
+    setActiveEvent(null);
   };
 
   return (
@@ -329,45 +335,23 @@ export default function EventsPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="relative">
-                        <button
-                          onClick={() => setActiveMenu(activeMenu === event.id ? null : event.id)}
-                          className="text-stone-400 hover:text-amber-600 transition-colors"
-                        >
-                          <MoreVertical className="w-5 h-5" />
-                        </button>
-
-                        {activeMenu === event.id && (
-                          <div className="absolute right-0 top-8 z-10 bg-stone-900/95 rounded-xl border border-white/[0.08] shadow-xl py-2 min-w-[160px]">
-                            <Link href={`/admin/events/${event.id}`}>
-                              <button className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg">
-                                <Users className="w-4 h-4" />
-                                Attendance
-                              </button>
-                            </Link>
-                            <Link href={`/dashboard/events/${event.id}`}>
-                              <button className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg">
-                                <Eye className="w-4 h-4" />
-                                View
-                              </button>
-                            </Link>
-                            <button
-                              onClick={() => openEditModal(event)}
-                              className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
-                            >
-                              <Edit className="w-4 h-4" />
-                              Edit
-                            </button>
-                            <button
-                              onClick={() => handleDeleteEvent(event.id)}
-                              className="w-full px-4 py-2 text-left text-sm font-light text-red-500 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                              Delete
-                            </button>
-                          </div>
-                        )}
-                      </div>
+                      <button
+                        onClick={(e) => {
+                          if (activeMenu === event.id) {
+                            setActiveMenu(null);
+                            setMenuPosition(null);
+                            setActiveEvent(null);
+                          } else {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setMenuPosition({ x: rect.right, y: rect.bottom });
+                            setActiveMenu(event.id);
+                            setActiveEvent(event);
+                          }
+                        }}
+                        className="text-stone-400 hover:text-amber-600 transition-colors"
+                      >
+                        <MoreVertical className="w-5 h-5" />
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -803,9 +787,42 @@ export default function EventsPage() {
         </div>
       )}
 
-      {/* Click outside to close menu */}
-      {activeMenu && (
-        <div className="fixed inset-0 z-0" onClick={() => setActiveMenu(null)} />
+      {/* Fixed-position dropdown (renders outside overflow-x-auto) */}
+      {activeMenu && menuPosition && activeEvent && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => { setActiveMenu(null); setMenuPosition(null); setActiveEvent(null); }} />
+          <div
+            className="fixed z-50 bg-stone-900/95 rounded-xl border border-white/[0.08] shadow-xl py-2 min-w-[160px]"
+            style={{ top: menuPosition.y + 4, left: menuPosition.x - 160 }}
+          >
+            <Link href={`/admin/events/${activeEvent.id}`}>
+              <button className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg">
+                <Users className="w-4 h-4" />
+                Attendance
+              </button>
+            </Link>
+            <Link href={`/dashboard/events/${activeEvent.id}`}>
+              <button className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg">
+                <Eye className="w-4 h-4" />
+                View
+              </button>
+            </Link>
+            <button
+              onClick={() => openEditModal(activeEvent)}
+              className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
+            >
+              <Edit className="w-4 h-4" />
+              Edit
+            </button>
+            <button
+              onClick={() => handleDeleteEvent(activeEvent.id)}
+              className="w-full px-4 py-2 text-left text-sm font-light text-red-500 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
+            >
+              <Trash2 className="w-4 h-4" />
+              Delete
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

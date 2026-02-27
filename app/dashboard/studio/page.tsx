@@ -529,18 +529,15 @@ export default function StudioBookingPage() {
           >
             {/* Studio photo / placeholder */}
             <div className="relative h-36 w-full overflow-hidden">
+              <div className={`absolute inset-0 bg-gradient-to-br ${studio.placeholder} flex items-center justify-center`} aria-hidden="true">
+                <Music className="w-10 h-10 text-amber-600/25" />
+              </div>
               <img
                 src={studio.image}
                 alt={studio.name}
-                className="w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
               />
-              <div className={`absolute inset-0 bg-gradient-to-br ${studio.placeholder} flex items-center justify-center`}
-                style={{ display: 'flex' }}
-                aria-hidden="true"
-              >
-                <Music className="w-10 h-10 text-amber-600/25" />
-              </div>
               {selectedStudio.id === studio.id && (
                 <div className="absolute inset-0 bg-amber-600/10 border-b border-amber-600/40" />
               )}
