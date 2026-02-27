@@ -30,6 +30,7 @@ interface Event {
   instructor_name?: string;
   external_rsvp_url?: string;
   image_url?: string;
+  remainingSpots?: number;
 }
 
 export default function EventsPage() {
@@ -59,8 +60,30 @@ export default function EventsPage() {
         query = query.eq('event_type', filter);
       }
 
-      const { data } = await query;
-      setEvents(data || []);
+      const { data: eventsData } = await query;
+      if (!eventsData || eventsData.length === 0) {
+        setEvents([]);
+        setIsLoading(false);
+        return;
+      }
+
+      // Fetch RSVP counts for all listed events in one query
+      const eventIds = eventsData.map((e: Event) => e.id);
+      const { data: rsvps } = await supabase
+        .from('event_rsvps')
+        .select('event_id, guest_count')
+        .in('event_id', eventIds);
+
+      // Build a map of event_id -> total guests booked
+      const rsvpMap: Record<string, number> = {};
+      (rsvps || []).forEach((r: any) => {
+        rsvpMap[r.event_id] = (rsvpMap[r.event_id] || 0) + (r.guest_count || 1);
+      });
+
+      setEvents(eventsData.map((e: Event) => ({
+        ...e,
+        remainingSpots: Math.max(0, e.capacity - (rsvpMap[e.id] || 0)),
+      })));
       setIsLoading(false);
     };
 
@@ -138,7 +161,11 @@ export default function EventsPage() {
                     </div>
                     <div className="flex items-center gap-2 text-sm text-stone-300 font-light">
                       <Users className="w-4 h-4 text-amber-600" />
-                      {event.capacity} spots available
+                      <span className={event.remainingSpots === 0 ? 'text-red-500' : ''}>
+                        {event.remainingSpots === 0
+                          ? 'Full'
+                          : `${event.remainingSpots ?? event.capacity} spots left`}
+                      </span>
                     </div>
                   </div>
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { Plus, MoreVertical, X, Edit, Trash2, Eye } from 'lucide-react';
+import { Plus, MoreVertical, X, Edit, Trash2, Eye, Users } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
 
@@ -332,7 +332,13 @@ export default function EventsPage() {
                         </button>
 
                         {activeMenu === event.id && (
-                          <div className="absolute right-0 top-8 z-10 bg-stone-900/95 rounded-xl border border-white/[0.08] shadow-xl py-2 min-w-[150px]">
+                          <div className="absolute right-0 top-8 z-10 bg-stone-900/95 rounded-xl border border-white/[0.08] shadow-xl py-2 min-w-[160px]">
+                            <Link href={`/admin/events/${event.id}`}>
+                              <button className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg">
+                                <Users className="w-4 h-4" />
+                                Attendance
+                              </button>
+                            </Link>
                             <Link href={`/dashboard/events/${event.id}`}>
                               <button className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg">
                                 <Eye className="w-4 h-4" />
