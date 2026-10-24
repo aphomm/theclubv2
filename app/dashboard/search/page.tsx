@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { Suspense, useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 import { Search, Users, Calendar, TrendingUp, FileText, MapPin, ArrowRight } from 'lucide-react';
@@ -40,7 +40,7 @@ interface Resource {
 
 type SearchTab = 'all' | 'members' | 'events' | 'projects' | 'resources';
 
-export default function SearchPage() {
+function SearchPageContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('q') || '';
 
@@ -384,5 +384,14 @@ export default function SearchPage() {
         </div>
       )}
     </div>
+  );
+}
+
+// Next 15 requires useSearchParams() inside a Suspense boundary for prerendering.
+export default function SearchPage() {
+  return (
+    <Suspense fallback={null}>
+      <SearchPageContent />
+    </Suspense>
   );
 }

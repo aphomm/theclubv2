@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
@@ -42,7 +42,7 @@ const TIER_DETAILS: Record<string, {
   },
 };
 
-export default function CheckoutPage() {
+function CheckoutPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tierParam = searchParams.get('tier');
@@ -258,5 +258,14 @@ export default function CheckoutPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Next 15 requires useSearchParams() inside a Suspense boundary for prerendering.
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={null}>
+      <CheckoutPageContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
@@ -19,7 +19,7 @@ const normalizeTier = (tier: string | null): string => {
 // Check if payment is bypassed (for development/testing)
 const isPaymentBypassed = process.env.NEXT_PUBLIC_BYPASS_PAYMENT === 'true';
 
-export default function SignupPage() {
+function SignupPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tier = normalizeTier(searchParams.get('tier'));
@@ -404,5 +404,14 @@ export default function SignupPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+// Next 15 requires useSearchParams() inside a Suspense boundary for prerendering.
+export default function SignupPage() {
+  return (
+    <Suspense fallback={null}>
+      <SignupPageContent />
+    </Suspense>
   );
 }

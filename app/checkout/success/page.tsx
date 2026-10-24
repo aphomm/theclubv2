@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { CheckCircle, Loader2, AlertCircle } from 'lucide-react';
@@ -8,7 +8,7 @@ import { createClient } from '@supabase/supabase-js';
 
 type VerifyState = 'verifying' | 'success' | 'pending';
 
-export default function CheckoutSuccessPage() {
+function CheckoutSuccessPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
@@ -138,5 +138,14 @@ export default function CheckoutSuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Next 15 requires useSearchParams() inside a Suspense boundary for prerendering.
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={null}>
+      <CheckoutSuccessPageContent />
+    </Suspense>
   );
 }
