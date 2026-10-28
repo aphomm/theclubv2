@@ -154,15 +154,15 @@ export default function CreateProjectPage() {
   return (
     <div className="max-w-3xl mx-auto">
       <Link href="/dashboard/the-pool">
-        <button className="flex items-center gap-2 text-amber-600 hover:underline mb-8 font-light">
+        <button className="flex items-center gap-2 text-accent-600 hover:underline mb-8">
           <ArrowLeft className="w-4 h-4" />
           Back to The Pool
         </button>
       </Link>
 
       <div className="mb-10">
-        <h1 className="text-4xl font-light mb-2">Start a Project</h1>
-        <p className="text-stone-400 font-light">
+        <h1 className="text-4xl mb-2">Start a Project</h1>
+        <p className="text-ink-400">
           Launch your creative vision and get funding from the ICWT community
         </p>
       </div>
@@ -171,10 +171,10 @@ export default function CreateProjectPage() {
       <div className="flex items-center gap-4 mb-12">
         <button
           onClick={() => setCurrentStep(1)}
-          className={`flex items-center gap-2 px-4 py-2 text-sm font-light border transition-colors rounded-full ${
+          className={`flex items-center gap-2 px-4 py-2 text-sm border transition-colors rounded-sm ${
             currentStep === 1
-              ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-              : 'border-white/10 text-stone-400'
+              ? 'border-accent-600 text-accent-600 bg-accent-600/10'
+              : 'border-white/10 text-ink-400'
           }`}
         >
           <span className="w-6 h-6 border border-current rounded-full flex items-center justify-center text-xs">
@@ -185,10 +185,10 @@ export default function CreateProjectPage() {
         <div className="h-px w-8 bg-white/[0.08]" />
         <button
           onClick={() => validateStep1() && setCurrentStep(2)}
-          className={`flex items-center gap-2 px-4 py-2 text-sm font-light border transition-colors rounded-full ${
+          className={`flex items-center gap-2 px-4 py-2 text-sm border transition-colors rounded-sm ${
             currentStep === 2
-              ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-              : 'border-white/10 text-stone-400'
+              ? 'border-accent-600 text-accent-600 bg-accent-600/10'
+              : 'border-white/10 text-ink-400'
           }`}
         >
           <span className="w-6 h-6 border border-current rounded-full flex items-center justify-center text-xs">
@@ -199,10 +199,10 @@ export default function CreateProjectPage() {
         <div className="h-px w-8 bg-white/[0.08]" />
         <button
           onClick={() => validateStep1() && setCurrentStep(3)}
-          className={`flex items-center gap-2 px-4 py-2 text-sm font-light border transition-colors rounded-full ${
+          className={`flex items-center gap-2 px-4 py-2 text-sm border transition-colors rounded-sm ${
             currentStep === 3
-              ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-              : 'border-white/10 text-stone-400'
+              ? 'border-accent-600 text-accent-600 bg-accent-600/10'
+              : 'border-white/10 text-ink-400'
           }`}
         >
           <span className="w-6 h-6 border border-current rounded-full flex items-center justify-center text-xs">
@@ -215,15 +215,15 @@ export default function CreateProjectPage() {
       {/* Step 1: Basics */}
       {currentStep === 1 && (
         <div className="space-y-8">
-          <div className="rounded-2xl border border-white/[0.08] p-8">
-            <h2 className="text-xl font-light mb-6 flex items-center gap-3">
-              <Target className="w-5 h-5 text-amber-600" />
+          <div className="rounded-sm border border-white/[0.08] p-8">
+            <h2 className="text-xl mb-6 flex items-center gap-3">
+              <Target className="w-5 h-5 text-accent-600" />
               Project Basics
             </h2>
 
             <div className="space-y-6">
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">
+                <label className="text-sm text-ink-400 mb-2 block">
                   Project Title *
                 </label>
                 <input
@@ -232,12 +232,12 @@ export default function CreateProjectPage() {
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="e.g., Debut Album: Midnight Sessions"
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                 />
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">
+                <label className="text-sm text-ink-400 mb-2 block">
                   Tagline
                 </label>
                 <input
@@ -247,20 +247,20 @@ export default function CreateProjectPage() {
                   onChange={handleInputChange}
                   placeholder="A short, catchy description (optional)"
                   maxLength={100}
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                 />
-                <p className="text-xs text-stone-500 mt-1">{formData.tagline.length}/100</p>
+                <p className="text-xs text-ink-500 mt-1">{formData.tagline.length}/100</p>
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">
+                <label className="text-sm text-ink-400 mb-2 block">
                   Category *
                 </label>
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 rounded-sm"
                 >
                   {categories.map(cat => (
                     <option key={cat} value={cat}>{cat}</option>
@@ -269,7 +269,7 @@ export default function CreateProjectPage() {
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">
+                <label className="text-sm text-ink-400 mb-2 block">
                   Description *
                 </label>
                 <textarea
@@ -278,17 +278,17 @@ export default function CreateProjectPage() {
                   onChange={handleInputChange}
                   placeholder="Tell potential investors about your project. What is it? Why should they invest? What makes it special?"
                   rows={6}
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors resize-none rounded-sm"
                 />
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block flex items-center gap-2">
+                <label className="text-sm text-ink-400 mb-2 block flex items-center gap-2">
                   <DollarSign className="w-4 h-4" />
                   Funding Goal *
                 </label>
                 <div className="relative">
-                  <span className="absolute left-4 top-3.5 text-stone-400">$</span>
+                  <span className="absolute left-4 top-3.5 text-ink-400">$</span>
                   <input
                     type="number"
                     name="funding_goal"
@@ -296,10 +296,10 @@ export default function CreateProjectPage() {
                     onChange={handleInputChange}
                     placeholder="50,000"
                     min="1000"
-                    className="w-full bg-white/[0.04] border border-white/10 pl-8 pr-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 pl-8 pr-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                   />
                 </div>
-                <p className="text-xs text-stone-500 mt-1">Minimum $1,000</p>
+                <p className="text-xs text-ink-500 mt-1">Minimum $1,000</p>
               </div>
             </div>
           </div>
@@ -307,7 +307,7 @@ export default function CreateProjectPage() {
           <div className="flex justify-end">
             <button
               onClick={() => validateStep1() && setCurrentStep(2)}
-              className="bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 px-8 py-3 text-sm font-light hover:opacity-90 transition-opacity rounded-full"
+              className="bg-accent-500 text-ink-950 px-8 py-3 text-sm hover:opacity-90 transition-opacity rounded-sm"
             >
               Continue to Details
             </button>
@@ -318,15 +318,15 @@ export default function CreateProjectPage() {
       {/* Step 2: Details */}
       {currentStep === 2 && (
         <div className="space-y-8">
-          <div className="rounded-2xl border border-white/[0.08] p-8">
-            <h2 className="text-xl font-light mb-6">Additional Details</h2>
-            <p className="text-stone-400 font-light text-sm mb-8">
+          <div className="rounded-sm border border-white/[0.08] p-8">
+            <h2 className="text-xl mb-6">Additional Details</h2>
+            <p className="text-ink-400 text-sm mb-8">
               These fields are optional but help investors understand your project better.
             </p>
 
             <div className="space-y-6">
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block flex items-center gap-2">
+                <label className="text-sm text-ink-400 mb-2 block flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
                   Expected Completion Date
                 </label>
@@ -335,12 +335,12 @@ export default function CreateProjectPage() {
                   name="expected_completion"
                   value={formData.expected_completion}
                   onChange={handleInputChange}
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 rounded-sm"
                 />
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block flex items-center gap-2">
+                <label className="text-sm text-ink-400 mb-2 block flex items-center gap-2">
                   <MapPin className="w-4 h-4" />
                   Location
                 </label>
@@ -350,12 +350,12 @@ export default function CreateProjectPage() {
                   value={formData.location}
                   onChange={handleInputChange}
                   placeholder="e.g., Los Angeles, CA"
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                 />
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block flex items-center gap-2">
+                <label className="text-sm text-ink-400 mb-2 block flex items-center gap-2">
                   <Video className="w-4 h-4" />
                   Video URL
                 </label>
@@ -365,9 +365,9 @@ export default function CreateProjectPage() {
                   value={formData.video_url}
                   onChange={handleInputChange}
                   placeholder="https://youtube.com/watch?v=... or https://vimeo.com/..."
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                 />
-                <p className="text-xs text-stone-500 mt-1">
+                <p className="text-xs text-ink-500 mt-1">
                   A pitch video can significantly increase investment interest
                 </p>
               </div>
@@ -377,13 +377,13 @@ export default function CreateProjectPage() {
           <div className="flex justify-between">
             <button
               onClick={() => setCurrentStep(1)}
-              className="border border-white/10 px-8 py-3 text-sm font-light hover:border-white/20 transition-colors rounded-full"
+              className="border border-white/10 px-8 py-3 text-sm hover:border-white/20 transition-colors rounded-sm"
             >
               Back
             </button>
             <button
               onClick={() => setCurrentStep(3)}
-              className="bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 px-8 py-3 text-sm font-light hover:opacity-90 transition-opacity rounded-full"
+              className="bg-accent-500 text-ink-950 px-8 py-3 text-sm hover:opacity-90 transition-opacity rounded-sm"
             >
               Continue to Milestones
             </button>
@@ -394,30 +394,30 @@ export default function CreateProjectPage() {
       {/* Step 3: Milestones */}
       {currentStep === 3 && (
         <div className="space-y-8">
-          <div className="rounded-2xl border border-white/[0.08] p-8">
-            <h2 className="text-xl font-light mb-2">Project Milestones</h2>
-            <p className="text-stone-400 font-light text-sm mb-8">
+          <div className="rounded-sm border border-white/[0.08] p-8">
+            <h2 className="text-xl mb-2">Project Milestones</h2>
+            <p className="text-ink-400 text-sm mb-8">
               Break your project into milestones to show investors how you'll use their funding.
               This is optional but highly recommended.
             </p>
 
             <div className="space-y-6">
               {milestones.map((milestone, index) => (
-                <div key={index} className="rounded-xl border border-white/[0.08] p-6 relative">
+                <div key={index} className="rounded-sm border border-white/[0.08] p-6 relative">
                   {milestones.length > 1 && (
                     <button
                       onClick={() => removeMilestone(index)}
-                      className="absolute top-4 right-4 text-stone-500 hover:text-red-500 transition-colors"
+                      className="absolute top-4 right-4 text-ink-500 hover:text-red-500 transition-colors"
                     >
                       <X className="w-4 h-4" />
                     </button>
                   )}
 
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-8 h-8 border border-amber-600 rounded-full flex items-center justify-center text-amber-600 text-sm font-light">
+                    <div className="w-8 h-8 border border-accent-600 rounded-full flex items-center justify-center text-accent-600 text-sm">
                       {index + 1}
                     </div>
-                    <span className="text-sm text-stone-400 font-light">Milestone {index + 1}</span>
+                    <span className="text-sm text-ink-400">Milestone {index + 1}</span>
                   </div>
 
                   <div className="space-y-4">
@@ -426,20 +426,20 @@ export default function CreateProjectPage() {
                       value={milestone.title}
                       onChange={(e) => handleMilestoneChange(index, 'title', e.target.value)}
                       placeholder="Milestone title (e.g., Pre-production complete)"
-                      className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                      className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                     />
                     <textarea
                       value={milestone.description}
                       onChange={(e) => handleMilestoneChange(index, 'description', e.target.value)}
                       placeholder="Brief description of what this milestone includes..."
                       rows={2}
-                      className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
+                      className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors resize-none rounded-sm"
                     />
                     <input
                       type="date"
                       value={milestone.date}
                       onChange={(e) => handleMilestoneChange(index, 'date', e.target.value)}
-                      className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
+                      className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 rounded-sm"
                     />
                   </div>
                 </div>
@@ -448,7 +448,7 @@ export default function CreateProjectPage() {
               {milestones.length < 10 && (
                 <button
                   onClick={addMilestone}
-                  className="w-full border border-dashed border-white/10 py-4 text-sm font-light text-stone-400 hover:border-amber-600 hover:text-amber-600 transition-colors flex items-center justify-center gap-2 rounded-xl"
+                  className="w-full border border-dashed border-white/10 py-4 text-sm text-ink-400 hover:border-accent-600 hover:text-accent-600 transition-colors flex items-center justify-center gap-2 rounded-sm"
                 >
                   <Plus className="w-4 h-4" />
                   Add Milestone
@@ -458,32 +458,32 @@ export default function CreateProjectPage() {
           </div>
 
           {/* Preview Summary */}
-          <div className="rounded-2xl border border-amber-600/30 bg-amber-600/5 p-8">
-            <h3 className="text-lg font-light mb-4">Project Summary</h3>
+          <div className="rounded-sm border border-accent-600/30 bg-accent-600/5 p-8">
+            <h3 className="text-lg mb-4">Project Summary</h3>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="text-stone-400">Title:</span>{' '}
-                <span className="font-light">{formData.title || '—'}</span>
+                <span className="text-ink-400">Title:</span>{' '}
+                <span className="">{formData.title || '—'}</span>
               </div>
               <div>
-                <span className="text-stone-400">Category:</span>{' '}
-                <span className="font-light">{formData.category}</span>
+                <span className="text-ink-400">Category:</span>{' '}
+                <span className="">{formData.category}</span>
               </div>
               <div>
-                <span className="text-stone-400">Funding Goal:</span>{' '}
-                <span className="font-light">
+                <span className="text-ink-400">Funding Goal:</span>{' '}
+                <span className="">
                   {formData.funding_goal ? `$${parseFloat(formData.funding_goal).toLocaleString()}` : '—'}
                 </span>
               </div>
               <div>
-                <span className="text-stone-400">Milestones:</span>{' '}
-                <span className="font-light">{milestones.filter(m => m.title).length}</span>
+                <span className="text-ink-400">Milestones:</span>{' '}
+                <span className="">{milestones.filter(m => m.title).length}</span>
               </div>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/[0.08] p-6">
-            <p className="text-xs text-stone-500 font-light">
+          <div className="rounded-sm border border-white/[0.08] p-6">
+            <p className="text-xs text-ink-500">
               By submitting this project, you agree to ICWT's project guidelines and investment terms.
               Your project will be reviewed before being published to the community. Projects typically
               go live within 24-48 hours of submission.
@@ -493,14 +493,14 @@ export default function CreateProjectPage() {
           <div className="flex justify-between">
             <button
               onClick={() => setCurrentStep(2)}
-              className="border border-white/10 px-8 py-3 text-sm font-light hover:border-white/20 transition-colors rounded-full"
+              className="border border-white/10 px-8 py-3 text-sm hover:border-white/20 transition-colors rounded-sm"
             >
               Back
             </button>
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 px-12 py-3 text-sm font-light hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed rounded-full"
+              className="bg-accent-500 text-ink-950 px-12 py-3 text-sm hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed rounded-sm"
             >
               {isSubmitting ? 'Submitting...' : 'Submit Project'}
             </button>

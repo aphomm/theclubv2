@@ -261,12 +261,12 @@ export default function EventsPage() {
     <div className="max-w-7xl">
       <div className="flex items-center justify-between mb-10">
         <div>
-          <h1 className="text-4xl font-light mb-2">Events</h1>
-          <p className="text-stone-400 font-light">Manage club events and masterclasses</p>
+          <h1 className="text-4xl mb-2">Events</h1>
+          <p className="text-ink-400">Manage club events and masterclasses</p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 px-6 py-3 text-sm font-light hover:opacity-90 transition-opacity rounded-full"
+          className="flex items-center gap-2 bg-accent-500 text-ink-950 px-6 py-3 text-sm hover:opacity-90 transition-opacity rounded-sm"
         >
           <Plus className="w-5 h-5" />
           New Event
@@ -274,13 +274,13 @@ export default function EventsPage() {
       </div>
 
       {/* Events Table */}
-      <div className="rounded-2xl border border-white/[0.08]">
+      <div className="rounded-sm border border-white/[0.08]">
         {isLoading ? (
           <div className="p-8 text-center">
             <div className="inline-block h-12 w-12 bg-white/[0.08] rounded-full animate-pulse" />
           </div>
         ) : events.length === 0 ? (
-          <div className="p-12 text-center text-stone-400 font-light">
+          <div className="p-12 text-center text-ink-400">
             No events found. Create your first event to get started.
           </div>
         ) : (
@@ -288,25 +288,25 @@ export default function EventsPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/[0.06]">
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Title
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Type
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Date
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Location
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Capacity
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Tier Access
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Actions
                   </th>
                 </tr>
@@ -314,21 +314,21 @@ export default function EventsPage() {
               <tbody>
                 {events.map((event, idx) => (
                   <tr key={event.id} className={idx !== events.length - 1 ? 'border-b border-white/[0.06]' : ''}>
-                    <td className="px-6 py-4 font-light max-w-sm truncate">{event.title}</td>
+                    <td className="px-6 py-4 max-w-sm truncate">{event.title}</td>
                     <td className="px-6 py-4">
-                      <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase rounded-full">
+                      <span className="text-xs bg-accent-600/20 text-accent-600 px-3 py-1 uppercase rounded-sm">
                         {event.event_type}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-stone-400 font-light">
+                    <td className="px-6 py-4 text-sm text-ink-400">
                       {new Date(event.date).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 text-sm text-stone-400 font-light">{event.location}</td>
-                    <td className="px-6 py-4 font-light">{event.capacity}</td>
+                    <td className="px-6 py-4 text-sm text-ink-400">{event.location}</td>
+                    <td className="px-6 py-4">{event.capacity}</td>
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-1">
                         {(event.tier_access || []).map(tier => (
-                          <span key={tier} className="text-xs bg-white/[0.08] text-stone-400 px-2 py-0.5 font-light rounded-full">
+                          <span key={tier} className="text-xs bg-white/[0.08] text-ink-400 px-2 py-0.5 rounded-sm">
                             {tier}
                           </span>
                         ))}
@@ -348,7 +348,7 @@ export default function EventsPage() {
                             setActiveEvent(event);
                           }
                         }}
-                        className="text-stone-400 hover:text-amber-600 transition-colors"
+                        className="text-ink-400 hover:text-accent-600 transition-colors"
                       >
                         <MoreVertical className="w-5 h-5" />
                       </button>
@@ -364,41 +364,41 @@ export default function EventsPage() {
       {/* Create Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-950 rounded-2xl border border-white/[0.08] p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-ink-950 rounded-sm border border-white/[0.08] p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-light">Create New Event</h2>
+              <h2 className="text-2xl">Create New Event</h2>
               <button
                 onClick={() => {
                   setShowCreateModal(false);
                   resetForm();
                 }}
-                className="text-stone-400 hover:text-stone-100"
+                className="text-ink-400 hover:text-ink-100"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
             <form onSubmit={handleCreateEvent} className="space-y-6">
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">Event Title *</label>
+                <label className="text-sm text-ink-400 mb-2 block">Event Title *</label>
                 <input
                   type="text"
                   name="title"
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="e.g., Songwriting Masterclass"
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                   required
                 />
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm text-stone-400 font-light mb-2 block">Event Type *</label>
+                  <label className="text-sm text-ink-400 mb-2 block">Event Type *</label>
                   <select
                     name="event_type"
                     value={formData.event_type}
                     onChange={handleInputChange}
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 rounded-sm"
                   >
                     {eventTypes.map(type => (
                       <option key={type} value={type}>{type}</option>
@@ -406,14 +406,14 @@ export default function EventsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-sm text-stone-400 font-light mb-2 block">Capacity *</label>
+                  <label className="text-sm text-ink-400 mb-2 block">Capacity *</label>
                   <input
                     type="number"
                     name="capacity"
                     value={formData.capacity}
                     onChange={handleInputChange}
                     min="1"
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                     required
                   />
                 </div>
@@ -421,96 +421,96 @@ export default function EventsPage() {
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm text-stone-400 font-light mb-2 block">Date *</label>
+                  <label className="text-sm text-ink-400 mb-2 block">Date *</label>
                   <input
                     type="date"
                     name="date"
                     value={formData.date}
                     onChange={handleInputChange}
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 rounded-sm"
                     required
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-stone-400 font-light mb-2 block">Time *</label>
+                  <label className="text-sm text-ink-400 mb-2 block">Time *</label>
                   <input
                     type="time"
                     name="time"
                     value={formData.time}
                     onChange={handleInputChange}
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 rounded-sm"
                     required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">Location *</label>
+                <label className="text-sm text-ink-400 mb-2 block">Location *</label>
                 <input
                   type="text"
                   name="location"
                   value={formData.location}
                   onChange={handleInputChange}
                   placeholder="e.g., WePlay Studios - Main Room"
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">External RSVP/Ticketing URL (Optional)</label>
+                <label className="text-sm text-ink-400 mb-2 block">External RSVP/Ticketing URL (Optional)</label>
                 <input
                   type="url"
                   name="external_rsvp_url"
                   value={formData.external_rsvp_url}
                   onChange={handleInputChange}
                   placeholder="e.g., https://eventbrite.com/your-event"
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                 />
-                <p className="text-xs text-stone-500 mt-1">If set, users will be redirected here for RSVP</p>
+                <p className="text-xs text-ink-500 mt-1">If set, users will be redirected here for RSVP</p>
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">Event Flyer / Image URL (Optional)</label>
+                <label className="text-sm text-ink-400 mb-2 block">Event Flyer / Image URL (Optional)</label>
                 <input
                   type="url"
                   name="image_url"
                   value={formData.image_url}
                   onChange={handleInputChange}
                   placeholder="e.g., https://your-storage.com/flyer.jpg"
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                 />
                 {formData.image_url && (
-                  <div className="mt-3 w-32 rounded-xl overflow-hidden border border-white/[0.08]">
+                  <div className="mt-3 w-32 rounded-sm overflow-hidden border border-white/[0.08]">
                     <img src={formData.image_url} alt="Flyer preview" className="w-full h-auto" />
                   </div>
                 )}
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">Description</label>
+                <label className="text-sm text-ink-400 mb-2 block">Description</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Describe the event..."
                   rows={4}
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors resize-none rounded-sm"
                 />
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-3 block">Tier Access</label>
+                <label className="text-sm text-ink-400 mb-3 block">Tier Access</label>
                 <div className="flex gap-3">
                   {tierOptions.map(tier => (
                     <button
                       key={tier}
                       type="button"
                       onClick={() => handleTierToggle(tier)}
-                      className={`px-4 py-2 text-sm font-light border transition-colors rounded-full ${
+                      className={`px-4 py-2 text-sm border transition-colors rounded-sm ${
                         formData.tier_access.includes(tier)
-                          ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-                          : 'border-white/10 text-stone-400 hover:border-white/20'
+                          ? 'border-accent-600 text-accent-600 bg-accent-600/10'
+                          : 'border-white/10 text-ink-400 hover:border-white/20'
                       }`}
                     >
                       {tier}
@@ -520,7 +520,7 @@ export default function EventsPage() {
               </div>
 
               <div className="border-t border-white/[0.06] pt-6">
-                <h4 className="text-sm text-stone-400 font-light mb-4">Instructor Details (Optional)</h4>
+                <h4 className="text-sm text-ink-400 mb-4">Instructor Details (Optional)</h4>
                 <div className="space-y-4">
                   <input
                     type="text"
@@ -528,7 +528,7 @@ export default function EventsPage() {
                     value={formData.instructor_name}
                     onChange={handleInputChange}
                     placeholder="Instructor name"
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                   />
                   <input
                     type="text"
@@ -536,7 +536,7 @@ export default function EventsPage() {
                     value={formData.instructor_title}
                     onChange={handleInputChange}
                     placeholder="Instructor title (e.g., Grammy-winning Producer)"
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                   />
                   <textarea
                     name="instructor_bio"
@@ -544,7 +544,7 @@ export default function EventsPage() {
                     onChange={handleInputChange}
                     placeholder="Brief bio..."
                     rows={2}
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors resize-none rounded-sm"
                   />
                 </div>
               </div>
@@ -556,14 +556,14 @@ export default function EventsPage() {
                     setShowCreateModal(false);
                     resetForm();
                   }}
-                  className="flex-1 border border-white/10 py-3 text-sm font-light hover:border-white/20 transition-colors rounded-full"
+                  className="flex-1 border border-white/10 py-3 text-sm hover:border-white/20 transition-colors rounded-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light hover:opacity-90 transition-opacity disabled:opacity-50 rounded-full"
+                  className="flex-1 bg-accent-500 text-ink-950 py-3 text-sm hover:opacity-90 transition-opacity disabled:opacity-50 rounded-sm"
                 >
                   {isSubmitting ? 'Saving...' : 'Create Event'}
                 </button>
@@ -576,42 +576,42 @@ export default function EventsPage() {
       {/* Edit Modal */}
       {showEditModal && editingEvent && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-950 rounded-2xl border border-white/[0.08] p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-ink-950 rounded-sm border border-white/[0.08] p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-light">Edit Event</h2>
+              <h2 className="text-2xl">Edit Event</h2>
               <button
                 onClick={() => {
                   setShowEditModal(false);
                   setEditingEvent(null);
                   resetForm();
                 }}
-                className="text-stone-400 hover:text-stone-100"
+                className="text-ink-400 hover:text-ink-100"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
             <form onSubmit={handleEditEvent} className="space-y-6">
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">Event Title *</label>
+                <label className="text-sm text-ink-400 mb-2 block">Event Title *</label>
                 <input
                   type="text"
                   name="title"
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="e.g., Songwriting Masterclass"
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                   required
                 />
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm text-stone-400 font-light mb-2 block">Event Type *</label>
+                  <label className="text-sm text-ink-400 mb-2 block">Event Type *</label>
                   <select
                     name="event_type"
                     value={formData.event_type}
                     onChange={handleInputChange}
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 rounded-sm"
                   >
                     {eventTypes.map(type => (
                       <option key={type} value={type}>{type}</option>
@@ -619,14 +619,14 @@ export default function EventsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-sm text-stone-400 font-light mb-2 block">Capacity *</label>
+                  <label className="text-sm text-ink-400 mb-2 block">Capacity *</label>
                   <input
                     type="number"
                     name="capacity"
                     value={formData.capacity}
                     onChange={handleInputChange}
                     min="1"
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                     required
                   />
                 </div>
@@ -634,96 +634,96 @@ export default function EventsPage() {
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm text-stone-400 font-light mb-2 block">Date *</label>
+                  <label className="text-sm text-ink-400 mb-2 block">Date *</label>
                   <input
                     type="date"
                     name="date"
                     value={formData.date}
                     onChange={handleInputChange}
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 rounded-sm"
                     required
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-stone-400 font-light mb-2 block">Time *</label>
+                  <label className="text-sm text-ink-400 mb-2 block">Time *</label>
                   <input
                     type="time"
                     name="time"
                     value={formData.time}
                     onChange={handleInputChange}
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 rounded-sm"
                     required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">Location *</label>
+                <label className="text-sm text-ink-400 mb-2 block">Location *</label>
                 <input
                   type="text"
                   name="location"
                   value={formData.location}
                   onChange={handleInputChange}
                   placeholder="e.g., WePlay Studios - Main Room"
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">External RSVP/Ticketing URL (Optional)</label>
+                <label className="text-sm text-ink-400 mb-2 block">External RSVP/Ticketing URL (Optional)</label>
                 <input
                   type="url"
                   name="external_rsvp_url"
                   value={formData.external_rsvp_url}
                   onChange={handleInputChange}
                   placeholder="e.g., https://eventbrite.com/your-event"
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                 />
-                <p className="text-xs text-stone-500 mt-1">If set, users will be redirected here for RSVP</p>
+                <p className="text-xs text-ink-500 mt-1">If set, users will be redirected here for RSVP</p>
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">Event Flyer / Image URL (Optional)</label>
+                <label className="text-sm text-ink-400 mb-2 block">Event Flyer / Image URL (Optional)</label>
                 <input
                   type="url"
                   name="image_url"
                   value={formData.image_url}
                   onChange={handleInputChange}
                   placeholder="e.g., https://your-storage.com/flyer.jpg"
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                 />
                 {formData.image_url && (
-                  <div className="mt-3 w-32 rounded-xl overflow-hidden border border-white/[0.08]">
+                  <div className="mt-3 w-32 rounded-sm overflow-hidden border border-white/[0.08]">
                     <img src={formData.image_url} alt="Flyer preview" className="w-full h-auto" />
                   </div>
                 )}
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">Description</label>
+                <label className="text-sm text-ink-400 mb-2 block">Description</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Describe the event..."
                   rows={4}
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors resize-none rounded-sm"
                 />
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-3 block">Tier Access</label>
+                <label className="text-sm text-ink-400 mb-3 block">Tier Access</label>
                 <div className="flex gap-3">
                   {tierOptions.map(tier => (
                     <button
                       key={tier}
                       type="button"
                       onClick={() => handleTierToggle(tier)}
-                      className={`px-4 py-2 text-sm font-light border transition-colors rounded-full ${
+                      className={`px-4 py-2 text-sm border transition-colors rounded-sm ${
                         formData.tier_access.includes(tier)
-                          ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-                          : 'border-white/10 text-stone-400 hover:border-white/20'
+                          ? 'border-accent-600 text-accent-600 bg-accent-600/10'
+                          : 'border-white/10 text-ink-400 hover:border-white/20'
                       }`}
                     >
                       {tier}
@@ -733,7 +733,7 @@ export default function EventsPage() {
               </div>
 
               <div className="border-t border-white/[0.06] pt-6">
-                <h4 className="text-sm text-stone-400 font-light mb-4">Instructor Details (Optional)</h4>
+                <h4 className="text-sm text-ink-400 mb-4">Instructor Details (Optional)</h4>
                 <div className="space-y-4">
                   <input
                     type="text"
@@ -741,7 +741,7 @@ export default function EventsPage() {
                     value={formData.instructor_name}
                     onChange={handleInputChange}
                     placeholder="Instructor name"
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                   />
                   <input
                     type="text"
@@ -749,7 +749,7 @@ export default function EventsPage() {
                     value={formData.instructor_title}
                     onChange={handleInputChange}
                     placeholder="Instructor title (e.g., Grammy-winning Producer)"
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                   />
                   <textarea
                     name="instructor_bio"
@@ -757,7 +757,7 @@ export default function EventsPage() {
                     onChange={handleInputChange}
                     placeholder="Brief bio..."
                     rows={2}
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors resize-none rounded-sm"
                   />
                 </div>
               </div>
@@ -770,14 +770,14 @@ export default function EventsPage() {
                     setEditingEvent(null);
                     resetForm();
                   }}
-                  className="flex-1 border border-white/10 py-3 text-sm font-light hover:border-white/20 transition-colors rounded-full"
+                  className="flex-1 border border-white/10 py-3 text-sm hover:border-white/20 transition-colors rounded-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light hover:opacity-90 transition-opacity disabled:opacity-50 rounded-full"
+                  className="flex-1 bg-accent-500 text-ink-950 py-3 text-sm hover:opacity-90 transition-opacity disabled:opacity-50 rounded-sm"
                 >
                   {isSubmitting ? 'Saving...' : 'Update Event'}
                 </button>
@@ -792,31 +792,31 @@ export default function EventsPage() {
         <>
           <div className="fixed inset-0 z-40" onClick={() => { setActiveMenu(null); setMenuPosition(null); setActiveEvent(null); }} />
           <div
-            className="fixed z-50 bg-stone-900/95 rounded-xl border border-white/[0.08] shadow-xl py-2 min-w-[160px]"
+            className="fixed z-50 bg-ink-900/95 rounded-sm border border-white/[0.08] shadow-xl py-2 min-w-[160px]"
             style={{ top: menuPosition.y + 4, left: menuPosition.x - 160 }}
           >
             <Link href={`/admin/events/${activeEvent.id}`}>
-              <button className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg">
+              <button className="w-full px-4 py-2 text-left text-sm text-ink-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg">
                 <Users className="w-4 h-4" />
                 Attendance
               </button>
             </Link>
             <Link href={`/dashboard/events/${activeEvent.id}`}>
-              <button className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg">
+              <button className="w-full px-4 py-2 text-left text-sm text-ink-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg">
                 <Eye className="w-4 h-4" />
                 View
               </button>
             </Link>
             <button
               onClick={() => openEditModal(activeEvent)}
-              className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
+              className="w-full px-4 py-2 text-left text-sm text-ink-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
             >
               <Edit className="w-4 h-4" />
               Edit
             </button>
             <button
               onClick={() => handleDeleteEvent(activeEvent.id)}
-              className="w-full px-4 py-2 text-left text-sm font-light text-red-500 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
+              className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
             >
               <Trash2 className="w-4 h-4" />
               Delete

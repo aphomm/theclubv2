@@ -29,9 +29,9 @@ interface PlatformNotification {
 type TabType = 'all' | 'messages' | 'announcements';
 
 const NOTIFICATION_TYPE_CONFIG = {
-  announcement: { label: 'Announcement', color: 'bg-blue-600' },
-  update: { label: 'Update', color: 'bg-green-600' },
-  alert: { label: 'Alert', color: 'bg-red-600' },
+  announcement: { label: 'Announcement', color: 'bg-ink-700' },
+  update: { label: 'Update', color: 'bg-ink-600' },
+  alert: { label: 'Alert', color: 'bg-signal' },
 };
 
 export default function NotificationsPage() {
@@ -242,8 +242,8 @@ export default function NotificationsPage() {
   return (
     <div className="max-w-4xl">
       <div className="mb-10">
-        <h1 className="text-4xl font-light mb-2">Notifications</h1>
-        <p className="text-stone-400 font-light">
+        <h1 className="text-4xl mb-2">Notifications</h1>
+        <p className="text-ink-400">
           Stay updated with messages and announcements
         </p>
       </div>
@@ -255,16 +255,16 @@ export default function NotificationsPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 text-sm font-light transition-colors flex items-center gap-2 rounded-full ${
+              className={`px-4 py-2 text-sm transition-colors flex items-center gap-2 rounded-sm ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950'
-                  : 'border border-white/10 text-stone-400 hover:border-amber-600/50'
+                  ? 'bg-accent-500 text-ink-950'
+                  : 'border border-white/10 text-ink-400 hover:border-accent-600/50'
               }`}
             >
               {tab.label}
               {tab.count > 0 && (
-                <span className={`text-xs px-1.5 py-0.5 rounded-full ${
-                  activeTab === tab.id ? 'bg-stone-950/20 text-stone-950' : 'bg-amber-600/20 text-amber-600'
+                <span className={`text-xs px-1.5 py-0.5 rounded-sm ${
+                  activeTab === tab.id ? 'bg-ink-950/20 text-ink-950' : 'bg-accent-600/20 text-accent-600'
                 }`}>
                   {tab.count}
                 </span>
@@ -276,7 +276,7 @@ export default function NotificationsPage() {
         {showAnnouncements && unreadPlatformCount > 0 && (
           <button
             onClick={markAllPlatformAsRead}
-            className="flex items-center gap-2 text-sm text-stone-400 hover:text-amber-600 transition-colors"
+            className="flex items-center gap-2 text-sm text-ink-400 hover:text-accent-600 transition-colors"
           >
             <Check className="w-4 h-4" />
             Mark all as read
@@ -285,27 +285,27 @@ export default function NotificationsPage() {
       </div>
 
       {isLoading ? (
-        <div className="rounded-2xl border border-white/[0.08] divide-y divide-white/[0.06] overflow-hidden">
+        <div className="rounded-sm border border-white/[0.08] divide-y divide-white/[0.06] overflow-hidden">
           {[1, 2, 3, 4, 5].map(i => (
             <div key={i} className="p-6">
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-white/[0.08] rounded-full animate-pulse" />
                 <div className="flex-1">
-                  <div className="h-4 bg-stone-800 rounded w-32 mb-2 animate-pulse" />
-                  <div className="h-3 bg-white/[0.06] rounded-full w-48 animate-pulse" />
+                  <div className="h-4 bg-ink-800 rounded w-32 mb-2 animate-pulse" />
+                  <div className="h-3 bg-white/[0.06] rounded-sm w-48 animate-pulse" />
                 </div>
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <div className="rounded-2xl border border-white/[0.08] divide-y divide-white/[0.06] overflow-hidden">
+        <div className="rounded-sm border border-white/[0.08] divide-y divide-white/[0.06] overflow-hidden">
           {/* Messages Section */}
           {showMessages && conversations.length > 0 && (
             <>
               {activeTab === 'all' && (
                 <div className="px-6 py-3 bg-white/[0.03]">
-                  <div className="flex items-center gap-2 text-xs text-stone-400 uppercase tracking-wider">
+                  <div className="flex items-center gap-2 text-xs text-ink-400 uppercase tracking-wider">
                     <MessageCircle className="w-3 h-3" />
                     Messages
                   </div>
@@ -315,30 +315,30 @@ export default function NotificationsPage() {
                 <Link key={conv.id} href={`/dashboard/messages/${conv.id}`}>
                   <div className="p-6 hover:bg-white/[0.03] transition-colors cursor-pointer flex items-center gap-4">
                     <div className="relative">
-                      <div className="w-10 h-10 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center">
-                        <span className="text-stone-950 font-light">
+                      <div className="w-10 h-10 bg-accent-600 rounded-full flex items-center justify-center">
+                        <span className="text-ink-950">
                           {conv.name?.charAt(0) || '?'}
                         </span>
                       </div>
                       {conv.unreadCount > 0 && (
-                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-amber-600 rounded-full flex items-center justify-center">
-                          <span className="text-xs text-stone-950 font-medium">{conv.unreadCount}</span>
+                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-accent-600 rounded-full flex items-center justify-center">
+                          <span className="text-xs text-ink-950 font-medium">{conv.unreadCount}</span>
                         </div>
                       )}
                     </div>
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
-                        <h3 className="font-light text-stone-100">{conv.name}</h3>
-                        <span className="text-xs text-stone-500">{formatDate(conv.lastMessageDate || '')}</span>
+                        <h3 className="text-ink-100">{conv.name}</h3>
+                        <span className="text-xs text-ink-500">{formatDate(conv.lastMessageDate || '')}</span>
                       </div>
                       {conv.role && (
-                        <p className="text-xs text-amber-600 font-light mb-1">{conv.role}</p>
+                        <p className="text-xs text-accent-600 mb-1">{conv.role}</p>
                       )}
-                      <p className="text-sm text-stone-400 font-light truncate">{conv.lastMessage}</p>
+                      <p className="text-sm text-ink-400 truncate">{conv.lastMessage}</p>
                     </div>
 
-                    <Circle className="w-2 h-2 fill-amber-600 text-amber-600" />
+                    <Circle className="w-2 h-2 fill-accent-600 text-accent-600" />
                   </div>
                 </Link>
               ))}
@@ -350,7 +350,7 @@ export default function NotificationsPage() {
             <>
               {activeTab === 'all' && (
                 <div className="px-6 py-3 bg-white/[0.03]">
-                  <div className="flex items-center gap-2 text-xs text-stone-400 uppercase tracking-wider">
+                  <div className="flex items-center gap-2 text-xs text-ink-400 uppercase tracking-wider">
                     <Megaphone className="w-3 h-3" />
                     Announcements
                   </div>
@@ -372,16 +372,16 @@ export default function NotificationsPage() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
                           <div className="flex items-center gap-2">
-                            <h3 className={`font-light ${notif.isRead ? 'text-stone-400' : 'text-stone-100'}`}>
+                            <h3 className={`${notif.isRead ? 'text-ink-400' : 'text-ink-100'}`}>
                               {notif.title}
                             </h3>
                             <span className={`text-xs px-2 py-0.5 rounded text-white ${typeConfig.color}`}>
                               {typeConfig.label}
                             </span>
                           </div>
-                          <span className="text-xs text-stone-500">{formatDate(notif.created_at)}</span>
+                          <span className="text-xs text-ink-500">{formatDate(notif.created_at)}</span>
                         </div>
-                        <p className={`text-sm font-light mb-2 ${notif.isRead ? 'text-stone-500' : 'text-stone-400'}`}>
+                        <p className={`text-sm mb-2 ${notif.isRead ? 'text-ink-500' : 'text-ink-400'}`}>
                           {notif.message}
                         </p>
 
@@ -391,7 +391,7 @@ export default function NotificationsPage() {
                               href={notif.action_url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1 text-xs text-amber-600 hover:underline"
+                              className="flex items-center gap-1 text-xs text-accent-600 hover:underline"
                             >
                               <ExternalLink className="w-3 h-3" />
                               Learn more
@@ -401,7 +401,7 @@ export default function NotificationsPage() {
                             <button
                               onClick={() => markNotificationAsRead(notif.id)}
                               disabled={markingId === notif.id}
-                              className="flex items-center gap-1 text-xs text-stone-500 hover:text-amber-600 transition-colors disabled:opacity-50"
+                              className="flex items-center gap-1 text-xs text-ink-500 hover:text-accent-600 transition-colors disabled:opacity-50"
                             >
                               {markingId === notif.id ? (
                                 <Loader2 className="w-3 h-3 animate-spin" />
@@ -415,7 +415,7 @@ export default function NotificationsPage() {
                       </div>
 
                       {!notif.isRead && (
-                        <Circle className="w-2 h-2 fill-amber-600 text-amber-600 flex-shrink-0 mt-2" />
+                        <Circle className="w-2 h-2 fill-accent-600 text-accent-600 flex-shrink-0 mt-2" />
                       )}
                     </div>
                   </div>
@@ -429,13 +429,13 @@ export default function NotificationsPage() {
             (showAnnouncements && platformNotifications.length === 0 && !showMessages) ||
             (showMessages && showAnnouncements && conversations.length === 0 && platformNotifications.length === 0)) && (
             <div className="p-12 text-center">
-              <Bell className="w-12 h-12 text-stone-700 mx-auto mb-4" />
-              <p className="text-stone-400 font-light text-lg mb-2">
+              <Bell className="w-12 h-12 text-ink-700 mx-auto mb-4" />
+              <p className="text-ink-400 text-lg mb-2">
                 {activeTab === 'messages' ? 'No unread messages' :
                  activeTab === 'announcements' ? 'No announcements' :
                  'No notifications'}
               </p>
-              <p className="text-stone-500 font-light text-sm">
+              <p className="text-ink-500 text-sm">
                 {activeTab === 'messages' ? 'You\'re all caught up!' :
                  activeTab === 'announcements' ? 'Check back later for updates' :
                  'You\'re all caught up!'}
@@ -449,7 +449,7 @@ export default function NotificationsPage() {
       {showMessages && (
         <div className="mt-6 text-center">
           <Link href="/dashboard/messages">
-            <span className="text-sm text-stone-400 hover:text-amber-600 transition-colors">
+            <span className="text-sm text-ink-400 hover:text-accent-600 transition-colors">
               View all conversations →
             </span>
           </Link>

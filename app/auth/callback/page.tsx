@@ -88,36 +88,35 @@ export default function AuthCallbackPage() {
   }, [router, searchParams]);
 
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-ink-950 text-ink-100 flex items-center justify-center px-6">
       <div className="max-w-md w-full text-center">
-        <div className="text-2xl font-light tracking-extra-wide mb-12">
-          <span className="text-stone-100">IC</span>
-          <span className="text-amber-600">WT</span>
+        <div className="text-2xl font-serif uppercase leading-none tracking-tight mb-12">
+          ICWT<span className="text-signal">.</span>
         </div>
 
-        <div className="border border-stone-800 p-12">
+        <div className="border border-ink-800 p-12">
           {status === 'loading' && (
             <>
-              <Loader2 className="w-12 h-12 animate-spin text-amber-600 mx-auto mb-6" />
-              <p className="text-stone-400 font-light">{message}</p>
+              <Loader2 className="w-12 h-12 animate-spin text-accent-600 mx-auto mb-6" />
+              <p className="text-ink-400">{message}</p>
             </>
           )}
 
           {status === 'success' && (
             <>
               <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-6" />
-              <h1 className="text-2xl font-light mb-4">Success!</h1>
-              <p className="text-stone-400 font-light">{message}</p>
+              <h1 className="text-2xl mb-4">Success!</h1>
+              <p className="text-ink-400">{message}</p>
             </>
           )}
 
           {status === 'error' && (
             <>
               <XCircle className="w-12 h-12 text-red-500 mx-auto mb-6" />
-              <h1 className="text-2xl font-light mb-4">Verification Failed</h1>
-              <p className="text-stone-400 font-light mb-6">{message}</p>
+              <h1 className="text-2xl mb-4">Verification Failed</h1>
+              <p className="text-ink-400 mb-6">{message}</p>
               <a href="/auth/signup">
-                <button className="bg-amber-600 text-stone-950 px-8 py-3 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors">
+                <button className="bg-accent-600 text-ink-950 px-8 py-3 text-sm tracking-wide hover:bg-accent-700 transition-colors">
                   Try Again
                 </button>
               </a>

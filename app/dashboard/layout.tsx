@@ -112,10 +112,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (authStatus === 'loading') {
     return (
-      <div className="min-h-screen bg-stone-950 flex items-center justify-center">
+      <div className="min-h-screen bg-ink-950 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-8 h-8 text-amber-600 animate-spin" />
-          <p className="text-stone-400 font-light text-sm tracking-wide">Verifying access...</p>
+          <Loader2 className="w-8 h-8 text-accent-600 animate-spin" />
+          <p className="text-ink-400 text-sm tracking-wide">Verifying access...</p>
         </div>
       </div>
     );
@@ -123,14 +123,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (authStatus === 'suspended') {
     return (
-      <div className="min-h-screen bg-stone-950 text-stone-100 flex items-center justify-center">
+      <div className="min-h-screen bg-ink-950 text-ink-100 flex items-center justify-center">
         <div className="text-center max-w-md px-6">
-          <div className="text-5xl font-light text-red-500 mb-6">⊘</div>
-          <h1 className="text-3xl font-light mb-4">Account Suspended</h1>
-          <p className="text-stone-400 font-light mb-8">
+          <div className="text-5xl text-red-500 mb-6">⊘</div>
+          <h1 className="text-3xl mb-4">Account Suspended</h1>
+          <p className="text-ink-400 mb-8">
             Your account has been suspended. Contact support to resolve this.
           </p>
-          <a href="mailto:support@icwt.com" className="inline-block border border-amber-600 text-amber-600 px-8 py-3 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors rounded-full">
+          <a href="mailto:support@icwt.com" className="inline-block border border-accent-600 text-accent-600 px-8 py-3 text-sm hover:bg-accent-600 hover:text-ink-950 transition-colors rounded-sm">
             Contact Support
           </a>
         </div>
@@ -139,16 +139,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100">
-      <header className="fixed top-0 left-0 right-0 z-40 border-b border-white/10 bg-stone-950/90 backdrop-blur-md">
+    <div className="min-h-screen bg-ink-950 text-ink-100">
+      <header className="fixed top-0 left-0 right-0 z-40 border-b border-white/10 bg-ink-950/90">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="lg:hidden text-stone-400 hover:text-amber-600">
+            <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="lg:hidden text-ink-400 hover:text-accent-600">
               {isSidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
             <Link href="/dashboard">
-              <div className="text-xl font-light tracking-extra-wide cursor-pointer hover:text-amber-600 transition-colors">
-                <span className="text-stone-100">IC</span><span className="text-amber-600">WT</span>
+              <div className="text-xl font-serif uppercase leading-none tracking-tight cursor-pointer hover:text-accent-600 transition-colors">
+                ICWT<span className="text-signal">.</span>
               </div>
             </Link>
           </div>
@@ -159,26 +159,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               const input = (e.target as HTMLFormElement).querySelector('input') as HTMLInputElement;
               if (input.value.trim()) router.push(`/dashboard/search?q=${encodeURIComponent(input.value.trim())}`);
             }} className="hidden md:block relative">
-              <Search className="absolute left-3 top-2.5 w-4 h-4 text-stone-500" />
-              <input type="text" placeholder="Search members, events..." className="bg-white/[0.04] border border-white/10 pl-9 pr-4 py-2 text-sm text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 w-64 rounded-full transition-colors" />
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-ink-500" />
+              <input type="text" placeholder="Search members, events..." className="bg-white/[0.04] border border-white/10 pl-9 pr-4 py-2 text-sm text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 w-64 rounded-sm transition-colors" />
             </form>
             <Link href="/dashboard/notifications">
-              <button className="relative text-stone-400 hover:text-amber-600">
+              <button className="relative text-ink-400 hover:text-accent-600">
                 <Bell className="w-5 h-5" />
                 {unreadCount > 0 && (
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-amber-500 rounded-full flex items-center justify-center">
-                    <span className="text-[10px] text-white font-medium">{unreadCount > 9 ? '9+' : unreadCount}</span>
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-signal rounded-full flex items-center justify-center">
+                    <span className="text-[10px] text-ink-950 font-medium">{unreadCount > 9 ? '9+' : unreadCount}</span>
                   </div>
                 )}
               </button>
             </Link>
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <div className="text-sm font-light">{userProfile?.name || 'Member'}</div>
-                <div className="text-xs text-amber-600 capitalize">{userProfile?.tier || 'Creator'}</div>
+                <div className="text-sm">{userProfile?.name || 'Member'}</div>
+                <div className="text-xs text-accent-600 capitalize">{userProfile?.tier || 'Creator'}</div>
               </div>
-              <div className="w-8 h-8 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center">
-                <span className="text-xs font-medium text-stone-950">
+              <div className="w-8 h-8 bg-accent-600 rounded-full flex items-center justify-center">
+                <span className="text-xs font-medium text-ink-950">
                   {(userProfile?.name || 'M').charAt(0).toUpperCase()}
                 </span>
               </div>
@@ -188,15 +188,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </header>
 
       <div className="flex pt-20">
-        <aside className={`fixed left-0 top-20 bottom-0 w-64 border-r border-white/10 bg-stone-950 transform transition-transform z-30 lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <aside className={`fixed left-0 top-20 bottom-0 w-64 border-r border-white/10 bg-ink-950 transform transition-transform z-30 lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
           <div className="flex flex-col h-full">
-            <nav className="flex-1 p-6 space-y-2 overflow-y-auto">
+            <nav className="flex-1 py-6 pr-6 space-y-1 overflow-y-auto">
               {navItems.map(item => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
                 return (
                   <Link key={item.href} href={item.href} onClick={() => setIsSidebarOpen(false)}>
-                    <div className={`flex items-center gap-3 px-4 py-3 text-sm font-light tracking-wide transition-colors cursor-pointer rounded-xl ${isActive ? 'bg-amber-600/15 text-amber-600' : 'text-stone-400 hover:text-stone-100 hover:bg-white/[0.04]'}`}>
+                    <div className={`flex items-center gap-3 px-4 py-3 text-sm border-l-2 transition-colors cursor-pointer ${isActive ? 'border-signal bg-ink-900 text-ink-100' : 'border-transparent text-ink-400 hover:text-ink-100'}`}>
                       <Icon className="w-5 h-5" />
                       {item.label}
                     </div>
@@ -207,12 +207,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
             <div className="flex-shrink-0 p-6 space-y-2 border-t border-white/10">
               <Link href="/dashboard/settings" onClick={() => setIsSidebarOpen(false)}>
-                <div className="flex items-center gap-3 px-4 py-3 text-sm font-light text-stone-400 hover:text-stone-100 hover:bg-white/[0.04] cursor-pointer transition-colors rounded-xl">
+                <div className="flex items-center gap-3 px-4 py-3 text-sm text-ink-400 hover:text-ink-100 hover:bg-white/[0.04] cursor-pointer transition-colors rounded-sm">
                   <Settings className="w-5 h-5" />
                   Settings
                 </div>
               </Link>
-              <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 text-sm font-light text-stone-400 hover:text-red-500 cursor-pointer transition-colors">
+              <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-ink-400 hover:text-red-500 cursor-pointer transition-colors">
                 <LogOut className="w-5 h-5" />
                 Sign Out
               </button>

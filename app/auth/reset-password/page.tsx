@@ -63,55 +63,54 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-ink-950 text-ink-100 flex items-center justify-center px-6">
       <div className="w-full max-w-md">
         <Link href="/">
-          <div className="text-2xl font-light tracking-extra-wide mb-12 text-center cursor-pointer hover:text-amber-600 transition-colors">
-            <span className="text-stone-100">IC</span>
-            <span className="text-amber-600">WT</span>
+          <div className="text-2xl font-serif uppercase leading-none tracking-tight mb-12 text-center cursor-pointer hover:text-accent-600 transition-colors">
+            ICWT<span className="text-signal">.</span>
           </div>
         </Link>
 
-        <div className="rounded-2xl border border-white/[0.08] p-8">
-          <h1 className="text-2xl font-light mb-2">Set New Password</h1>
-          <p className="text-stone-400 font-light text-sm mb-8">
+        <div className="rounded-sm border border-white/[0.08] p-8">
+          <h1 className="text-2xl mb-2">Set New Password</h1>
+          <p className="text-ink-400 text-sm mb-8">
             Enter a new password for your account.
           </p>
 
           {!isReady ? (
             <div className="text-center py-8">
-              <Loader2 className="w-6 h-6 text-amber-600 animate-spin mx-auto mb-3" />
-              <p className="text-stone-400 font-light text-sm">Verifying reset link...</p>
+              <Loader2 className="w-6 h-6 text-accent-600 animate-spin mx-auto mb-3" />
+              <p className="text-ink-400 text-sm">Verifying reset link...</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">New Password</label>
+                <label className="text-sm text-ink-400 mb-2 block">New Password</label>
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="At least 8 characters"
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                   required
                   minLength={8}
                 />
               </div>
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">Confirm Password</label>
+                <label className="text-sm text-ink-400 mb-2 block">Confirm Password</label>
                 <input
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Repeat your new password"
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                   required
                 />
               </div>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2 mt-2 rounded-full"
+                className="w-full bg-accent-500 text-ink-950 py-3 text-sm tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2 mt-2 rounded-sm"
               >
                 {isSubmitting ? (
                   <><Loader2 className="w-4 h-4 animate-spin" /> Updating...</>

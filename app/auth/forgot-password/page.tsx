@@ -56,14 +56,14 @@ export default function ForgotPasswordPage() {
     return (
       <div>
         <div className="mb-8">
-          <h1 className="text-3xl font-light mb-2">Check Your Email</h1>
-          <p className="text-stone-400 font-light">
+          <h1 className="text-3xl mb-2">Check Your Email</h1>
+          <p className="text-ink-400">
             We've sent a password reset link to {email}
           </p>
         </div>
 
-        <div className="bg-white/[0.04] border border-white/[0.08] p-6 rounded-xl mb-8">
-          <p className="text-stone-300 text-sm font-light leading-relaxed">
+        <div className="bg-white/[0.04] border border-white/[0.08] p-6 rounded-sm mb-8">
+          <p className="text-ink-300 text-sm leading-relaxed">
             Click the link in the email to reset your password. If you don't see the email,
             check your spam folder or request a new link.
           </p>
@@ -75,14 +75,14 @@ export default function ForgotPasswordPage() {
               setSubmitted(false);
               setEmail('');
             }}
-            className="w-full border border-white/10 py-3 text-sm font-light tracking-wide hover:border-amber-600 hover:text-amber-600 transition-colors rounded-full"
+            className="w-full border border-white/10 py-3 text-sm tracking-wide hover:border-accent-600 hover:text-accent-600 transition-colors rounded-sm"
           >
             Try Another Email
           </button>
         </div>
 
         <div className="mt-8 text-center">
-          <Link href="/auth/login" className="inline-flex items-center gap-2 text-amber-600 hover:underline text-sm font-light">
+          <Link href="/auth/login" className="inline-flex items-center gap-2 text-accent-600 hover:underline text-sm">
             <ArrowLeft className="w-4 h-4" />
             Back to login
           </Link>
@@ -94,35 +94,35 @@ export default function ForgotPasswordPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-light mb-2">Reset Password</h1>
-        <p className="text-stone-400 font-light">
+        <h1 className="text-3xl mb-2">Reset Password</h1>
+        <p className="text-ink-400">
           Enter your email to receive a password reset link
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-sm font-light mb-2">Email Address</label>
+          <label className="block text-sm mb-2">Email Address</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your@email.com"
-            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
           />
         </div>
 
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed rounded-full"
+          className="w-full bg-accent-500 text-ink-950 py-3 text-sm tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed rounded-sm"
         >
           {isLoading ? 'Sending...' : 'Send Reset Link'}
         </button>
       </form>
 
       <div className="mt-8 text-center">
-        <Link href="/auth/login" className="inline-flex items-center gap-2 text-amber-600 hover:underline text-sm font-light">
+        <Link href="/auth/login" className="inline-flex items-center gap-2 text-accent-600 hover:underline text-sm">
           <ArrowLeft className="w-4 h-4" />
           Back to login
         </Link>

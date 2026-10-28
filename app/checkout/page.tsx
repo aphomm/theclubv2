@@ -163,20 +163,20 @@ export default function CheckoutPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-stone-950 text-stone-100 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-amber-600" />
+      <div className="min-h-screen bg-ink-950 text-ink-100 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-accent-600" />
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-stone-950 text-stone-100 flex items-center justify-center px-6">
+      <div className="min-h-screen bg-ink-950 text-ink-100 flex items-center justify-center px-6">
         <div className="text-center">
-          <AlertCircle className="w-12 h-12 text-amber-600 mx-auto mb-4" />
-          <h1 className="text-2xl font-light mb-4">Please sign in first</h1>
+          <AlertCircle className="w-12 h-12 text-accent-600 mx-auto mb-4" />
+          <h1 className="text-2xl mb-4">Please sign in first</h1>
           <Link href="/auth/signup">
-            <button className="bg-amber-600 text-stone-950 px-8 py-3 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors">
+            <button className="bg-accent-600 text-ink-950 px-8 py-3 text-sm tracking-wide hover:bg-accent-700 transition-colors">
               Sign Up
             </button>
           </Link>
@@ -186,43 +186,42 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100 py-16 px-6">
+    <div className="min-h-screen bg-ink-950 text-ink-100 py-16 px-6">
       <div className="max-w-2xl mx-auto">
         <Link href="/">
-          <div className="text-2xl font-light tracking-extra-wide mb-12 text-center cursor-pointer hover:text-amber-600 transition-colors">
-            <span className="text-stone-100">IC</span>
-            <span className="text-amber-600">WT</span>
+          <div className="text-2xl font-serif uppercase leading-none tracking-tight mb-12 text-center cursor-pointer hover:text-accent-600 transition-colors">
+            ICWT<span className="text-signal">.</span>
           </div>
         </Link>
 
-        <div className="border border-stone-800 p-8">
-          <h1 className="text-3xl font-light mb-2">Complete Your Membership</h1>
-          <p className="text-stone-400 font-light mb-8">
+        <div className="border border-ink-800 p-8">
+          <h1 className="text-3xl mb-2">Complete Your Membership</h1>
+          <p className="text-ink-400 mb-8">
             You're signing up for{' '}
-            <span className="text-amber-600">{user.tier}</span> membership
+            <span className="text-accent-600">{user.tier}</span> membership
           </p>
 
           {/* Tier Summary */}
-          <div className="border border-stone-700 p-6 mb-8">
+          <div className="border border-ink-700 p-6 mb-8">
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h2 className="text-xl font-light">{user.tier} Membership</h2>
-                <p className="text-stone-400 text-sm font-light">Billed monthly</p>
+                <h2 className="text-xl">{user.tier} Membership</h2>
+                <p className="text-ink-400 text-sm">Billed monthly</p>
               </div>
               <div className="text-right">
-                <div className="text-3xl font-light text-amber-600">
+                <div className="text-3xl text-accent-600">
                   ${tierDetails?.price.toLocaleString()}
                 </div>
-                <div className="text-stone-400 text-sm font-light">per month</div>
+                <div className="text-ink-400 text-sm">per month</div>
               </div>
             </div>
 
-            <div className="border-t border-stone-800 pt-6">
-              <h3 className="text-sm text-stone-400 font-light mb-4">INCLUDES</h3>
+            <div className="border-t border-ink-800 pt-6">
+              <h3 className="text-sm text-ink-400 mb-4">INCLUDES</h3>
               <ul className="space-y-3">
                 {tierDetails?.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-3 text-stone-300 font-light">
-                    <Check className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <li key={idx} className="flex items-start gap-3 text-ink-300">
+                    <Check className="w-5 h-5 text-accent-600 flex-shrink-0 mt-0.5" />
                     {feature}
                   </li>
                 ))}
@@ -234,7 +233,7 @@ export default function CheckoutPage() {
           <button
             onClick={handleCheckout}
             disabled={isProcessing}
-            className="w-full bg-amber-600 text-stone-950 py-4 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-accent-600 text-ink-950 py-4 text-sm tracking-wide hover:bg-accent-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isProcessing ? (
               <>
@@ -246,13 +245,13 @@ export default function CheckoutPage() {
             )}
           </button>
 
-          <p className="text-stone-500 text-xs font-light text-center mt-4">
+          <p className="text-ink-500 text-xs text-center mt-4">
             Secure payment powered by Stripe. Cancel anytime.
           </p>
 
           {/* Change tier link */}
           <div className="text-center mt-6">
-            <Link href="/#membership" className="text-amber-600 text-sm font-light hover:underline">
+            <Link href="/#membership" className="text-accent-600 text-sm hover:underline">
               Want a different tier? Go back to select
             </Link>
           </div>

@@ -141,8 +141,8 @@ export default function MessagesPage() {
   return (
     <div className="max-w-4xl">
       <div className="mb-10">
-        <h1 className="text-4xl font-light mb-2">Messages</h1>
-        <p className="text-stone-400 font-light">
+        <h1 className="text-4xl mb-2">Messages</h1>
+        <p className="text-ink-400">
           Connect with other members in ICWT
         </p>
       </div>
@@ -150,19 +150,19 @@ export default function MessagesPage() {
       {/* Search */}
       <div className="mb-8">
         <div className="relative">
-          <Search className="absolute left-4 top-3.5 w-5 h-5 text-stone-500" />
+          <Search className="absolute left-4 top-3.5 w-5 h-5 text-ink-500" />
           <input
             type="text"
             placeholder="Search conversations..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white/[0.04] border border-white/10 pl-12 pr-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-full"
+            className="w-full bg-white/[0.04] border border-white/10 pl-12 pr-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
           />
         </div>
       </div>
 
       {/* Conversations List */}
-      <div className="rounded-2xl border border-white/[0.08] overflow-hidden">
+      <div className="rounded-sm border border-white/[0.08] overflow-hidden">
         {isLoading ? (
           <div className="divide-y divide-white/[0.06]">
             {[1, 2, 3, 4, 5].map(i => (
@@ -170,8 +170,8 @@ export default function MessagesPage() {
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-white/[0.08] rounded-full animate-pulse" />
                   <div className="flex-1">
-                    <div className="h-4 bg-white/[0.06] rounded-full w-32 mb-2 animate-pulse" />
-                    <div className="h-3 bg-stone-800 rounded w-48 animate-pulse" />
+                    <div className="h-4 bg-white/[0.06] rounded-sm w-32 mb-2 animate-pulse" />
+                    <div className="h-3 bg-ink-800 rounded w-48 animate-pulse" />
                   </div>
                 </div>
               </div>
@@ -179,13 +179,13 @@ export default function MessagesPage() {
           </div>
         ) : filteredConversations.length === 0 ? (
           <div className="p-12 text-center">
-            <MessageCircle className="w-12 h-12 text-stone-700 mx-auto mb-4" />
-            <p className="text-stone-400 font-light text-lg mb-2">No messages yet</p>
-            <p className="text-stone-500 font-light text-sm mb-6">
+            <MessageCircle className="w-12 h-12 text-ink-700 mx-auto mb-4" />
+            <p className="text-ink-400 text-lg mb-2">No messages yet</p>
+            <p className="text-ink-500 text-sm mb-6">
               Start a conversation from the member directory
             </p>
             <Link href="/dashboard/directory">
-              <button className="border border-amber-600 text-amber-600 px-6 py-2 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors rounded-full">
+              <button className="border border-accent-600 text-accent-600 px-6 py-2 text-sm hover:bg-accent-600 hover:text-ink-950 transition-colors rounded-sm">
                 Browse Members
               </button>
             </Link>
@@ -196,39 +196,39 @@ export default function MessagesPage() {
               <Link key={conv.id} href={`/dashboard/messages/${conv.id}`}>
                 <div className="p-6 hover:bg-white/[0.04] transition-colors cursor-pointer flex items-center gap-4">
                   <div className="relative">
-                    <div className="w-12 h-12 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center">
-                      <span className="text-stone-950 font-light text-lg">
+                    <div className="w-12 h-12 bg-accent-600 rounded-full flex items-center justify-center">
+                      <span className="text-ink-950 text-lg">
                         {conv.name?.charAt(0) || '?'}
                       </span>
                     </div>
                     {conv.unreadCount > 0 && (
-                      <div className="absolute -top-1 -right-1 w-5 h-5 bg-amber-600 rounded-full flex items-center justify-center">
-                        <span className="text-xs text-stone-950 font-medium">{conv.unreadCount}</span>
+                      <div className="absolute -top-1 -right-1 w-5 h-5 bg-accent-600 rounded-full flex items-center justify-center">
+                        <span className="text-xs text-ink-950 font-medium">{conv.unreadCount}</span>
                       </div>
                     )}
                   </div>
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
-                      <h3 className={`font-light ${conv.unreadCount > 0 ? 'text-stone-100' : 'text-stone-300'}`}>
+                      <h3 className={`${conv.unreadCount > 0 ? 'text-ink-100' : 'text-ink-300'}`}>
                         {conv.name}
                       </h3>
-                      <span className="text-xs text-stone-500 font-light">
+                      <span className="text-xs text-ink-500">
                         {formatDate(conv.lastMessageDate)}
                       </span>
                     </div>
                     {conv.role && (
-                      <p className="text-xs text-amber-600 font-light mb-1">{conv.role}</p>
+                      <p className="text-xs text-accent-600 mb-1">{conv.role}</p>
                     )}
-                    <p className={`text-sm font-light truncate ${
-                      conv.unreadCount > 0 ? 'text-stone-300' : 'text-stone-500'
+                    <p className={`text-sm truncate ${
+                      conv.unreadCount > 0 ? 'text-ink-300' : 'text-ink-500'
                     }`}>
                       {conv.lastMessage}
                     </p>
                   </div>
 
                   {conv.unreadCount > 0 && (
-                    <Circle className="w-2 h-2 fill-amber-600 text-amber-600" />
+                    <Circle className="w-2 h-2 fill-accent-600 text-accent-600" />
                   )}
                 </div>
               </Link>

@@ -19,9 +19,9 @@ interface PlatformNotification {
 }
 
 const NOTIFICATION_TYPES = [
-  { value: 'announcement', label: 'Announcement', color: 'bg-blue-600' },
-  { value: 'update', label: 'Update', color: 'bg-green-600' },
-  { value: 'alert', label: 'Alert', color: 'bg-red-600' },
+  { value: 'announcement', label: 'Announcement', color: 'bg-ink-700' },
+  { value: 'update', label: 'Update', color: 'bg-ink-600' },
+  { value: 'alert', label: 'Alert', color: 'bg-signal' },
 ];
 
 const TIERS = ['Creator', 'Professional', 'Executive'];
@@ -210,14 +210,14 @@ export default function AdminNotificationsPage() {
     <div className="max-w-4xl">
       <div className="flex items-center justify-between mb-10">
         <div>
-          <h1 className="text-4xl font-light mb-2">Notifications</h1>
-          <p className="text-stone-400 font-light">
+          <h1 className="text-4xl mb-2">Notifications</h1>
+          <p className="text-ink-400">
             Create and manage platform-wide notifications
           </p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 border border-amber-600 text-amber-600 px-4 py-2 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors rounded-full"
+          className="flex items-center gap-2 border border-accent-600 text-accent-600 px-4 py-2 text-sm hover:bg-accent-600 hover:text-ink-950 transition-colors rounded-sm"
         >
           <Plus className="w-4 h-4" />
           New Notification
@@ -226,47 +226,47 @@ export default function AdminNotificationsPage() {
 
       {/* Create/Edit Form */}
       {showForm && (
-        <div className="rounded-2xl border border-white/[0.08] p-6 mb-8">
-          <h2 className="text-xl font-light mb-6">
+        <div className="rounded-sm border border-white/[0.08] p-6 mb-8">
+          <h2 className="text-xl mb-6">
             {editingNotification ? 'Edit Notification' : 'Create Notification'}
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm text-stone-400 mb-2">Title</label>
+              <label className="block text-sm text-ink-400 mb-2">Title</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Notification title..."
-                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
               />
             </div>
 
             <div>
-              <label className="block text-sm text-stone-400 mb-2">Message</label>
+              <label className="block text-sm text-ink-400 mb-2">Message</label>
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Notification message..."
                 rows={4}
-                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors resize-none rounded-sm"
               />
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm text-stone-400 mb-2">Type</label>
+                <label className="block text-sm text-ink-400 mb-2">Type</label>
                 <div className="flex gap-2">
                   {NOTIFICATION_TYPES.map(type => (
                     <button
                       key={type.value}
                       type="button"
                       onClick={() => setNotificationType(type.value as any)}
-                      className={`px-4 py-2 text-sm font-light transition-colors rounded-full ${
+                      className={`px-4 py-2 text-sm transition-colors rounded-sm ${
                         notificationType === type.value
-                          ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950'
-                          : 'border border-white/10 text-stone-400 hover:border-amber-600'
+                          ? 'bg-accent-500 text-ink-950'
+                          : 'border border-white/10 text-ink-400 hover:border-accent-600'
                       }`}
                     >
                       {type.label}
@@ -276,17 +276,17 @@ export default function AdminNotificationsPage() {
               </div>
 
               <div>
-                <label className="block text-sm text-stone-400 mb-2">Target Tiers</label>
+                <label className="block text-sm text-ink-400 mb-2">Target Tiers</label>
                 <div className="flex gap-2">
                   {TIERS.map(tier => (
                     <button
                       key={tier}
                       type="button"
                       onClick={() => toggleTier(tier)}
-                      className={`px-4 py-2 text-sm font-light transition-colors rounded-full ${
+                      className={`px-4 py-2 text-sm transition-colors rounded-sm ${
                         targetTiers.includes(tier)
-                          ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950'
-                          : 'border border-white/10 text-stone-400 hover:border-amber-600'
+                          ? 'bg-accent-500 text-ink-950'
+                          : 'border border-white/10 text-ink-400 hover:border-accent-600'
                       }`}
                     >
                       {tier}
@@ -298,23 +298,23 @@ export default function AdminNotificationsPage() {
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm text-stone-400 mb-2">Action URL (optional)</label>
+                <label className="block text-sm text-ink-400 mb-2">Action URL (optional)</label>
                 <input
                   type="url"
                   value={actionUrl}
                   onChange={(e) => setActionUrl(e.target.value)}
                   placeholder="https://..."
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-sm text-stone-400 mb-2">Expires At (optional)</label>
+                <label className="block text-sm text-ink-400 mb-2">Expires At (optional)</label>
                 <input
                   type="datetime-local"
                   value={expiresAt}
                   onChange={(e) => setExpiresAt(e.target.value)}
-                  className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 transition-colors"
+                  className="w-full bg-transparent border border-ink-700 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 transition-colors"
                 />
               </div>
             </div>
@@ -323,14 +323,14 @@ export default function AdminNotificationsPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="border border-amber-600 text-amber-600 px-6 py-2 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors disabled:opacity-50 rounded-full"
+                className="border border-accent-600 text-accent-600 px-6 py-2 text-sm hover:bg-accent-600 hover:text-ink-950 transition-colors disabled:opacity-50 rounded-sm"
               >
                 {isSubmitting ? 'Saving...' : (editingNotification ? 'Update' : 'Create')}
               </button>
               <button
                 type="button"
                 onClick={resetForm}
-                className="border border-white/10 text-stone-400 px-6 py-2 text-sm font-light hover:border-white/20 transition-colors rounded-full"
+                className="border border-white/10 text-ink-400 px-6 py-2 text-sm hover:border-white/20 transition-colors rounded-sm"
               >
                 Cancel
               </button>
@@ -340,7 +340,7 @@ export default function AdminNotificationsPage() {
       )}
 
       {/* Notifications List */}
-      <div className="rounded-2xl border border-white/[0.08] overflow-hidden">
+      <div className="rounded-sm border border-white/[0.08] overflow-hidden">
         {isLoading ? (
           <div className="divide-y divide-white/[0.06]">
             {[1, 2, 3].map(i => (
@@ -353,9 +353,9 @@ export default function AdminNotificationsPage() {
           </div>
         ) : notifications.length === 0 ? (
           <div className="p-12 text-center">
-            <Bell className="w-12 h-12 text-stone-700 mx-auto mb-4" />
-            <p className="text-stone-400 font-light text-lg mb-2">No notifications yet</p>
-            <p className="text-stone-500 font-light text-sm">
+            <Bell className="w-12 h-12 text-ink-700 mx-auto mb-4" />
+            <p className="text-ink-400 text-lg mb-2">No notifications yet</p>
+            <p className="text-ink-500 text-sm">
               Create your first notification to broadcast to members
             </p>
           </div>
@@ -376,15 +376,15 @@ export default function AdminNotificationsPage() {
                         {isExpired && (
                           <span className="text-xs text-red-500">Expired</span>
                         )}
-                        <span className="text-xs text-stone-500">
+                        <span className="text-xs text-ink-500">
                           {formatDate(notif.created_at)}
                         </span>
                       </div>
 
-                      <h3 className="text-lg font-light text-stone-100 mb-2">{notif.title}</h3>
-                      <p className="text-stone-400 font-light text-sm mb-3">{notif.message}</p>
+                      <h3 className="text-lg text-ink-100 mb-2">{notif.title}</h3>
+                      <p className="text-ink-400 text-sm mb-3">{notif.message}</p>
 
-                      <div className="flex items-center gap-4 text-xs text-stone-500">
+                      <div className="flex items-center gap-4 text-xs text-ink-500">
                         <div className="flex items-center gap-1">
                           <Users className="w-3 h-3" />
                           {notif.target_tiers.join(', ')}
@@ -397,7 +397,7 @@ export default function AdminNotificationsPage() {
                             href={notif.action_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-1 text-amber-600 hover:underline"
+                            className="flex items-center gap-1 text-accent-600 hover:underline"
                           >
                             <ExternalLink className="w-3 h-3" />
                             Link
@@ -414,13 +414,13 @@ export default function AdminNotificationsPage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleEdit(notif)}
-                        className="p-2 text-stone-400 hover:text-amber-600 transition-colors"
+                        className="p-2 text-ink-400 hover:text-accent-600 transition-colors"
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(notif.id)}
-                        className="p-2 text-stone-400 hover:text-red-500 transition-colors"
+                        className="p-2 text-ink-400 hover:text-red-500 transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>

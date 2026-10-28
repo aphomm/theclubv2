@@ -238,27 +238,27 @@ export default function ConversationPage() {
       <div className="rounded-t-2xl border border-white/[0.08] p-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/dashboard/messages">
-            <button className="text-stone-400 hover:text-amber-600 transition-colors">
+            <button className="text-ink-400 hover:text-accent-600 transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </button>
           </Link>
           <Link href={`/dashboard/directory/${partner.id}`}>
             <div className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <div className="w-10 h-10 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center">
-                <span className="text-stone-950 font-light">
+              <div className="w-10 h-10 bg-accent-600 rounded-full flex items-center justify-center">
+                <span className="text-ink-950">
                   {partner.name?.charAt(0) || '?'}
                 </span>
               </div>
               <div>
-                <h2 className="font-light">{partner.name}</h2>
+                <h2 className="">{partner.name}</h2>
                 {partner.role && (
-                  <p className="text-xs text-amber-600 font-light">{partner.role}</p>
+                  <p className="text-xs text-accent-600">{partner.role}</p>
                 )}
               </div>
             </div>
           </Link>
         </div>
-        <button className="text-stone-400 hover:text-amber-600 transition-colors">
+        <button className="text-ink-400 hover:text-accent-600 transition-colors">
           <MoreVertical className="w-5 h-5" />
         </button>
       </div>
@@ -267,8 +267,8 @@ export default function ConversationPage() {
       <div className="flex-1 overflow-y-auto border-x border-white/[0.08] p-6 space-y-6">
         {messages.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-stone-400 font-light">No messages yet</p>
-            <p className="text-stone-500 font-light text-sm mt-1">
+            <p className="text-ink-400">No messages yet</p>
+            <p className="text-ink-500 text-sm mt-1">
               Send a message to start the conversation
             </p>
           </div>
@@ -278,7 +278,7 @@ export default function ConversationPage() {
               {/* Date Divider */}
               <div className="flex items-center justify-center mb-6">
                 <div className="h-px bg-white/[0.06] flex-1" />
-                <span className="px-4 text-xs text-stone-500 font-light">
+                <span className="px-4 text-xs text-ink-500">
                   {formatDate(group.date)}
                 </span>
                 <div className="h-px bg-white/[0.06] flex-1" />
@@ -297,15 +297,15 @@ export default function ConversationPage() {
                       <div
                         className={`max-w-[70%] ${
                           isMine
-                            ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 rounded-2xl rounded-br-sm'
-                            : 'bg-white/[0.06] border border-white/[0.08] rounded-2xl rounded-bl-sm'
+                            ? 'bg-accent-500 text-ink-950 rounded-sm rounded-br-sm'
+                            : 'bg-white/[0.06] border border-white/[0.08] rounded-sm rounded-bl-sm'
                         } px-4 py-3`}
                       >
-                        <p className="font-light text-sm whitespace-pre-wrap">{msg.content}</p>
+                        <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                         <p
                           className={`text-xs mt-1 ${
-                            isMine ? 'text-stone-800' : 'text-stone-500'
-                          } font-light`}
+                            isMine ? 'text-ink-800' : 'text-ink-500'
+                          }`}
                         >
                           {formatTime(msg.created_at)}
                         </p>
@@ -328,12 +328,12 @@ export default function ConversationPage() {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type a message..."
-            className="flex-1 bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-full"
+            className="flex-1 bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
           />
           <button
             type="submit"
             disabled={!newMessage.trim() || isSending}
-            className="bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 p-3 hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed rounded-full"
+            className="bg-accent-500 text-ink-950 p-3 hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed rounded-full"
           >
             <Send className="w-5 h-5" />
           </button>

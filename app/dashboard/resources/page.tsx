@@ -18,17 +18,17 @@ interface Resource {
 }
 
 const CATEGORY_CONFIG: Record<string, { icon: React.FC<{ className?: string }>, color: string, band: string, tile: string }> = {
-  Business:     { icon: Briefcase,   color: 'text-amber-500',   band: 'bg-amber-500',   tile: 'border-amber-500/30 hover:border-amber-500/60' },
-  Legal:        { icon: Scale,       color: 'text-blue-400',    band: 'bg-blue-400',    tile: 'border-blue-400/30 hover:border-blue-400/60' },
-  Production:   { icon: Mic2,        color: 'text-purple-400',  band: 'bg-purple-400',  tile: 'border-purple-400/30 hover:border-purple-400/60' },
-  Marketing:    { icon: TrendingUp,  color: 'text-emerald-400', band: 'bg-emerald-400', tile: 'border-emerald-400/30 hover:border-emerald-400/60' },
-  Distribution: { icon: Share2,      color: 'text-teal-400',    band: 'bg-teal-400',    tile: 'border-teal-400/30 hover:border-teal-400/60' },
-  Samples:      { icon: Music,       color: 'text-rose-400',    band: 'bg-rose-400',    tile: 'border-rose-400/30 hover:border-rose-400/60' },
-  Templates:    { icon: LayoutGrid,  color: 'text-orange-400',  band: 'bg-orange-400',  tile: 'border-orange-400/30 hover:border-orange-400/60' },
-  Tutorials:    { icon: BookOpen,    color: 'text-indigo-400',  band: 'bg-indigo-400',  tile: 'border-indigo-400/30 hover:border-indigo-400/60' },
+  Business:     { icon: Briefcase,   color: 'text-ink-300',   band: 'bg-ink-600',   tile: 'border-ink-800 hover:border-ink-500' },
+  Legal:        { icon: Scale,       color: 'text-ink-300',    band: 'bg-ink-600',    tile: 'border-ink-800 hover:border-ink-500' },
+  Production:   { icon: Mic2,        color: 'text-ink-300',  band: 'bg-ink-600',  tile: 'border-ink-800 hover:border-ink-500' },
+  Marketing:    { icon: TrendingUp,  color: 'text-ink-300', band: 'bg-ink-600', tile: 'border-ink-800 hover:border-ink-500' },
+  Distribution: { icon: Share2,      color: 'text-ink-300',    band: 'bg-ink-600',    tile: 'border-ink-800 hover:border-ink-500' },
+  Samples:      { icon: Music,       color: 'text-ink-300',    band: 'bg-ink-600',    tile: 'border-ink-800 hover:border-ink-500' },
+  Templates:    { icon: LayoutGrid,  color: 'text-ink-300',  band: 'bg-ink-600',  tile: 'border-ink-800 hover:border-ink-500' },
+  Tutorials:    { icon: BookOpen,    color: 'text-ink-300',  band: 'bg-ink-600',  tile: 'border-ink-800 hover:border-ink-500' },
 };
 
-const DEFAULT_CONFIG = { icon: FileText, color: 'text-amber-600', band: 'bg-amber-600', tile: 'border-amber-600/30 hover:border-amber-600/60' };
+const DEFAULT_CONFIG = { icon: FileText, color: 'text-ink-300', band: 'bg-ink-600', tile: 'border-ink-800 hover:border-ink-500' };
 
 function getCategoryConfig(category: string) {
   return CATEGORY_CONFIG[category] || DEFAULT_CONFIG;
@@ -75,12 +75,12 @@ export default function ResourcesPage() {
   const getFormatIcon = (format: string) => {
     switch (format.toLowerCase()) {
       case 'video':
-        return <Video className="w-5 h-5 text-blue-400" />;
+        return <Video className="w-5 h-5 text-ink-300" />;
       case 'pdf':
       case 'document':
-        return <FileText className="w-5 h-5 text-amber-600" />;
+        return <FileText className="w-5 h-5 text-accent-600" />;
       default:
-        return <File className="w-5 h-5 text-amber-600" />;
+        return <File className="w-5 h-5 text-accent-600" />;
     }
   };
 
@@ -93,8 +93,8 @@ export default function ResourcesPage() {
   return (
     <div className="max-w-6xl">
       <div className="mb-10">
-        <h1 className="text-4xl font-light mb-2">Resource Library</h1>
-        <p className="text-stone-400 font-light">Templates, guides, and materials to help you succeed</p>
+        <h1 className="text-4xl mb-2">Resource Library</h1>
+        <p className="text-ink-400">Templates, guides, and materials to help you succeed</p>
       </div>
 
       {/* Category icon tiles */}
@@ -108,14 +108,14 @@ export default function ResourcesPage() {
               <button
                 key={cat}
                 onClick={() => setFilterCategory(isActive ? 'all' : cat)}
-                className={`rounded-2xl border p-4 flex flex-col items-center gap-2 transition-all ${
+                className={`rounded-sm border p-4 flex flex-col items-center gap-2 transition-all ${
                   isActive
                     ? `${cfg.tile} bg-white/[0.06]`
                     : `border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.04] ${cfg.tile}`
                 }`}
               >
-                <IconComponent className={`w-5 h-5 ${isActive ? cfg.color : 'text-stone-400'}`} />
-                <span className={`text-[10px] font-light leading-tight text-center ${isActive ? cfg.color : 'text-stone-500'}`}>
+                <IconComponent className={`w-5 h-5 ${isActive ? cfg.color : 'text-ink-400'}`} />
+                <span className={`text-[10px] leading-tight text-center ${isActive ? cfg.color : 'text-ink-500'}`}>
                   {cat}
                 </span>
               </button>
@@ -128,10 +128,10 @@ export default function ResourcesPage() {
       <div className="flex gap-2 mb-10 overflow-x-auto pb-2">
         <button
           onClick={() => setFilterCategory('all')}
-          className={`px-4 py-2 text-sm font-light whitespace-nowrap transition-colors rounded-full border ${
+          className={`px-4 py-2 text-sm whitespace-nowrap transition-colors rounded-sm border ${
             filterCategory === 'all'
-              ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-              : 'border-white/10 text-stone-400 hover:border-amber-600/50'
+              ? 'border-accent-600 text-accent-600 bg-accent-600/10'
+              : 'border-white/10 text-ink-400 hover:border-accent-600/50'
           }`}
         >
           All
@@ -142,10 +142,10 @@ export default function ResourcesPage() {
             <button
               key={cat}
               onClick={() => setFilterCategory(cat)}
-              className={`px-4 py-2 text-sm font-light whitespace-nowrap transition-colors rounded-full border ${
+              className={`px-4 py-2 text-sm whitespace-nowrap transition-colors rounded-sm border ${
                 filterCategory === cat
-                  ? `border-amber-600 text-amber-600 bg-amber-600/10`
-                  : 'border-white/10 text-stone-400 hover:border-white/30'
+                  ? `border-accent-600 text-accent-600 bg-accent-600/10`
+                  : 'border-white/10 text-ink-400 hover:border-white/30'
               }`}
             >
               {cat}
@@ -158,13 +158,13 @@ export default function ResourcesPage() {
       {isLoading ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-48 bg-stone-900 animate-pulse rounded-2xl border border-white/[0.08]" />
+            <div key={i} className="h-48 bg-ink-900 animate-pulse rounded-sm border border-white/[0.08]" />
           ))}
         </div>
       ) : resources.length === 0 ? (
-        <div className="text-center py-20 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-12">
-          <p className="text-stone-400 font-light">No resources available yet</p>
-          <p className="text-stone-500 font-light text-sm mt-2">Check back soon for new materials</p>
+        <div className="text-center py-20 rounded-sm border border-white/[0.08] bg-white/[0.02] p-12">
+          <p className="text-ink-400">No resources available yet</p>
+          <p className="text-ink-500 text-sm mt-2">Check back soon for new materials</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -173,10 +173,10 @@ export default function ResourcesPage() {
             return (
               <div
                 key={resource.id}
-                className={`rounded-2xl border overflow-hidden transition-all ${
+                className={`rounded-sm border overflow-hidden transition-all ${
                   resource.featured
-                    ? 'border-amber-600/40 bg-amber-600/5'
-                    : 'border-white/[0.08] bg-white/[0.02] hover:border-amber-600/30 hover:bg-white/[0.04]'
+                    ? 'border-accent-600/40 bg-accent-600/5'
+                    : 'border-white/[0.08] bg-white/[0.02] hover:border-accent-600/30 hover:bg-white/[0.04]'
                 }`}
               >
                 {/* Colored top band */}
@@ -186,25 +186,25 @@ export default function ResourcesPage() {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                       {getFormatIcon(resource.format)}
-                      {resource.featured && <Star className="w-4 h-4 text-amber-600 fill-amber-600" />}
+                      {resource.featured && <Star className="w-4 h-4 text-accent-600 fill-accent-600" />}
                     </div>
-                    <span className="text-xs bg-white/[0.06] text-stone-400 px-3 py-1 font-light uppercase rounded-full">
+                    <span className="text-xs bg-white/[0.06] text-ink-400 px-3 py-1 uppercase rounded-sm">
                       {resource.format}
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-light mb-2 line-clamp-2">{resource.title}</h3>
-                  <p className="text-stone-400 font-light text-sm mb-6 line-clamp-3">{resource.description}</p>
+                  <h3 className="text-lg mb-2 line-clamp-2">{resource.title}</h3>
+                  <p className="text-ink-400 text-sm mb-6 line-clamp-3">{resource.description}</p>
 
                   <div className="flex items-center justify-between pt-4 border-t border-white/[0.08]">
                     <div className="flex items-center gap-1.5">
                       <cfg.icon className={`w-3.5 h-3.5 ${cfg.color}`} />
-                      <span className="text-xs text-stone-500 font-light">{resource.category}</span>
+                      <span className="text-xs text-ink-500">{resource.category}</span>
                     </div>
                     {resource.file_url ? (
                       <button
                         onClick={() => handleResourceClick(resource)}
-                        className="flex items-center gap-2 text-amber-600 hover:underline text-sm font-light"
+                        className="flex items-center gap-2 text-accent-600 hover:underline text-sm"
                       >
                         {resource.format.toLowerCase() === 'link' ? (
                           <>
@@ -219,7 +219,7 @@ export default function ResourcesPage() {
                         )}
                       </button>
                     ) : (
-                      <span className="text-xs text-stone-600 font-light">Coming soon</span>
+                      <span className="text-xs text-ink-600">Coming soon</span>
                     )}
                   </div>
                 </div>

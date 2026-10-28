@@ -73,10 +73,10 @@ export default function CheckoutSuccessPage() {
 
   if (state === 'verifying') {
     return (
-      <div className="min-h-screen bg-stone-950 text-stone-100 flex items-center justify-center">
+      <div className="min-h-screen bg-ink-950 text-ink-100 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-amber-600 mx-auto mb-4" />
-          <p className="text-stone-400 font-light">Confirming your payment...</p>
+          <Loader2 className="w-12 h-12 animate-spin text-accent-600 mx-auto mb-4" />
+          <p className="text-ink-400">Confirming your payment...</p>
         </div>
       </div>
     );
@@ -84,22 +84,21 @@ export default function CheckoutSuccessPage() {
 
   if (state === 'pending') {
     return (
-      <div className="min-h-screen bg-stone-950 text-stone-100 flex items-center justify-center px-6">
+      <div className="min-h-screen bg-ink-950 text-ink-100 flex items-center justify-center px-6">
         <div className="max-w-md w-full text-center">
           <Link href="/">
-            <div className="text-2xl font-light tracking-extra-wide mb-12 cursor-pointer hover:text-amber-600 transition-colors">
-              <span className="text-stone-100">IC</span>
-              <span className="text-amber-600">WT</span>
+            <div className="text-2xl font-serif uppercase leading-none tracking-tight mb-12 cursor-pointer hover:text-accent-600 transition-colors">
+              ICWT<span className="text-signal">.</span>
             </div>
           </Link>
-          <div className="border border-stone-800 p-12">
-            <AlertCircle className="w-16 h-16 text-amber-600 mx-auto mb-6" />
-            <h1 className="text-3xl font-light mb-4">Payment Processing</h1>
-            <p className="text-stone-400 font-light mb-8">
+          <div className="border border-ink-800 p-12">
+            <AlertCircle className="w-16 h-16 text-accent-600 mx-auto mb-6" />
+            <h1 className="text-3xl mb-4">Payment Processing</h1>
+            <p className="text-ink-400 mb-8">
               Your payment was received and your membership is being activated. This usually completes within a minute.
             </p>
             <Link href="/dashboard">
-              <button className="w-full bg-amber-600 text-stone-950 py-4 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors">
+              <button className="w-full bg-accent-600 text-ink-950 py-4 text-sm tracking-wide hover:bg-accent-700 transition-colors">
                 Go to Dashboard
               </button>
             </Link>
@@ -110,31 +109,30 @@ export default function CheckoutSuccessPage() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-ink-950 text-ink-100 flex items-center justify-center px-6">
       <div className="max-w-md w-full text-center">
         <Link href="/">
-          <div className="text-2xl font-light tracking-extra-wide mb-12 cursor-pointer hover:text-amber-600 transition-colors">
-            <span className="text-stone-100">IC</span>
-            <span className="text-amber-600">WT</span>
+          <div className="text-2xl font-serif uppercase leading-none tracking-tight mb-12 cursor-pointer hover:text-accent-600 transition-colors">
+            ICWT<span className="text-signal">.</span>
           </div>
         </Link>
 
-        <div className="border border-stone-800 p-12">
+        <div className="border border-ink-800 p-12">
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-6" />
 
-          <h1 className="text-3xl font-light mb-4">Welcome to ICWT</h1>
+          <h1 className="text-3xl mb-4">Welcome to ICWT</h1>
 
-          <p className="text-stone-400 font-light mb-8">
+          <p className="text-ink-400 mb-8">
             Your membership is now active. You have full access to all your tier benefits.
           </p>
 
           <Link href="/dashboard">
-            <button className="w-full bg-amber-600 text-stone-950 py-4 text-sm font-light tracking-wide hover:bg-amber-700 transition-colors">
+            <button className="w-full bg-accent-600 text-ink-950 py-4 text-sm tracking-wide hover:bg-accent-700 transition-colors">
               Go to Dashboard
             </button>
           </Link>
 
-          <p className="text-stone-500 text-xs font-light mt-4">
+          <p className="text-ink-500 text-xs mt-4">
             Redirecting automatically...
           </p>
         </div>

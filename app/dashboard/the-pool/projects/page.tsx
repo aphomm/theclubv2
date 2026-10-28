@@ -46,7 +46,7 @@ export default function ProjectsListPage() {
   return (
     <div className="max-w-6xl">
       <Link href="/dashboard/the-pool">
-        <button className="flex items-center gap-2 text-amber-600 hover:underline mb-8 font-light">
+        <button className="flex items-center gap-2 text-accent-600 hover:underline mb-8">
           <ArrowLeft className="w-4 h-4" />
           Back to The Pool
         </button>
@@ -54,11 +54,11 @@ export default function ProjectsListPage() {
 
       <div className="flex items-start justify-between mb-10">
         <div>
-          <h1 className="text-4xl font-light mb-2">All Projects</h1>
-          <p className="text-stone-400 font-light">Browse and invest in community projects</p>
+          <h1 className="text-4xl mb-2">All Projects</h1>
+          <p className="text-ink-400">Browse and invest in community projects</p>
         </div>
         <Link href="/dashboard/the-pool/projects/new">
-          <button className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 px-6 py-3 text-sm font-light hover:opacity-90 transition-opacity rounded-full">
+          <button className="flex items-center gap-2 bg-accent-500 text-ink-950 px-6 py-3 text-sm hover:opacity-90 transition-opacity rounded-sm">
             <Plus className="w-5 h-5" />
             Start a Project
           </button>
@@ -74,10 +74,10 @@ export default function ProjectsListPage() {
           <button
             key={f.value}
             onClick={() => setFilter(f.value)}
-            className={`px-4 py-2 text-sm font-light transition-colors ${
+            className={`px-4 py-2 text-sm transition-colors ${
               filter === f.value
-                ? 'text-amber-600 border-b-2 border-amber-600 pb-4'
-                : 'text-stone-400 hover:text-amber-600'
+                ? 'text-accent-600 border-b-2 border-accent-600 pb-4'
+                : 'text-ink-400 hover:text-accent-600'
             }`}
           >
             {f.label}
@@ -89,12 +89,12 @@ export default function ProjectsListPage() {
       {isLoading ? (
         <div className="space-y-6">
           {[1, 2, 3].map(i => (
-            <div key={i} className="h-32 bg-white/[0.04] animate-pulse rounded-2xl border border-white/[0.08]" />
+            <div key={i} className="h-32 bg-white/[0.04] animate-pulse rounded-sm border border-white/[0.08]" />
           ))}
         </div>
       ) : projects.length === 0 ? (
-        <div className="text-center py-20 rounded-2xl border border-white/[0.08] p-12">
-          <p className="text-stone-400 font-light">
+        <div className="text-center py-20 rounded-sm border border-white/[0.08] p-12">
+          <p className="text-ink-400">
             No {filter === 'active' ? 'live' : filter} projects found
           </p>
         </div>
@@ -105,31 +105,31 @@ export default function ProjectsListPage() {
 
             return (
               <Link key={project.id} href={`/dashboard/the-pool/projects/${project.id}`}>
-                <div className="rounded-2xl border border-white/[0.08] hover:border-amber-600/60 transition-colors cursor-pointer hover:bg-white/[0.03] flex overflow-hidden min-h-[160px]">
+                <div className="rounded-sm border border-white/[0.08] hover:border-accent-600/60 transition-colors cursor-pointer hover:bg-white/[0.03] flex overflow-hidden min-h-[160px]">
                   {/* Left: main content */}
                   <div className="flex-1 p-8">
                     <div className="flex items-center gap-3 mb-3">
-                      <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase tracking-wide rounded-full">
+                      <span className="text-xs bg-accent-600/20 text-accent-600 px-3 py-1 uppercase tracking-wide rounded-sm">
                         {project.category}
                       </span>
-                      <span className="text-xs bg-green-600/20 text-green-500 px-3 py-1 font-light uppercase tracking-wide rounded-full">
+                      <span className="text-xs bg-green-600/20 text-green-500 px-3 py-1 uppercase tracking-wide rounded-sm">
                         {Math.round(percentFunded)}% Funded
                       </span>
                     </div>
-                    <h3 className="text-2xl font-light mb-2">{project.title}</h3>
-                    <p className="text-stone-400 font-light line-clamp-2 mb-6">{project.description}</p>
+                    <h3 className="text-2xl mb-2">{project.title}</h3>
+                    <p className="text-ink-400 line-clamp-2 mb-6">{project.description}</p>
 
                     <div className="pt-4 border-t border-white/5">
-                      <div className="text-xs text-stone-400 font-light mb-1">FUNDED</div>
-                      <div className="font-light mb-2">
+                      <div className="text-xs text-ink-400 mb-1">FUNDED</div>
+                      <div className="mb-2">
                         ${(project.funding_raised / 1000).toFixed(0)}K /{' '}
-                        <span className="text-stone-400">
+                        <span className="text-ink-400">
                           ${(project.funding_goal / 1000).toFixed(0)}K
                         </span>
                       </div>
                       <div className="w-full bg-white/[0.08] h-2 rounded-full">
                         <div
-                          className="bg-gradient-to-r from-amber-500 to-amber-600 h-full rounded-full"
+                          className="bg-accent-500 h-full rounded-full"
                           style={{ width: `${percentFunded}%` }}
                         />
                       </div>
@@ -145,11 +145,11 @@ export default function ProjectsListPage() {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-stone-900 to-stone-950 flex flex-col items-center justify-center gap-3">
-                        <div className="w-10 h-10 rounded-full border border-amber-600/20 flex items-center justify-center">
-                          <TrendingUp className="w-4 h-4 text-amber-600/40" />
+                      <div className="w-full h-full bg-ink-900 flex flex-col items-center justify-center gap-3">
+                        <div className="w-10 h-10 rounded-sm border border-accent-600/20 flex items-center justify-center">
+                          <TrendingUp className="w-4 h-4 text-accent-600/40" />
                         </div>
-                        <span className="text-xs text-stone-600 font-light text-center px-3 leading-relaxed">
+                        <span className="text-xs text-ink-600 text-center px-3 leading-relaxed">
                           Project<br/>Visual
                         </span>
                       </div>

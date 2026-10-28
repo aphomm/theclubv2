@@ -353,12 +353,12 @@ export default function AdminResourcesPage() {
     <div className="max-w-7xl">
       <div className="flex items-center justify-between mb-10">
         <div>
-          <h1 className="text-4xl font-light mb-2">Resources</h1>
-          <p className="text-stone-400 font-light">Manage the member resource library</p>
+          <h1 className="text-4xl mb-2">Resources</h1>
+          <p className="text-ink-400">Manage the member resource library</p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 px-6 py-3 text-sm font-light hover:opacity-90 transition-opacity rounded-full"
+          className="flex items-center gap-2 bg-accent-500 text-ink-950 px-6 py-3 text-sm hover:opacity-90 transition-opacity rounded-sm"
         >
           <Plus className="w-5 h-5" />
           Add Resource
@@ -369,10 +369,10 @@ export default function AdminResourcesPage() {
       <div className="flex gap-2 mb-8 flex-wrap">
         <button
           onClick={() => setFilterCategory('all')}
-          className={`px-4 py-2 text-sm font-light border transition-colors rounded-full ${
+          className={`px-4 py-2 text-sm border transition-colors rounded-sm ${
             filterCategory === 'all'
-              ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-              : 'border-white/10 text-stone-400 hover:border-white/20'
+              ? 'border-accent-600 text-accent-600 bg-accent-600/10'
+              : 'border-white/10 text-ink-400 hover:border-white/20'
           }`}
         >
           All ({resources.length})
@@ -384,10 +384,10 @@ export default function AdminResourcesPage() {
             <button
               key={cat}
               onClick={() => setFilterCategory(cat)}
-              className={`px-4 py-2 text-sm font-light border transition-colors rounded-full ${
+              className={`px-4 py-2 text-sm border transition-colors rounded-sm ${
                 filterCategory === cat
-                  ? 'border-amber-600 text-amber-600 bg-amber-600/10'
-                  : 'border-white/10 text-stone-400 hover:border-white/20'
+                  ? 'border-accent-600 text-accent-600 bg-accent-600/10'
+                  : 'border-white/10 text-ink-400 hover:border-white/20'
               }`}
             >
               {cat} ({count})
@@ -397,13 +397,13 @@ export default function AdminResourcesPage() {
       </div>
 
       {/* Resources Table */}
-      <div className="rounded-2xl border border-white/[0.08]">
+      <div className="rounded-sm border border-white/[0.08]">
         {isLoading ? (
           <div className="p-8 text-center">
             <div className="inline-block h-12 w-12 bg-white/[0.08] rounded-full animate-pulse" />
           </div>
         ) : filteredResources.length === 0 ? (
-          <div className="p-12 text-center text-stone-400 font-light">
+          <div className="p-12 text-center text-ink-400">
             {resources.length === 0
               ? 'No resources yet. Add your first resource to get started.'
               : 'No resources in this category.'}
@@ -413,22 +413,22 @@ export default function AdminResourcesPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/[0.06]">
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Resource
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Category
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Format
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Featured
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Added
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Actions
                   </th>
                 </tr>
@@ -438,13 +438,13 @@ export default function AdminResourcesPage() {
                   <tr key={resource.id} className={idx !== filteredResources.length - 1 ? 'border-b border-white/[0.06]' : ''}>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="text-amber-600">
+                        <div className="text-accent-600">
                           {getFormatIcon(resource.format)}
                         </div>
                         <div>
-                          <div className="font-light">{resource.title}</div>
+                          <div className="">{resource.title}</div>
                           {resource.description && (
-                            <div className="text-xs text-stone-500 line-clamp-1 max-w-xs">
+                            <div className="text-xs text-ink-500 line-clamp-1 max-w-xs">
                               {resource.description}
                             </div>
                           )}
@@ -452,37 +452,37 @@ export default function AdminResourcesPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-xs bg-white/[0.08] text-stone-300 px-3 py-1 font-light rounded-full">
+                      <span className="text-xs bg-white/[0.08] text-ink-300 px-3 py-1 rounded-sm">
                         {resource.category}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-stone-400 font-light">
+                    <td className="px-6 py-4 text-sm text-ink-400">
                       {resource.format}
                     </td>
                     <td className="px-6 py-4">
                       {resource.featured ? (
-                        <Star className="w-5 h-5 text-amber-600 fill-amber-600" />
+                        <Star className="w-5 h-5 text-accent-600 fill-accent-600" />
                       ) : (
-                        <Star className="w-5 h-5 text-stone-700" />
+                        <Star className="w-5 h-5 text-ink-700" />
                       )}
                     </td>
-                    <td className="px-6 py-4 text-sm text-stone-400 font-light">
+                    <td className="px-6 py-4 text-sm text-ink-400">
                       {new Date(resource.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4">
                       <div className="relative actions-menu">
                         <button
                           onClick={() => setActiveMenu(activeMenu === resource.id ? null : resource.id)}
-                          className="text-stone-400 hover:text-amber-600 transition-colors"
+                          className="text-ink-400 hover:text-accent-600 transition-colors"
                         >
                           <MoreVertical className="w-5 h-5" />
                         </button>
 
                         {activeMenu === resource.id && (
-                          <div className="absolute right-0 top-8 z-50 bg-stone-900/95 rounded-xl border border-white/[0.08] shadow-xl py-2 min-w-[150px]">
+                          <div className="absolute right-0 top-8 z-50 bg-ink-900/95 rounded-sm border border-white/[0.08] shadow-xl py-2 min-w-[150px]">
                             <button
                               onClick={() => toggleFeatured(resource)}
-                              className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
+                              className="w-full px-4 py-2 text-left text-sm text-ink-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
                             >
                               {resource.featured ? (
                                 <>
@@ -498,14 +498,14 @@ export default function AdminResourcesPage() {
                             </button>
                             <button
                               onClick={() => openEditModal(resource)}
-                              className="w-full px-4 py-2 text-left text-sm font-light text-stone-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
+                              className="w-full px-4 py-2 text-left text-sm text-ink-300 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
                             >
                               <Edit className="w-4 h-4" />
                               Edit
                             </button>
                             <button
                               onClick={() => handleDeleteResource(resource.id)}
-                              className="w-full px-4 py-2 text-left text-sm font-light text-red-500 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
+                              className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-white/[0.06] flex items-center gap-2 rounded-lg"
                             >
                               <Trash2 className="w-4 h-4" />
                               Delete
@@ -525,41 +525,41 @@ export default function AdminResourcesPage() {
       {/* Create Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-950 rounded-2xl border border-white/[0.08] p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-ink-950 rounded-sm border border-white/[0.08] p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-light">Add New Resource</h2>
+              <h2 className="text-2xl">Add New Resource</h2>
               <button
                 onClick={() => {
                   setShowCreateModal(false);
                   resetForm();
                 }}
-                className="text-stone-400 hover:text-stone-100"
+                className="text-ink-400 hover:text-ink-100"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
             <form onSubmit={handleCreateResource} className="space-y-6">
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">Title *</label>
+                <label className="text-sm text-ink-400 mb-2 block">Title *</label>
                 <input
                   type="text"
                   name="title"
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="e.g., Sample Recording Contract"
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                   required
                 />
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm text-stone-400 font-light mb-2 block">Category *</label>
+                  <label className="text-sm text-ink-400 mb-2 block">Category *</label>
                   <select
                     name="category"
                     value={formData.category}
                     onChange={handleInputChange}
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 rounded-sm"
                   >
                     {categories.map(cat => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -567,12 +567,12 @@ export default function AdminResourcesPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-sm text-stone-400 font-light mb-2 block">Format *</label>
+                  <label className="text-sm text-ink-400 mb-2 block">Format *</label>
                   <select
                     name="format"
                     value={formData.format}
                     onChange={handleInputChange}
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 rounded-sm"
                   >
                     {formats.map(fmt => (
                       <option key={fmt} value={fmt}>{fmt}</option>
@@ -582,30 +582,30 @@ export default function AdminResourcesPage() {
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">Description</label>
+                <label className="text-sm text-ink-400 mb-2 block">Description</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Describe the resource..."
                   rows={3}
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors resize-none rounded-sm"
                 />
               </div>
 
               {/* File Upload Section */}
-              <div className="rounded-xl border border-white/10 border-dashed p-6">
+              <div className="rounded-sm border border-white/10 border-dashed p-6">
                 <div className="text-center">
-                  <Upload className="w-8 h-8 text-stone-500 mx-auto mb-2" />
-                  <p className="text-sm text-stone-400 font-light mb-3">
+                  <Upload className="w-8 h-8 text-ink-500 mx-auto mb-2" />
+                  <p className="text-sm text-ink-400 mb-3">
                     {selectedFile ? (
-                      <span className="text-amber-600">{selectedFile.name}</span>
+                      <span className="text-accent-600">{selectedFile.name}</span>
                     ) : (
                       'Upload a file'
                     )}
                   </p>
                   <label className="cursor-pointer">
-                    <span className="bg-white/[0.08] text-stone-300 px-4 py-2 text-sm font-light hover:bg-white/[0.12] transition-colors inline-block rounded-full">
+                    <span className="bg-white/[0.08] text-ink-300 px-4 py-2 text-sm hover:bg-white/[0.12] transition-colors inline-block rounded-sm">
                       {uploadingFile ? (
                         <span className="flex items-center gap-2">
                           <Loader2 className="w-4 h-4 animate-spin" />
@@ -623,7 +623,7 @@ export default function AdminResourcesPage() {
                     />
                   </label>
                   {selectedFile && (
-                    <p className="text-xs text-stone-500 mt-2">
+                    <p className="text-xs text-ink-500 mt-2">
                       {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                     </p>
                   )}
@@ -635,12 +635,12 @@ export default function AdminResourcesPage() {
                   <div className="w-full border-t border-white/[0.08]"></div>
                 </div>
                 <div className="relative flex justify-center">
-                  <span className="bg-stone-950 px-4 text-xs text-stone-500">OR</span>
+                  <span className="bg-ink-950 px-4 text-xs text-ink-500">OR</span>
                 </div>
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">External URL / Link</label>
+                <label className="text-sm text-ink-400 mb-2 block">External URL / Link</label>
                 <input
                   type="url"
                   name="file_url"
@@ -648,9 +648,9 @@ export default function AdminResourcesPage() {
                   onChange={handleInputChange}
                   placeholder="https://..."
                   disabled={!!selectedFile}
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors disabled:opacity-50 rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors disabled:opacity-50 rounded-sm"
                 />
-                <p className="text-xs text-stone-500 mt-2">
+                <p className="text-xs text-ink-500 mt-2">
                   Or paste a link (Google Drive, Dropbox, etc.)
                 </p>
               </div>
@@ -662,9 +662,9 @@ export default function AdminResourcesPage() {
                   id="featured-create"
                   checked={formData.featured}
                   onChange={handleInputChange}
-                  className="w-4 h-4 bg-white/[0.04] border border-white/10 accent-amber-600"
+                  className="w-4 h-4 bg-white/[0.04] border border-white/10 accent-accent-600"
                 />
-                <label htmlFor="featured-create" className="text-sm font-light">
+                <label htmlFor="featured-create" className="text-sm">
                   Feature this resource (shows at the top of the library)
                 </label>
               </div>
@@ -676,14 +676,14 @@ export default function AdminResourcesPage() {
                     setShowCreateModal(false);
                     resetForm();
                   }}
-                  className="flex-1 border border-white/10 py-3 text-sm font-light hover:border-white/20 transition-colors rounded-full"
+                  className="flex-1 border border-white/10 py-3 text-sm hover:border-white/20 transition-colors rounded-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light hover:opacity-90 transition-opacity disabled:opacity-50 rounded-full"
+                  className="flex-1 bg-accent-500 text-ink-950 py-3 text-sm hover:opacity-90 transition-opacity disabled:opacity-50 rounded-sm"
                 >
                   {isSubmitting ? 'Saving...' : 'Add Resource'}
                 </button>
@@ -696,42 +696,42 @@ export default function AdminResourcesPage() {
       {/* Edit Modal */}
       {showEditModal && editingResource && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-950 rounded-2xl border border-white/[0.08] p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-ink-950 rounded-sm border border-white/[0.08] p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-light">Edit Resource</h2>
+              <h2 className="text-2xl">Edit Resource</h2>
               <button
                 onClick={() => {
                   setShowEditModal(false);
                   setEditingResource(null);
                   resetForm();
                 }}
-                className="text-stone-400 hover:text-stone-100"
+                className="text-ink-400 hover:text-ink-100"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
             <form onSubmit={handleEditResource} className="space-y-6">
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">Title *</label>
+                <label className="text-sm text-ink-400 mb-2 block">Title *</label>
                 <input
                   type="text"
                   name="title"
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="e.g., Sample Recording Contract"
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                   required
                 />
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm text-stone-400 font-light mb-2 block">Category *</label>
+                  <label className="text-sm text-ink-400 mb-2 block">Category *</label>
                   <select
                     name="category"
                     value={formData.category}
                     onChange={handleInputChange}
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 rounded-sm"
                   >
                     {categories.map(cat => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -739,12 +739,12 @@ export default function AdminResourcesPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-sm text-stone-400 font-light mb-2 block">Format *</label>
+                  <label className="text-sm text-ink-400 mb-2 block">Format *</label>
                   <select
                     name="format"
                     value={formData.format}
                     onChange={handleInputChange}
-                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 focus:outline-none focus:border-amber-600 rounded-xl"
+                    className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 focus:outline-none focus:border-accent-600 rounded-sm"
                   >
                     {formats.map(fmt => (
                       <option key={fmt} value={fmt}>{fmt}</option>
@@ -754,28 +754,28 @@ export default function AdminResourcesPage() {
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">Description</label>
+                <label className="text-sm text-ink-400 mb-2 block">Description</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Describe the resource..."
                   rows={3}
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors resize-none rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors resize-none rounded-sm"
                 />
               </div>
 
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">File URL / Link</label>
+                <label className="text-sm text-ink-400 mb-2 block">File URL / Link</label>
                 <input
                   type="url"
                   name="file_url"
                   value={formData.file_url}
                   onChange={handleInputChange}
                   placeholder="https://..."
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                 />
-                <p className="text-xs text-stone-500 mt-2">
+                <p className="text-xs text-ink-500 mt-2">
                   Paste a link to the file (Google Drive, Dropbox, etc.) or direct URL
                 </p>
               </div>
@@ -787,9 +787,9 @@ export default function AdminResourcesPage() {
                   id="featured-edit"
                   checked={formData.featured}
                   onChange={handleInputChange}
-                  className="w-4 h-4 bg-white/[0.04] border border-white/10 accent-amber-600"
+                  className="w-4 h-4 bg-white/[0.04] border border-white/10 accent-accent-600"
                 />
-                <label htmlFor="featured-edit" className="text-sm font-light">
+                <label htmlFor="featured-edit" className="text-sm">
                   Feature this resource (shows at the top of the library)
                 </label>
               </div>
@@ -802,14 +802,14 @@ export default function AdminResourcesPage() {
                     setEditingResource(null);
                     resetForm();
                   }}
-                  className="flex-1 border border-white/10 py-3 text-sm font-light hover:border-white/20 transition-colors rounded-full"
+                  className="flex-1 border border-white/10 py-3 text-sm hover:border-white/20 transition-colors rounded-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light hover:opacity-90 transition-opacity disabled:opacity-50 rounded-full"
+                  className="flex-1 bg-accent-500 text-ink-950 py-3 text-sm hover:opacity-90 transition-opacity disabled:opacity-50 rounded-sm"
                 >
                   {isSubmitting ? 'Saving...' : 'Update Resource'}
                 </button>

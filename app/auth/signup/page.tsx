@@ -196,36 +196,36 @@ export default function SignupPage() {
           <div className="w-16 h-16 bg-green-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <Mail className="w-8 h-8 text-green-500" />
           </div>
-          <h1 className="text-3xl font-light mb-2">Check Your Email</h1>
-          <p className="text-stone-400 font-light">
+          <h1 className="text-3xl mb-2">Check Your Email</h1>
+          <p className="text-ink-400">
             We've sent a verification link to
           </p>
-          <p className="text-amber-600 font-light mt-1">{signupEmail}</p>
+          <p className="text-accent-600 mt-1">{signupEmail}</p>
         </div>
 
-        <div className="rounded-xl border border-white/[0.08] p-6 text-left mb-6">
-          <h3 className="font-light mb-3">Next Steps:</h3>
-          <ol className="space-y-2 text-sm text-stone-400 font-light">
+        <div className="rounded-sm border border-white/[0.08] p-6 text-left mb-6">
+          <h3 className="mb-3">Next Steps:</h3>
+          <ol className="space-y-2 text-sm text-ink-400">
             <li className="flex items-start gap-2">
-              <span className="text-amber-600">1.</span>
+              <span className="text-accent-600">1.</span>
               Open your email inbox
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-amber-600">2.</span>
+              <span className="text-accent-600">2.</span>
               Click the verification link in the email from ICWT
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-amber-600">3.</span>
+              <span className="text-accent-600">3.</span>
               Complete your membership setup
             </li>
           </ol>
         </div>
 
-        <p className="text-xs text-stone-500 font-light">
+        <p className="text-xs text-ink-500">
           Didn't receive the email? Check your spam folder or{' '}
           <button
             onClick={() => setSignupSuccess(false)}
-            className="text-amber-600 hover:underline"
+            className="text-accent-600 hover:underline"
           >
             try again
           </button>
@@ -237,65 +237,65 @@ export default function SignupPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-light mb-2">Create Your Account</h1>
-        <p className="text-stone-400 font-light">
+        <h1 className="text-3xl mb-2">Create Your Account</h1>
+        <p className="text-ink-400">
           Join ICWT as a{' '}
-          <span className="text-amber-600 capitalize">{tier}</span> member
+          <span className="text-accent-600 capitalize">{tier}</span> member
         </p>
       </div>
 
       <form onSubmit={handleSignup} className="space-y-6">
         <div>
-          <label className="block text-sm font-light mb-2">Full Name *</label>
+          <label className="block text-sm mb-2">Full Name *</label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Your full legal name"
-            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 transition-colors rounded-sm"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-light mb-2">Email Address *</label>
+          <label className="block text-sm mb-2">Email Address *</label>
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleInputChange}
             placeholder="your@email.com"
-            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 transition-colors rounded-sm"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-light mb-2">Phone Number *</label>
+          <label className="block text-sm mb-2">Phone Number *</label>
           <input
             type="tel"
             name="phone"
             value={formData.phone}
             onChange={handleInputChange}
             placeholder="+1 (555) 000-0000"
-            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 transition-colors rounded-sm"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-light mb-2">Company/Organization</label>
+          <label className="block text-sm mb-2">Company/Organization</label>
           <input
             type="text"
             name="company"
             value={formData.company}
             onChange={handleInputChange}
             placeholder="Your company or label"
-            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 transition-colors rounded-sm"
           />
         </div>
 
         {/* Address Section */}
         <div className="border-t border-white/[0.06] pt-6">
-          <h3 className="text-sm font-light text-stone-400 mb-4">Address (Optional)</h3>
+          <h3 className="text-sm text-ink-400 mb-4">Address (Optional)</h3>
           <div className="space-y-4">
             <div>
               <input
@@ -304,7 +304,7 @@ export default function SignupPage() {
                 value={formData.address_line1}
                 onChange={handleInputChange}
                 placeholder="Street address"
-                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 transition-colors rounded-sm"
               />
             </div>
             <div>
@@ -314,7 +314,7 @@ export default function SignupPage() {
                 value={formData.address_line2}
                 onChange={handleInputChange}
                 placeholder="Apt, suite, unit (optional)"
-                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 transition-colors rounded-sm"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -324,7 +324,7 @@ export default function SignupPage() {
                 value={formData.city}
                 onChange={handleInputChange}
                 placeholder="City"
-                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 transition-colors rounded-sm"
               />
               <input
                 type="text"
@@ -332,7 +332,7 @@ export default function SignupPage() {
                 value={formData.state}
                 onChange={handleInputChange}
                 placeholder="State"
-                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 transition-colors rounded-sm"
               />
             </div>
             <div>
@@ -342,7 +342,7 @@ export default function SignupPage() {
                 value={formData.postal_code}
                 onChange={handleInputChange}
                 placeholder="ZIP / Postal code"
-                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
+                className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 transition-colors rounded-sm"
               />
             </div>
           </div>
@@ -350,11 +350,11 @@ export default function SignupPage() {
 
         {/* Password Section */}
         <div className="border-t border-white/[0.06] pt-6">
-          <h3 className="text-sm font-light text-stone-400 mb-4">Set Your Password</h3>
+          <h3 className="text-sm text-ink-400 mb-4">Set Your Password</h3>
         </div>
 
         <div>
-          <label className="block text-sm font-light mb-2">Password *</label>
+          <label className="block text-sm mb-2">Password *</label>
           <div className="relative">
             <input
               type={showPassword ? 'text' : 'password'}
@@ -362,12 +362,12 @@ export default function SignupPage() {
               value={formData.password}
               onChange={handleInputChange}
               placeholder="••••••••"
-              className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
+              className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 transition-colors rounded-sm"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3.5 text-stone-500 hover:text-amber-600"
+              className="absolute right-3 top-3.5 text-ink-500 hover:text-accent-600"
             >
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
@@ -375,30 +375,30 @@ export default function SignupPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-light mb-2">Confirm Password *</label>
+          <label className="block text-sm mb-2">Confirm Password *</label>
           <input
             type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleInputChange}
             placeholder="••••••••"
-            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 transition-colors rounded-sm"
           />
         </div>
 
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed rounded-full"
+          className="w-full bg-accent-500 text-ink-950 py-3 text-sm tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed rounded-sm"
         >
           {isLoading ? 'Creating Account...' : 'Create Account'}
         </button>
       </form>
 
       <div className="mt-8 mb-12 text-center">
-        <p className="text-stone-400 text-sm font-light">
+        <p className="text-ink-400 text-sm">
           Already have an account?{' '}
-          <Link href="/auth/login" className="text-amber-600 hover:underline">
+          <Link href="/auth/login" className="text-accent-600 hover:underline">
             Sign in
           </Link>
         </p>

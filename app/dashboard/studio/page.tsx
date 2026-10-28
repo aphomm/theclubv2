@@ -86,21 +86,21 @@ const studios = [
     name: 'Studio A',
     description: 'Main recording studio with SSL console',
     image: '/images/studio-a.jpg',
-    placeholder: 'from-amber-950/40 to-stone-900',
+    placeholder: 'from-accent-950/40 to-ink-900',
   },
   {
     id: 'studio-b',
     name: 'Studio B',
     description: 'Vocal booth and production suite',
     image: '/images/studio-b.jpg',
-    placeholder: 'from-stone-800 to-stone-950',
+    placeholder: 'from-ink-800 to-ink-950',
   },
   {
     id: 'studio-c',
     name: 'Studio C',
     description: 'Podcast and content creation studio',
     image: '/images/studio-c.jpg',
-    placeholder: 'from-stone-700/40 to-stone-900',
+    placeholder: 'from-ink-700/40 to-ink-900',
   },
 ];
 
@@ -478,37 +478,37 @@ export default function StudioBookingPage() {
   return (
     <div className="max-w-7xl">
       <div className="mb-12">
-        <h1 className="text-4xl font-light mb-2">Studio Booking</h1>
-        <p className="text-stone-400 font-light">
+        <h1 className="text-4xl mb-2">Studio Booking</h1>
+        <p className="text-ink-400">
           Book recording time at WePlay Studios
         </p>
         {/* Monthly Allocation Banner */}
-        <div className={`mt-4 p-4 border rounded-xl ${hoursRemaining > 0 ? 'border-amber-600/50 bg-amber-600/10' : 'border-red-600/50 bg-red-600/10'}`}>
+        <div className={`mt-4 p-4 border rounded-sm ${hoursRemaining > 0 ? 'border-accent-600/50 bg-accent-600/10' : 'border-red-600/50 bg-red-600/10'}`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {hoursRemaining > 0 ? (
-                <Clock className="w-5 h-5 text-amber-600" />
+                <Clock className="w-5 h-5 text-accent-600" />
               ) : (
                 <AlertCircle className="w-5 h-5 text-red-500" />
               )}
-              <span className="font-light">
-                <span className={hoursRemaining > 0 ? 'text-amber-600' : 'text-red-500'}>{hoursRemaining}h</span>
-                <span className="text-stone-400"> remaining this month</span>
-                <span className="text-stone-500 text-sm ml-2">({hoursUsed}h of {monthlyStudioHours}h used)</span>
+              <span className="">
+                <span className={hoursRemaining > 0 ? 'text-accent-600' : 'text-red-500'}>{hoursRemaining}h</span>
+                <span className="text-ink-400"> remaining this month</span>
+                <span className="text-ink-500 text-sm ml-2">({hoursUsed}h of {monthlyStudioHours}h used)</span>
               </span>
             </div>
-            <span className="text-xs text-stone-500">Resets on the 1st • All times in PST</span>
+            <span className="text-xs text-ink-500">Resets on the 1st • All times in PST</span>
           </div>
         </div>
 
         {/* Suspension Banner */}
         {suspendedUntil && suspendedUntil > new Date() && (
-          <div className="mt-2 p-4 border border-red-600/50 bg-red-600/10 rounded-xl">
+          <div className="mt-2 p-4 border border-red-600/50 bg-red-600/10 rounded-sm">
             <div className="flex items-center gap-3">
               <AlertTriangle className="w-5 h-5 text-red-500" />
-              <span className="text-sm font-light">
+              <span className="text-sm">
                 <span className="text-red-500">Bookings suspended</span>
-                <span className="text-stone-400"> until {suspendedUntil.toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles', weekday: 'short', month: 'short', day: 'numeric' })}</span>
+                <span className="text-ink-400"> until {suspendedUntil.toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles', weekday: 'short', month: 'short', day: 'numeric' })}</span>
               </span>
             </div>
           </div>
@@ -521,16 +521,16 @@ export default function StudioBookingPage() {
           <button
             key={studio.id}
             onClick={() => setSelectedStudio(studio)}
-            className={`rounded-2xl border text-left transition-colors overflow-hidden ${
+            className={`rounded-sm border text-left transition-colors overflow-hidden ${
               selectedStudio.id === studio.id
-                ? 'border-amber-600 bg-amber-600/10'
-                : 'border-white/[0.08] hover:border-amber-600/60'
+                ? 'border-accent-600 bg-accent-600/10'
+                : 'border-white/[0.08] hover:border-accent-600/60'
             }`}
           >
             {/* Studio photo / placeholder */}
             <div className="relative h-36 w-full overflow-hidden">
               <div className={`absolute inset-0 bg-gradient-to-br ${studio.placeholder} flex items-center justify-center`} aria-hidden="true">
-                <Music className="w-10 h-10 text-amber-600/25" />
+                <Music className="w-10 h-10 text-accent-600/25" />
               </div>
               <img
                 src={studio.image}
@@ -539,15 +539,15 @@ export default function StudioBookingPage() {
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
               />
               {selectedStudio.id === studio.id && (
-                <div className="absolute inset-0 bg-amber-600/10 border-b border-amber-600/40" />
+                <div className="absolute inset-0 bg-accent-600/10 border-b border-accent-600/40" />
               )}
             </div>
             <div className="p-5">
               <div className="flex items-center gap-2 mb-1">
-                <Music className="w-4 h-4 text-amber-600" />
-                <h3 className="font-light text-lg">{studio.name}</h3>
+                <Music className="w-4 h-4 text-accent-600" />
+                <h3 className="text-lg">{studio.name}</h3>
               </div>
-              <p className="text-sm text-stone-400 font-light">{studio.description}</p>
+              <p className="text-sm text-ink-400">{studio.description}</p>
             </div>
           </button>
         ))}
@@ -556,21 +556,21 @@ export default function StudioBookingPage() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Calendar */}
         <div className="lg:col-span-2">
-          <div className="rounded-2xl border border-white/[0.08] p-6">
+          <div className="rounded-sm border border-white/[0.08] p-6">
             {/* Month Navigation */}
             <div className="flex items-center justify-between mb-6">
               <button
                 onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
-                className="p-2 text-stone-400 hover:text-amber-600 transition-colors"
+                className="p-2 text-ink-400 hover:text-accent-600 transition-colors"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              <h2 className="text-xl font-light">
+              <h2 className="text-xl">
                 {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
               </h2>
               <button
                 onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
-                className="p-2 text-stone-400 hover:text-amber-600 transition-colors"
+                className="p-2 text-ink-400 hover:text-accent-600 transition-colors"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -579,7 +579,7 @@ export default function StudioBookingPage() {
             {/* Day Headers */}
             <div className="grid grid-cols-7 gap-1 mb-2">
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                <div key={day} className={`text-center text-xs font-light py-2 ${day === 'Sun' ? 'text-stone-600' : 'text-stone-500'}`}>
+                <div key={day} className={`text-center text-xs py-2 ${day === 'Sun' ? 'text-ink-600' : 'text-ink-500'}`}>
                   {day}
                 </div>
               ))}
@@ -606,21 +606,21 @@ export default function StudioBookingPage() {
                     disabled={isPast || isSunday}
                     className={`aspect-square border p-1 flex flex-col items-center justify-center transition-colors relative ${
                       isSelected && !isSunday
-                        ? 'border-amber-600 bg-amber-600/20'
+                        ? 'border-accent-600 bg-accent-600/20'
                         : isToday
-                        ? 'border-amber-600/50'
+                        ? 'border-accent-600/50'
                         : isSunday
                         ? 'border-white/5 bg-white/[0.02]'
-                        : 'border-white/[0.08] hover:border-amber-600/40'
+                        : 'border-white/[0.08] hover:border-accent-600/40'
                     } ${isPast || isSunday ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
                   >
-                    <span className={`text-sm font-light ${isToday && !isSunday ? 'text-amber-600' : ''}`}>
+                    <span className={`text-sm ${isToday && !isSunday ? 'text-accent-600' : ''}`}>
                       {day.getDate()}
                     </span>
                     {hasBookings && !isSunday && (
                       <div className="absolute bottom-1 flex gap-0.5">
                         {dayBookings.slice(0, 3).map((_, i) => (
-                          <div key={i} className="w-1 h-1 bg-amber-600 rounded-full" />
+                          <div key={i} className="w-1 h-1 bg-accent-600 rounded-full" />
                         ))}
                       </div>
                     )}
@@ -631,8 +631,8 @@ export default function StudioBookingPage() {
           </div>
 
           {/* Time Slots */}
-          <div className="rounded-2xl border border-white/[0.08] p-6 mt-6">
-            <h3 className="text-lg font-light mb-1">
+          <div className="rounded-sm border border-white/[0.08] p-6 mt-6">
+            <h3 className="text-lg mb-1">
               Available Times — {selectedDate.toLocaleDateString('en-US', {
                 timeZone: 'America/Los_Angeles',
                 weekday: 'long',
@@ -642,14 +642,14 @@ export default function StudioBookingPage() {
             </h3>
 
             {selectedDate.getDay() === 0 ? (
-              <div className="flex items-center gap-2 py-8 text-stone-500">
+              <div className="flex items-center gap-2 py-8 text-ink-500">
                 <AlertCircle className="w-4 h-4" />
-                <span className="font-light text-sm">Studio is closed on Sundays</span>
+                <span className="text-sm">Studio is closed on Sundays</span>
               </div>
             ) : isLoading ? (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
                 {[1, 2, 3, 4, 5, 6].map(i => (
-                  <div key={i} className="h-16 bg-white/[0.04] animate-pulse rounded-xl" />
+                  <div key={i} className="h-16 bg-white/[0.04] animate-pulse rounded-sm" />
                 ))}
               </div>
             ) : (
@@ -670,19 +670,19 @@ export default function StudioBookingPage() {
                       key={slot.start}
                       onClick={() => handleSlotClick(slot)}
                       disabled={isPastDate || (noHoursLeft && !booked) || (isSuspended && !mine)}
-                      className={`p-4 border rounded-xl transition-colors flex items-center justify-between ${
+                      className={`p-4 border rounded-sm transition-colors flex items-center justify-between ${
                         mine
                           ? 'border-green-600 bg-green-600/10 text-green-500'
                           : booked
-                          ? 'border-white/[0.06] bg-white/[0.02] text-stone-500 cursor-not-allowed'
+                          ? 'border-white/[0.06] bg-white/[0.02] text-ink-500 cursor-not-allowed'
                           : isPastDate || noHoursLeft || isSuspended
-                          ? 'border-white/[0.06] text-stone-600 cursor-not-allowed'
-                          : 'border-white/[0.08] hover:border-amber-600 hover:bg-amber-600/5'
+                          ? 'border-white/[0.06] text-ink-600 cursor-not-allowed'
+                          : 'border-white/[0.08] hover:border-accent-600 hover:bg-accent-600/5'
                       }`}
                     >
                       <div className="flex items-center gap-2">
                         <Clock className="w-4 h-4" />
-                        <span className="font-light text-sm">
+                        <span className="text-sm">
                           {formatTimeRange(slot.start, slot.end)}
                         </span>
                       </div>
@@ -703,19 +703,19 @@ export default function StudioBookingPage() {
 
         {/* My Bookings Sidebar */}
         <div>
-          <div className="rounded-2xl border border-white/[0.08] p-6">
-            <h3 className="text-lg font-light mb-6">Your Upcoming Bookings</h3>
+          <div className="rounded-sm border border-white/[0.08] p-6">
+            <h3 className="text-lg mb-6">Your Upcoming Bookings</h3>
 
             {myBookings.length === 0 ? (
-              <p className="text-stone-400 font-light text-sm">No upcoming bookings</p>
+              <p className="text-ink-400 text-sm">No upcoming bookings</p>
             ) : (
               <div className="space-y-4">
                 {myBookings.map(booking => (
-                  <div key={booking.id} className="rounded-xl border border-white/[0.08] p-4">
+                  <div key={booking.id} className="rounded-sm border border-white/[0.08] p-4">
                     <div className="flex items-start justify-between mb-2">
                       <div>
-                        <h4 className="font-light">{booking.studio_name}</h4>
-                        <p className="text-sm text-stone-400 font-light">
+                        <h4 className="">{booking.studio_name}</h4>
+                        <p className="text-sm text-ink-400">
                           {new Date(booking.date + 'T12:00:00').toLocaleDateString('en-US', {
                             timeZone: 'America/Los_Angeles',
                             weekday: 'short',
@@ -726,18 +726,18 @@ export default function StudioBookingPage() {
                       </div>
                       <button
                         onClick={() => initiateCancelBooking(booking)}
-                        className="text-stone-500 hover:text-red-500 transition-colors"
+                        className="text-ink-500 hover:text-red-500 transition-colors"
                         title="Cancel booking"
                       >
                         <X className="w-4 h-4" />
                       </button>
                     </div>
-                    <div className="flex items-center gap-2 text-amber-600 text-sm font-light mb-2">
+                    <div className="flex items-center gap-2 text-accent-600 text-sm mb-2">
                       <Clock className="w-4 h-4" />
                       {formatTimeRange(booking.start_time, booking.end_time)}
                     </div>
                     {booking.purpose && (
-                      <p className="text-xs text-stone-500 mt-1 font-light">{booking.purpose}</p>
+                      <p className="text-xs text-ink-500 mt-1">{booking.purpose}</p>
                     )}
                     <a
                       href={generateAddToCalendarLink({
@@ -749,7 +749,7 @@ export default function StudioBookingPage() {
                       })}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-xs text-stone-500 hover:text-amber-600 transition-colors mt-2"
+                      className="flex items-center gap-1 text-xs text-ink-500 hover:text-accent-600 transition-colors mt-2"
                     >
                       <CalendarPlus className="w-3 h-3" />
                       Add to Calendar
@@ -761,8 +761,8 @@ export default function StudioBookingPage() {
 
             {/* Cancellation Policy Notice */}
             <div className="mt-6 pt-6 border-t border-white/[0.08]">
-              <p className="text-xs text-stone-500 font-light leading-relaxed">
-                <span className="text-stone-400">Cancellation Policy:</span><br />
+              <p className="text-xs text-ink-500 leading-relaxed">
+                <span className="text-ink-400">Cancellation Policy:</span><br />
                 24h+ notice: hours restored<br />
                 6–24h notice: hours forfeited, no penalty<br />
                 Under 6h: hours forfeited + strike<br />
@@ -772,15 +772,15 @@ export default function StudioBookingPage() {
           </div>
 
           {/* Studio Info */}
-          <div className="rounded-2xl border border-white/[0.08] p-6 mt-6">
-            <h3 className="text-lg font-light mb-4">Studio Hours (PST)</h3>
-            <div className="space-y-2 text-sm font-light text-stone-400">
+          <div className="rounded-sm border border-white/[0.08] p-6 mt-6">
+            <h3 className="text-lg mb-4">Studio Hours (PST)</h3>
+            <div className="space-y-2 text-sm text-ink-400">
               <p>Monday – Friday: 9:00 AM – 9:00 PM</p>
               <p>Saturday: 10:00 AM – 8:00 PM</p>
-              <p className="text-stone-600">Sunday: Closed</p>
+              <p className="text-ink-600">Sunday: Closed</p>
             </div>
             <div className="border-t border-white/[0.08] mt-4 pt-4">
-              <p className="text-xs text-stone-500 font-light">
+              <p className="text-xs text-ink-500">
                 2-hour booking slots • {monthlyStudioHours}h/month allocation • Resets on the 1st
               </p>
             </div>
@@ -791,12 +791,12 @@ export default function StudioBookingPage() {
       {/* Cancel Confirmation Dialog */}
       {cancelState && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-950 rounded-2xl border border-white/[0.08] p-6 max-w-md w-full">
+          <div className="bg-ink-950 rounded-sm border border-white/[0.08] p-6 max-w-md w-full">
             <div className="flex items-start gap-3 mb-4">
-              <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+              <AlertTriangle className="w-5 h-5 text-accent-600 flex-shrink-0 mt-0.5" />
               <div>
-                <h2 className="text-lg font-light mb-1">Cancel Booking?</h2>
-                <p className="text-stone-400 font-light text-sm">
+                <h2 className="text-lg mb-1">Cancel Booking?</h2>
+                <p className="text-ink-400 text-sm">
                   {cancelState.booking.studio_name} • {new Date(cancelState.booking.date + 'T12:00:00').toLocaleDateString('en-US', {
                     timeZone: 'America/Los_Angeles', weekday: 'short', month: 'short', day: 'numeric'
                   })} • {formatTimeRange(cancelState.booking.start_time, cancelState.booking.end_time)}
@@ -804,11 +804,11 @@ export default function StudioBookingPage() {
               </div>
             </div>
 
-            <div className={`p-3 mb-6 text-sm font-light border rounded-xl ${
+            <div className={`p-3 mb-6 text-sm border rounded-sm ${
               cancelState.hoursUntil >= 24
                 ? 'border-green-600/30 bg-green-600/5 text-green-400'
                 : cancelState.hoursUntil >= 6
-                ? 'border-amber-600/30 bg-amber-600/5 text-amber-400'
+                ? 'border-accent-600/30 bg-accent-600/5 text-accent-400'
                 : 'border-red-600/30 bg-red-600/5 text-red-400'
             }`}>
               {cancelState.hoursUntil >= 24
@@ -821,14 +821,14 @@ export default function StudioBookingPage() {
             <div className="flex gap-3">
               <button
                 onClick={() => setCancelState(null)}
-                className="flex-1 border border-white/10 py-2 text-sm font-light hover:bg-white/[0.06] transition-colors rounded-full"
+                className="flex-1 border border-white/10 py-2 text-sm hover:bg-white/[0.06] transition-colors rounded-sm"
               >
                 Keep Booking
               </button>
               <button
                 onClick={confirmCancelBooking}
                 disabled={isCancelling}
-                className="flex-1 bg-red-600 text-white py-2 text-sm font-light hover:bg-red-700 transition-colors disabled:opacity-50 rounded-full"
+                className="flex-1 bg-red-600 text-white py-2 text-sm hover:bg-red-700 transition-colors disabled:opacity-50 rounded-sm"
               >
                 {isCancelling ? 'Cancelling...' : 'Yes, Cancel'}
               </button>
@@ -840,29 +840,29 @@ export default function StudioBookingPage() {
       {/* Booking Modal */}
       {showBookingModal && selectedSlot && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-950 rounded-2xl border border-white/[0.08] p-8 max-w-md w-full">
+          <div className="bg-ink-950 rounded-sm border border-white/[0.08] p-8 max-w-md w-full">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-light">Confirm Booking</h2>
+              <h2 className="text-2xl">Confirm Booking</h2>
               <button
                 onClick={() => {
                   setShowBookingModal(false);
                   setSelectedSlot(null);
                   setBookingPurpose('');
                 }}
-                className="text-stone-400 hover:text-stone-100"
+                className="text-ink-400 hover:text-ink-100"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
 
             <div className="space-y-4 mb-8">
-              <div className="rounded-xl border border-white/[0.08] p-4">
-                <div className="text-sm text-stone-400 font-light mb-1">Studio</div>
-                <div className="font-light">{selectedStudio.name}</div>
+              <div className="rounded-sm border border-white/[0.08] p-4">
+                <div className="text-sm text-ink-400 mb-1">Studio</div>
+                <div className="">{selectedStudio.name}</div>
               </div>
-              <div className="rounded-xl border border-white/[0.08] p-4">
-                <div className="text-sm text-stone-400 font-light mb-1">Date</div>
-                <div className="font-light">
+              <div className="rounded-sm border border-white/[0.08] p-4">
+                <div className="text-sm text-ink-400 mb-1">Date</div>
+                <div className="">
                   {selectedDate.toLocaleDateString('en-US', {
                     timeZone: 'America/Los_Angeles',
                     weekday: 'long',
@@ -872,19 +872,19 @@ export default function StudioBookingPage() {
                   })}
                 </div>
               </div>
-              <div className="rounded-xl border border-white/[0.08] p-4">
-                <div className="text-sm text-stone-400 font-light mb-1">Time (PST)</div>
-                <div className="font-light">{formatTimeRange(selectedSlot.start, selectedSlot.end)}</div>
+              <div className="rounded-sm border border-white/[0.08] p-4">
+                <div className="text-sm text-ink-400 mb-1">Time (PST)</div>
+                <div className="">{formatTimeRange(selectedSlot.start, selectedSlot.end)}</div>
               </div>
-              <div className="rounded-xl border border-white/[0.08] p-4">
-                <div className="text-sm text-stone-400 font-light mb-1">Hours</div>
-                <div className="font-light">
-                  This booking uses <span className="text-amber-600">{HOURS_PER_BOOKING}h</span> of your monthly allocation
-                  <span className="text-stone-500 text-sm ml-2">({hoursRemaining - HOURS_PER_BOOKING}h remaining after)</span>
+              <div className="rounded-sm border border-white/[0.08] p-4">
+                <div className="text-sm text-ink-400 mb-1">Hours</div>
+                <div className="">
+                  This booking uses <span className="text-accent-600">{HOURS_PER_BOOKING}h</span> of your monthly allocation
+                  <span className="text-ink-500 text-sm ml-2">({hoursRemaining - HOURS_PER_BOOKING}h remaining after)</span>
                 </div>
               </div>
               <div>
-                <label className="text-sm text-stone-400 font-light mb-2 block">
+                <label className="text-sm text-ink-400 mb-2 block">
                   Purpose (optional)
                 </label>
                 <input
@@ -892,10 +892,10 @@ export default function StudioBookingPage() {
                   value={bookingPurpose}
                   onChange={(e) => setBookingPurpose(e.target.value)}
                   placeholder="Recording session, mixing, etc."
-                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors rounded-xl"
+                  className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors rounded-sm"
                 />
               </div>
-              <p className="text-xs text-stone-500 font-light">
+              <p className="text-xs text-ink-500">
                 Cancellations must be made 24+ hours in advance to restore hours.
               </p>
             </div>
@@ -907,14 +907,14 @@ export default function StudioBookingPage() {
                   setSelectedSlot(null);
                   setBookingPurpose('');
                 }}
-                className="flex-1 border border-white/10 py-3 text-sm font-light hover:border-white/20 transition-colors rounded-full"
+                className="flex-1 border border-white/10 py-3 text-sm hover:border-white/20 transition-colors rounded-sm"
               >
                 Cancel
               </button>
               <button
                 onClick={handleBooking}
                 disabled={isSubmitting}
-                className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light hover:opacity-90 transition-opacity disabled:opacity-50 rounded-full"
+                className="flex-1 bg-accent-500 text-ink-950 py-3 text-sm hover:opacity-90 transition-opacity disabled:opacity-50 rounded-sm"
               >
                 {isSubmitting ? 'Booking...' : 'Confirm Booking'}
               </button>

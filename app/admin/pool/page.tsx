@@ -134,8 +134,8 @@ export default function AdminPoolPage() {
     <div className="max-w-7xl">
       <div className="flex items-center justify-between mb-10">
         <div>
-          <h1 className="text-4xl font-light mb-2">The Pool - Projects</h1>
-          <p className="text-stone-400 font-light">
+          <h1 className="text-4xl mb-2">The Pool - Projects</h1>
+          <p className="text-ink-400">
             Review and manage member-submitted projects
             {pendingCount > 0 && (
               <span className="ml-2 text-yellow-500">({pendingCount} pending review)</span>
@@ -150,15 +150,15 @@ export default function AdminPoolPage() {
           <button
             key={status}
             onClick={() => setFilter(status)}
-            className={`px-4 py-2 text-sm font-light transition-colors ${
+            className={`px-4 py-2 text-sm transition-colors ${
               filter === status
-                ? 'text-amber-600 border-b-2 border-amber-600'
-                : 'text-stone-400 hover:text-amber-600'
+                ? 'text-accent-600 border-b-2 border-accent-600'
+                : 'text-ink-400 hover:text-accent-600'
             }`}
           >
             {status === 'all' ? 'All' : statusLabels[status] || status}
             {status === 'pending' && pendingCount > 0 && (
-              <span className="ml-1 text-xs bg-yellow-500 text-stone-950 px-2 py-0.5 rounded-full">
+              <span className="ml-1 text-xs bg-yellow-500 text-ink-950 px-2 py-0.5 rounded-sm">
                 {pendingCount}
               </span>
             )}
@@ -167,13 +167,13 @@ export default function AdminPoolPage() {
       </div>
 
       {/* Projects Table */}
-      <div className="rounded-2xl border border-white/[0.08]">
+      <div className="rounded-sm border border-white/[0.08]">
         {isLoading ? (
           <div className="p-8 text-center">
             <div className="inline-block h-12 w-12 bg-white/[0.08] rounded-full animate-pulse" />
           </div>
         ) : filteredProjects.length === 0 ? (
-          <div className="p-12 text-center text-stone-400 font-light">
+          <div className="p-12 text-center text-ink-400">
             No projects found
           </div>
         ) : (
@@ -181,22 +181,22 @@ export default function AdminPoolPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/[0.06]">
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Project
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Creator
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Category
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Funding Goal
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Status
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-light text-stone-400 uppercase tracking-wide">
+                  <th className="px-6 py-4 text-left text-xs text-ink-400 uppercase tracking-wide">
                     Actions
                   </th>
                 </tr>
@@ -209,24 +209,24 @@ export default function AdminPoolPage() {
                   >
                     <td className="px-6 py-4">
                       <div className="max-w-xs">
-                        <div className="font-light truncate">{project.title}</div>
-                        <div className="text-xs text-stone-500 truncate">{project.tagline}</div>
+                        <div className="truncate">{project.title}</div>
+                        <div className="text-xs text-ink-500 truncate">{project.tagline}</div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm font-light">{project.creator?.name || 'Unknown'}</div>
-                      <div className="text-xs text-stone-500">{project.creator?.tier}</div>
+                      <div className="text-sm">{project.creator?.name || 'Unknown'}</div>
+                      <div className="text-xs text-ink-500">{project.creator?.tier}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-xs bg-white/[0.08] text-stone-300 px-3 py-1 font-light rounded-full">
+                      <span className="text-xs bg-white/[0.08] text-ink-300 px-3 py-1 rounded-sm">
                         {project.category}
                       </span>
                     </td>
-                    <td className="px-6 py-4 font-light">
+                    <td className="px-6 py-4">
                       ${project.funding_goal?.toLocaleString()}
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`text-xs px-3 py-1 border font-light ${statusColors[project.status] || ''}`}>
+                      <span className={`text-xs px-3 py-1 border ${statusColors[project.status] || ''}`}>
                         {statusLabels[project.status] || project.status}
                       </span>
                     </td>
@@ -237,7 +237,7 @@ export default function AdminPoolPage() {
                             setSelectedProject(project);
                             setShowDetailModal(true);
                           }}
-                          className="p-2 text-stone-400 hover:text-amber-600 transition-colors"
+                          className="p-2 text-ink-400 hover:text-accent-600 transition-colors"
                           title="View Details"
                         >
                           <Eye className="w-4 h-4" />
@@ -246,14 +246,14 @@ export default function AdminPoolPage() {
                           <>
                             <button
                               onClick={() => updateProjectStatus(project.id, 'active')}
-                              className="p-2 text-stone-400 hover:text-green-500 transition-colors"
+                              className="p-2 text-ink-400 hover:text-green-500 transition-colors"
                               title="Approve"
                             >
                               <Check className="w-4 h-4" />
                             </button>
                             <button
                               onClick={() => updateProjectStatus(project.id, 'rejected')}
-                              className="p-2 text-stone-400 hover:text-red-500 transition-colors"
+                              className="p-2 text-ink-400 hover:text-red-500 transition-colors"
                               title="Reject"
                             >
                               <X className="w-4 h-4" />
@@ -273,12 +273,12 @@ export default function AdminPoolPage() {
       {/* Project Detail Modal */}
       {showDetailModal && selectedProject && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-stone-950 rounded-2xl border border-white/[0.08] p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-ink-950 rounded-sm border border-white/[0.08] p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-light">Project Details</h2>
+              <h2 className="text-2xl">Project Details</h2>
               <button
                 onClick={() => setShowDetailModal(false)}
-                className="text-stone-400 hover:text-stone-100"
+                className="text-ink-400 hover:text-ink-100"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -286,47 +286,47 @@ export default function AdminPoolPage() {
 
             <div className="space-y-6">
               <div>
-                <span className={`text-xs px-3 py-1 border font-light ${statusColors[selectedProject.status] || ''}`}>
+                <span className={`text-xs px-3 py-1 border ${statusColors[selectedProject.status] || ''}`}>
                   {statusLabels[selectedProject.status] || selectedProject.status}
                 </span>
               </div>
 
               <div>
-                <h3 className="text-xl font-light mb-1">{selectedProject.title}</h3>
-                <p className="text-amber-600 font-light">{selectedProject.tagline}</p>
+                <h3 className="text-xl mb-1">{selectedProject.title}</h3>
+                <p className="text-accent-600">{selectedProject.tagline}</p>
               </div>
 
-              <div className="rounded-xl border border-white/[0.08] p-4">
-                <h4 className="text-sm text-stone-400 font-light mb-2">Creator</h4>
-                <div className="font-light">{selectedProject.creator?.name}</div>
-                <div className="text-sm text-stone-500">{selectedProject.creator?.email}</div>
-                <div className="text-xs text-amber-600 mt-1">{selectedProject.creator?.tier} tier</div>
+              <div className="rounded-sm border border-white/[0.08] p-4">
+                <h4 className="text-sm text-ink-400 mb-2">Creator</h4>
+                <div className="">{selectedProject.creator?.name}</div>
+                <div className="text-sm text-ink-500">{selectedProject.creator?.email}</div>
+                <div className="text-xs text-accent-600 mt-1">{selectedProject.creator?.tier} tier</div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="rounded-xl border border-white/[0.08] p-4">
-                  <h4 className="text-sm text-stone-400 font-light mb-2">Funding Goal</h4>
-                  <div className="text-xl font-light text-amber-600">
+                <div className="rounded-sm border border-white/[0.08] p-4">
+                  <h4 className="text-sm text-ink-400 mb-2">Funding Goal</h4>
+                  <div className="text-xl text-accent-600">
                     ${selectedProject.funding_goal?.toLocaleString()}
                   </div>
                 </div>
-                <div className="rounded-xl border border-white/[0.08] p-4">
-                  <h4 className="text-sm text-stone-400 font-light mb-2">Category</h4>
-                  <div className="font-light">{selectedProject.category}</div>
+                <div className="rounded-sm border border-white/[0.08] p-4">
+                  <h4 className="text-sm text-ink-400 mb-2">Category</h4>
+                  <div className="">{selectedProject.category}</div>
                 </div>
               </div>
 
-              <div className="rounded-xl border border-white/[0.08] p-4">
-                <h4 className="text-sm text-stone-400 font-light mb-2">Description</h4>
-                <p className="font-light text-stone-300 whitespace-pre-wrap">
+              <div className="rounded-sm border border-white/[0.08] p-4">
+                <h4 className="text-sm text-ink-400 mb-2">Description</h4>
+                <p className="text-ink-300 whitespace-pre-wrap">
                   {selectedProject.description}
                 </p>
               </div>
 
               {selectedProject.expected_completion && (
-                <div className="rounded-xl border border-white/[0.08] p-4">
-                  <h4 className="text-sm text-stone-400 font-light mb-2">Expected Completion</h4>
-                  <div className="font-light">
+                <div className="rounded-sm border border-white/[0.08] p-4">
+                  <h4 className="text-sm text-ink-400 mb-2">Expected Completion</h4>
+                  <div className="">
                     {new Date(selectedProject.expected_completion).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',
@@ -336,7 +336,7 @@ export default function AdminPoolPage() {
                 </div>
               )}
 
-              <div className="text-xs text-stone-500">
+              <div className="text-xs text-ink-500">
                 Submitted on{' '}
                 {new Date(selectedProject.created_at).toLocaleDateString('en-US', {
                   year: 'numeric',
@@ -350,14 +350,14 @@ export default function AdminPoolPage() {
                 <div className="flex gap-4 pt-4 border-t border-white/[0.08]">
                   <button
                     onClick={() => updateProjectStatus(selectedProject.id, 'active')}
-                    className="flex-1 bg-green-600 text-white py-3 text-sm font-light hover:bg-green-700 transition-colors flex items-center justify-center gap-2 rounded-full"
+                    className="flex-1 bg-green-600 text-white py-3 text-sm hover:bg-green-700 transition-colors flex items-center justify-center gap-2 rounded-sm"
                   >
                     <Check className="w-4 h-4" />
                     Approve & Make Live
                   </button>
                   <button
                     onClick={() => updateProjectStatus(selectedProject.id, 'rejected')}
-                    className="flex-1 border border-red-600 text-red-500 py-3 text-sm font-light hover:bg-red-600 hover:text-white transition-colors flex items-center justify-center gap-2 rounded-full"
+                    className="flex-1 border border-red-600 text-red-500 py-3 text-sm hover:bg-red-600 hover:text-white transition-colors flex items-center justify-center gap-2 rounded-sm"
                   >
                     <X className="w-4 h-4" />
                     Reject
@@ -368,7 +368,7 @@ export default function AdminPoolPage() {
               {selectedProject.status === 'active' && (
                 <div className="pt-4 border-t border-white/[0.08]">
                   <Link href={`/dashboard/the-pool/projects/${selectedProject.id}`}>
-                    <button className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light hover:opacity-90 transition-opacity rounded-full">
+                    <button className="w-full bg-accent-500 text-ink-950 py-3 text-sm hover:opacity-90 transition-opacity rounded-sm">
                       View Public Project Page
                     </button>
                   </Link>

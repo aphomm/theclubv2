@@ -63,26 +63,26 @@ export default function LoginPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-light mb-2">Welcome Back</h1>
-        <p className="text-stone-400 font-light">Sign in to your account</p>
+        <h1 className="text-3xl mb-2">Welcome Back</h1>
+        <p className="text-ink-400">Sign in to your account</p>
       </div>
 
       <form onSubmit={handleLogin} className="space-y-6">
         <div>
-          <label className="block text-sm font-light mb-2">Email Address</label>
+          <label className="block text-sm mb-2">Email Address</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your@email.com"
-            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
+            className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 transition-colors rounded-sm"
           />
         </div>
 
         <div>
           <div className="flex justify-between items-center mb-2">
-            <label className="block text-sm font-light">Password</label>
-            <Link href="/auth/forgot-password" className="text-xs text-amber-600 hover:underline">
+            <label className="block text-sm">Password</label>
+            <Link href="/auth/forgot-password" className="text-xs text-accent-600 hover:underline">
               Forgot password?
             </Link>
           </div>
@@ -92,12 +92,12 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 transition-colors rounded-xl"
+              className="w-full bg-white/[0.04] border border-white/10 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 transition-colors rounded-sm"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3.5 text-stone-500 hover:text-amber-600"
+              className="absolute right-3 top-3.5 text-ink-500 hover:text-accent-600"
             >
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
@@ -107,16 +107,16 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 py-3 text-sm font-light tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed rounded-full"
+          className="w-full bg-accent-500 text-ink-950 py-3 text-sm tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed rounded-sm"
         >
           {isLoading ? 'Signing in...' : 'Sign In'}
         </button>
       </form>
 
       <div className="mt-8 text-center">
-        <p className="text-stone-400 text-sm font-light">
+        <p className="text-ink-400 text-sm">
           Don't have an account?{' '}
-          <Link href="/auth/signup" className="text-amber-600 hover:underline">
+          <Link href="/auth/signup" className="text-accent-600 hover:underline">
             Create one
           </Link>
         </p>

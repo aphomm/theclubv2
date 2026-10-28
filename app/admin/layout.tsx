@@ -51,10 +51,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (authStatus === 'loading') {
     return (
-      <div className="min-h-screen bg-stone-950 flex items-center justify-center">
+      <div className="min-h-screen bg-ink-950 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-8 h-8 text-amber-600 animate-spin" />
-          <p className="text-stone-400 font-light text-sm tracking-wide">Verifying admin access...</p>
+          <Loader2 className="w-8 h-8 text-accent-600 animate-spin" />
+          <p className="text-ink-400 text-sm tracking-wide">Verifying admin access...</p>
         </div>
       </div>
     );
@@ -62,16 +62,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (authStatus === 'denied') {
     return (
-      <div className="min-h-screen bg-stone-950 text-stone-100 flex items-center justify-center">
+      <div className="min-h-screen bg-ink-950 text-ink-100 flex items-center justify-center">
         <div className="text-center max-w-md px-6">
-          <div className="text-6xl font-light text-red-500 mb-6">401</div>
-          <h1 className="text-3xl font-light mb-4">Access Denied</h1>
-          <p className="text-stone-400 font-light mb-8">You don't have permission to access the admin panel.</p>
+          <div className="text-6xl text-red-500 mb-6">401</div>
+          <h1 className="text-3xl mb-4">Access Denied</h1>
+          <p className="text-ink-400 mb-8">You don't have permission to access the admin panel.</p>
           <div className="flex items-center justify-center gap-4">
-            <Link href="/dashboard" className="border border-amber-600 text-amber-600 px-8 py-3 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors rounded-full">
+            <Link href="/dashboard" className="border border-accent-600 text-accent-600 px-8 py-3 text-sm hover:bg-accent-600 hover:text-ink-950 transition-colors rounded-sm">
               Go to Dashboard
             </Link>
-            <a href="mailto:support@icwt.com" className="text-sm text-stone-400 hover:text-amber-600 transition-colors font-light">
+            <a href="mailto:support@icwt.com" className="text-sm text-ink-400 hover:text-accent-600 transition-colors">
               Contact Support
             </a>
           </div>
@@ -81,16 +81,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100">
-      <header className="border-b border-white/10 bg-stone-950">
+    <div className="min-h-screen bg-ink-950 text-ink-100">
+      <header className="border-b border-white/10 bg-ink-950">
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
           <Link href="/admin">
-            <div className="text-xl font-light tracking-extra-wide cursor-pointer hover:text-amber-600 transition-colors">
-              <span className="text-stone-100">IC</span><span className="text-amber-600">WT</span>
-              <span className="text-stone-500 text-sm ml-2">ADMIN</span>
+            <div className="text-xl font-serif uppercase leading-none tracking-tight cursor-pointer hover:text-accent-600 transition-colors">
+              ICWT<span className="text-signal">.</span>
+              <span className="text-ink-500 text-sm ml-2">ADMIN</span>
             </div>
           </Link>
-          <button onClick={handleLogout} className="flex items-center gap-2 text-stone-400 hover:text-red-500 transition-colors text-sm font-light">
+          <button onClick={handleLogout} className="flex items-center gap-2 text-ink-400 hover:text-red-500 transition-colors text-sm">
             <LogOut className="w-5 h-5" />
             Logout
           </button>
@@ -104,7 +104,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               const Icon = item.icon;
               return (
                 <Link key={item.href} href={item.href}>
-                  <div className="flex items-center gap-3 px-4 py-3 text-sm font-light text-stone-400 hover:text-stone-100 hover:bg-white/[0.04] cursor-pointer transition-colors rounded-xl">
+                  <div className="flex items-center gap-3 px-4 py-3 text-sm text-ink-400 hover:text-ink-100 hover:bg-white/[0.04] cursor-pointer transition-colors rounded-sm">
                     <Icon className="w-5 h-5" />
                     {item.label}
                   </div>

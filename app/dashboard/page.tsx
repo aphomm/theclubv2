@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { Calendar, Users, Music, TrendingUp } from 'lucide-react';
 
 // Monthly studio hour allocation per tier
 const TIER_STUDIO_HOURS: Record<string, number> = {
@@ -128,36 +127,35 @@ export default function DashboardPage() {
     fetchDashboardData();
   }, []);
 
-  const StatCard = ({ icon: Icon, label, value }: any) => (
-    <div className="rounded-2xl border border-white/[0.08] p-6 hover:border-amber-600/40 hover:bg-white/[0.02] transition-colors">
-      <div className="flex items-start justify-between mb-4">
-        <Icon className="w-6 h-6 text-amber-600" />
-        <div className="text-3xl font-light text-amber-600">{value}</div>
-      </div>
-      <p className="text-sm text-stone-400 font-light">{label}</p>
+  const StatCard = ({ label, value }: any) => (
+    <div className="bg-ink-950 p-6">
+      <p className="font-mono text-[11px] uppercase tracking-wider text-ink-500 mb-6">{label}</p>
+      <div className="font-serif text-5xl leading-none">{value}</div>
     </div>
   );
 
   return (
     <div className="max-w-7xl">
       <div className="mb-12">
-        <h1 className="text-4xl font-light mb-2">Welcome back{profileName ? `, ${profileName.split(' ')[0]}` : ''}</h1>
-        <p className="text-stone-400 font-light">Here's what's happening at ICWT</p>
+        <h1 className="text-4xl mb-2">Welcome back{profileName ? `, ${profileName.split(' ')[0]}` : ''}</h1>
+        <p className="font-mono text-xs uppercase tracking-wider text-ink-500">
+          {new Date().toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles', weekday: 'long', month: 'long', day: 'numeric' })}
+        </p>
       </div>
 
       {/* Quick Stats */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <StatCard icon={Calendar} label="Events RSVP'd" value={stats.eventsRsvpd} />
-        <StatCard icon={Music} label="Studio Hours" value={`${stats.studioHoursAvailable}h`} />
-        <StatCard icon={Users} label="Network Connections" value={stats.networkConnections} />
-        <StatCard icon={TrendingUp} label="Active Pool Projects" value={stats.activePoolProjects} />
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-ink-800 border border-ink-800 mb-12">
+        <StatCard label="Events RSVP'd" value={stats.eventsRsvpd} />
+        <StatCard label="Studio hours left" value={`${stats.studioHoursAvailable}h`} />
+        <StatCard label="Network" value={stats.networkConnections} />
+        <StatCard label="Active Pool projects" value={stats.activePoolProjects} />
       </div>
 
       {/* Upcoming Events */}
-      <div className="rounded-2xl border border-white/[0.08] p-8">
+      <div className="rounded-sm border border-white/[0.08] p-8">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-light">Upcoming Events</h2>
-          <a href="/dashboard/events" className="text-sm text-amber-600 hover:underline font-light">
+          <h2 className="text-2xl">Upcoming Events</h2>
+          <a href="/dashboard/events" className="text-sm text-accent-600 hover:underline">
             View All
           </a>
         </div>
@@ -165,13 +163,13 @@ export default function DashboardPage() {
         {isLoading ? (
           <div className="space-y-4">
             {[1, 2, 3].map(i => (
-              <div key={i} className="h-20 bg-white/[0.04] animate-pulse rounded-xl" />
+              <div key={i} className="h-20 bg-white/[0.04] animate-pulse rounded-sm" />
             ))}
           </div>
         ) : upcomingEvents.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-stone-400 font-light">No upcoming events scheduled</p>
-            <a href="/dashboard/events" className="text-amber-600 hover:underline text-sm font-light mt-2 inline-block">
+            <p className="text-ink-400">No upcoming events scheduled</p>
+            <a href="/dashboard/events" className="text-accent-600 hover:underline text-sm mt-2 inline-block">
               Browse all events
             </a>
           </div>
@@ -180,11 +178,11 @@ export default function DashboardPage() {
             {upcomingEvents.map(event => (
               <div
                 key={event.id}
-                className="rounded-xl border border-white/[0.08] p-4 hover:border-amber-600/60 hover:bg-white/[0.02] transition-colors flex items-center justify-between"
+                className="rounded-sm border border-white/[0.08] p-4 hover:border-accent-600/60 hover:bg-white/[0.02] transition-colors flex items-center justify-between"
               >
                 <div>
-                  <h3 className="font-light text-lg">{event.title}</h3>
-                  <p className="text-sm text-stone-400 font-light">
+                  <h3 className="text-lg">{event.title}</h3>
+                  <p className="text-sm text-ink-400">
                     {new Date(event.date + 'T12:00:00').toLocaleDateString('en-US', {
                       timeZone: 'America/Los_Angeles',
                       weekday: 'short',
@@ -195,11 +193,11 @@ export default function DashboardPage() {
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="text-right">
-                    <div className="text-sm text-amber-600 font-light">{event.capacity} spots</div>
-                    <div className="text-xs text-stone-400">Available</div>
+                    <div className="text-sm text-accent-600">{event.capacity} spots</div>
+                    <div className="text-xs text-ink-400">Available</div>
                   </div>
                   <a href={`/dashboard/events/${event.id}`}>
-                    <button className="border border-amber-600 text-amber-600 px-6 py-2 text-sm font-light hover:bg-amber-600 hover:text-stone-950 transition-colors rounded-full">
+                    <button className="border border-accent-600 text-accent-600 px-6 py-2 text-sm hover:bg-accent-600 hover:text-ink-950 transition-colors rounded-sm">
                       RSVP
                     </button>
                   </a>
@@ -212,29 +210,29 @@ export default function DashboardPage() {
 
       {/* Studio Bookings Preview */}
       <div className="grid md:grid-cols-2 gap-8 mt-12">
-        <div className="rounded-2xl border border-white/[0.08] p-8">
+        <div className="rounded-sm border border-white/[0.08] p-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-light">Studio Bookings</h2>
-            <a href="/dashboard/studio" className="text-sm text-amber-600 hover:underline font-light">
+            <h2 className="text-xl">Studio Bookings</h2>
+            <a href="/dashboard/studio" className="text-sm text-accent-600 hover:underline">
               Book Now
             </a>
           </div>
-          <p className="text-stone-400 font-light text-sm">
-            You have <span className="text-amber-600">{stats.studioHoursAvailable}h</span> available this month
+          <p className="text-ink-400 text-sm">
+            You have <span className="text-accent-600">{stats.studioHoursAvailable}h</span> available this month
             {stats.studioHoursUsed > 0 && (
               <span> ({stats.studioHoursUsed}h used)</span>
             )}. Book your recording sessions.
           </p>
         </div>
 
-        <div className="rounded-2xl border border-white/[0.08] p-8">
+        <div className="rounded-sm border border-white/[0.08] p-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-light">The Pool</h2>
-            <a href="/dashboard/the-pool" className="text-sm text-amber-600 hover:underline font-light">
+            <h2 className="text-xl">The Pool</h2>
+            <a href="/dashboard/the-pool" className="text-sm text-accent-600 hover:underline">
               View
             </a>
           </div>
-          <p className="text-stone-400 font-light text-sm">
+          <p className="text-ink-400 text-sm">
             Explore collaborative projects and investment opportunities.
           </p>
         </div>

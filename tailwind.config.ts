@@ -10,8 +10,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        serif: ['var(--font-cormorant)', 'Georgia', 'serif'],
+        sans: ['var(--font-archivo)', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-archivo)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-plex-mono)', 'ui-monospace', 'monospace'],
       },
       letterSpacing: {
         'extra-wide': '0.1em',
@@ -26,11 +27,20 @@ const config: Config = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
-      boxShadow: {
-        'card': '0 10px 40px 0 rgba(217, 119, 6, 0.08)',
-        'premium': '0 20px 60px 0 rgba(217, 119, 6, 0.15)',
-      },
       colors: {
+        ink: {
+          100: '#ECECE8',
+          200: '#D7D7D2',
+          300: '#B6B6B0',
+          400: '#8F8F89',
+          500: '#6C6C67',
+          600: '#4E4E4A',
+          700: '#353533',
+          800: '#232322',
+          900: '#161615',
+          950: '#0A0A0A',
+        },
+        signal: '#E8492E',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -56,6 +66,11 @@ const config: Config = {
         accent: {
           DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))',
+          400: '#FBF8F1',
+          500: '#F2EDE2',
+          600: '#E8E1D1',
+          700: '#CBC2AD',
+          950: '#1B1915',
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',

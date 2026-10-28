@@ -6,12 +6,11 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-ink-950 text-ink-100 flex items-center justify-center px-6">
       <div className="w-full max-w-md">
         <Link href="/">
-          <div className="text-2xl font-light tracking-extra-wide mb-12 text-center cursor-pointer hover:text-amber-600 transition-colors">
-            <span className="text-stone-100">IC</span>
-            <span className="text-amber-600">WT</span>
+          <div className="text-2xl font-serif uppercase leading-none tracking-tight mb-12 text-center cursor-pointer hover:text-accent-600 transition-colors">
+            ICWT<span className="text-signal">.</span>
           </div>
         </Link>
         {children}

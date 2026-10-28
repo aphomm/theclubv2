@@ -93,8 +93,8 @@ export default function EventsPage() {
   return (
     <div className="max-w-6xl">
       <div className="mb-10">
-        <h1 className="text-4xl font-light mb-2">Upcoming Events</h1>
-        <p className="text-stone-400 font-light">Connect, learn, and collaborate with members</p>
+        <h1 className="text-4xl mb-2">Upcoming Events</h1>
+        <p className="text-ink-400">Connect, learn, and collaborate with members</p>
       </div>
 
       {/* Filter Tabs */}
@@ -103,10 +103,10 @@ export default function EventsPage() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-4 py-2 text-sm font-light transition-colors ${
+            className={`px-4 py-2 text-sm transition-colors ${
               filter === f
-                ? 'text-amber-600 border-b-2 border-amber-600 pb-4'
-                : 'text-stone-400 hover:text-amber-600'
+                ? 'text-accent-600 border-b-2 border-accent-600 pb-4'
+                : 'text-ink-400 hover:text-accent-600'
             }`}
           >
             {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -118,20 +118,20 @@ export default function EventsPage() {
       {isLoading ? (
         <div className="space-y-6">
           {[1, 2, 3].map(i => (
-            <div key={i} className="rounded-2xl border border-white/[0.08] p-8">
-              <div className="h-6 bg-white/[0.06] rounded-full w-1/4 mb-4 animate-pulse" />
-              <div className="h-8 bg-white/[0.06] rounded-full w-1/2 mb-4 animate-pulse" />
-              <div className="h-4 bg-white/[0.06] rounded-full w-3/4 animate-pulse" />
+            <div key={i} className="rounded-sm border border-white/[0.08] p-8">
+              <div className="h-6 bg-white/[0.06] rounded-sm w-1/4 mb-4 animate-pulse" />
+              <div className="h-8 bg-white/[0.06] rounded-sm w-1/2 mb-4 animate-pulse" />
+              <div className="h-4 bg-white/[0.06] rounded-sm w-3/4 animate-pulse" />
             </div>
           ))}
         </div>
       ) : events.length === 0 ? (
-        <div className="text-center py-20 rounded-2xl border border-amber-600/20 bg-amber-600/[0.03] p-12">
-          <div className="w-16 h-16 rounded-full border border-amber-600/20 flex items-center justify-center mx-auto mb-6">
-            <Calendar className="w-7 h-7 text-amber-600/40" />
+        <div className="text-center py-20 rounded-sm border border-accent-600/20 bg-accent-600/[0.03] p-12">
+          <div className="w-16 h-16 rounded-sm border border-accent-600/20 flex items-center justify-center mx-auto mb-6">
+            <Calendar className="w-7 h-7 text-accent-600/40" />
           </div>
-          <h3 className="text-xl font-light font-serif mb-3">No Events Scheduled</h3>
-          <p className="text-stone-500 font-light text-sm max-w-xs mx-auto">
+          <h3 className="text-xl font-serif mb-3">No Events Scheduled</h3>
+          <p className="text-ink-500 text-sm max-w-xs mx-auto">
             Exclusive masterclasses, studio sessions, and networking events are added regularly. Check back soon.
           </p>
         </div>
@@ -139,20 +139,20 @@ export default function EventsPage() {
         <div className="space-y-6">
           {events.map(event => (
             <Link key={event.id} href={`/dashboard/events/${event.id}`}>
-              <div className="rounded-2xl border border-white/[0.08] hover:border-amber-600/60 transition-all cursor-pointer hover:bg-white/[0.03] flex overflow-hidden min-h-[160px]">
+              <div className="rounded-sm border border-white/[0.08] hover:border-accent-600/60 transition-all cursor-pointer hover:bg-white/[0.03] flex overflow-hidden min-h-[160px]">
                 {/* Left: main content */}
                 <div className="flex-1 p-8">
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="text-xs bg-amber-600/20 text-amber-600 px-3 py-1 font-light uppercase tracking-wide rounded-full">
+                    <span className="text-xs bg-accent-600/20 text-accent-600 px-3 py-1 uppercase tracking-wide rounded-sm">
                       {event.event_type}
                     </span>
                   </div>
-                  <h3 className="text-2xl font-light mb-2">{event.title}</h3>
-                  <p className="text-stone-400 font-light line-clamp-2 mb-4">{event.description}</p>
+                  <h3 className="text-2xl mb-2">{event.title}</h3>
+                  <p className="text-ink-400 line-clamp-2 mb-4">{event.description}</p>
 
                   <div className="grid md:grid-cols-3 gap-6 pt-4 border-t border-white/5">
-                    <div className="flex items-center gap-2 text-sm text-stone-300 font-light">
-                      <Calendar className="w-4 h-4 text-amber-600" />
+                    <div className="flex items-center gap-2 text-sm text-ink-300">
+                      <Calendar className="w-4 h-4 text-accent-600" />
                       {new Date(event.date).toLocaleDateString('en-US', {
                         weekday: 'short',
                         month: 'short',
@@ -161,12 +161,12 @@ export default function EventsPage() {
                       {' at '}
                       {event.time}
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-stone-300 font-light">
-                      <MapPin className="w-4 h-4 text-amber-600" />
+                    <div className="flex items-center gap-2 text-sm text-ink-300">
+                      <MapPin className="w-4 h-4 text-accent-600" />
                       {event.location}
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-stone-300 font-light">
-                      <Users className="w-4 h-4 text-amber-600" />
+                    <div className="flex items-center gap-2 text-sm text-ink-300">
+                      <Users className="w-4 h-4 text-accent-600" />
                       <span className={event.remainingSpots === 0 ? 'text-red-500' : ''}>
                         {event.remainingSpots === 0
                           ? 'Full'
@@ -178,7 +178,7 @@ export default function EventsPage() {
                   {(event.instructor_name || event.external_rsvp_url) && (
                     <div className="flex items-center justify-between mt-4">
                       {event.instructor_name && (
-                        <div className="text-sm text-amber-600 font-light">Hosted by {event.instructor_name}</div>
+                        <div className="text-sm text-accent-600">Hosted by {event.instructor_name}</div>
                       )}
                       {event.external_rsvp_url && (
                         <a
@@ -186,7 +186,7 @@ export default function EventsPage() {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="flex items-center gap-1 text-xs text-amber-600 hover:underline"
+                          className="flex items-center gap-1 text-xs text-accent-600 hover:underline"
                         >
                           <ExternalLink className="w-3 h-3" />
                           External RSVP
@@ -205,9 +205,9 @@ export default function EventsPage() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-stone-900 to-stone-950 flex flex-col items-center justify-center gap-3">
-                      <div className="w-10 h-10 rounded-full border border-amber-600/20 flex items-center justify-center">
-                        <Calendar className="w-4 h-4 text-amber-600/40" />
+                    <div className="w-full h-full bg-ink-900 flex flex-col items-center justify-center gap-3">
+                      <div className="w-10 h-10 rounded-sm border border-accent-600/20 flex items-center justify-center">
+                        <Calendar className="w-4 h-4 text-accent-600/40" />
                       </div>
                     </div>
                   )}

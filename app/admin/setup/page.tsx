@@ -61,23 +61,23 @@ export default function AdminSetupPage() {
 
   if (adminExists === null) {
     return (
-      <div className="min-h-screen bg-stone-950 flex items-center justify-center">
-        <Loader2 className="w-6 h-6 text-amber-600 animate-spin" />
+      <div className="min-h-screen bg-ink-950 flex items-center justify-center">
+        <Loader2 className="w-6 h-6 text-accent-600 animate-spin" />
       </div>
     );
   }
 
   if (adminExists) {
     return (
-      <div className="min-h-screen bg-stone-950 text-stone-100 flex items-center justify-center px-6">
+      <div className="min-h-screen bg-ink-950 text-ink-100 flex items-center justify-center px-6">
         <div className="text-center max-w-md">
-          <Shield className="w-12 h-12 text-amber-600 mx-auto mb-6" />
-          <h1 className="text-2xl font-light mb-4">Admin Already Configured</h1>
-          <p className="text-stone-400 font-light text-sm mb-8">
+          <Shield className="w-12 h-12 text-accent-600 mx-auto mb-6" />
+          <h1 className="text-2xl mb-4">Admin Already Configured</h1>
+          <p className="text-ink-400 text-sm mb-8">
             An admin account already exists for this platform.
           </p>
           <Link href="/admin">
-            <button className="bg-amber-600 text-stone-950 px-8 py-3 text-sm font-light hover:bg-amber-700 transition-colors">
+            <button className="bg-accent-600 text-ink-950 px-8 py-3 text-sm hover:bg-accent-700 transition-colors">
               Go to Admin Panel
             </button>
           </Link>
@@ -87,51 +87,50 @@ export default function AdminSetupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-100 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-ink-950 text-ink-100 flex items-center justify-center px-6">
       <div className="w-full max-w-md">
-        <div className="text-2xl font-light tracking-extra-wide mb-12 text-center">
-          <span className="text-stone-100">IC</span>
-          <span className="text-amber-600">WT</span>
-          <span className="text-stone-400 text-base ml-2">Admin Setup</span>
+        <div className="text-2xl font-serif uppercase leading-none tracking-tight mb-12 text-center">
+          ICWT<span className="text-signal">.</span>
+          <span className="text-ink-400 text-base ml-2">Admin Setup</span>
         </div>
 
-        <div className="border border-stone-800 p-8">
+        <div className="border border-ink-800 p-8">
           <div className="flex items-center gap-3 mb-6">
-            <Shield className="w-6 h-6 text-amber-600" />
-            <h1 className="text-xl font-light">First-Run Admin Setup</h1>
+            <Shield className="w-6 h-6 text-accent-600" />
+            <h1 className="text-xl">First-Run Admin Setup</h1>
           </div>
-          <p className="text-stone-400 font-light text-sm mb-8">
+          <p className="text-ink-400 text-sm mb-8">
             No admin exists yet. Enter your account email and the setup passphrase to become the platform admin. This can only be done once.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="text-sm text-stone-400 font-light mb-2 block">Your Account Email</label>
+              <label className="text-sm text-ink-400 mb-2 block">Your Account Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                className="w-full bg-transparent border border-ink-700 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors"
                 required
               />
             </div>
             <div>
-              <label className="text-sm text-stone-400 font-light mb-2 block">Setup Passphrase</label>
+              <label className="text-sm text-ink-400 mb-2 block">Setup Passphrase</label>
               <input
                 type="password"
                 value={passphrase}
                 onChange={(e) => setPassphrase(e.target.value)}
                 placeholder="Enter setup passphrase"
-                className="w-full bg-transparent border border-stone-700 px-4 py-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600 transition-colors"
+                className="w-full bg-transparent border border-ink-700 px-4 py-3 text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-accent-600 transition-colors"
                 required
               />
-              <p className="text-xs text-stone-500 mt-1">Set via ADMIN_SETUP_PASSPHRASE environment variable</p>
+              <p className="text-xs text-ink-500 mt-1">Set via ADMIN_SETUP_PASSPHRASE environment variable</p>
             </div>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-amber-600 text-stone-950 py-3 text-sm font-light hover:bg-amber-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
+              className="w-full bg-accent-600 text-ink-950 py-3 text-sm hover:bg-accent-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
             >
               {isSubmitting ? (
                 <><Loader2 className="w-4 h-4 animate-spin" /> Setting up...</>

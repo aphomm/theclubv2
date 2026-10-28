@@ -1,15 +1,15 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter, Cormorant } from 'next/font/google';
+import { Archivo, IBM_Plex_Mono } from 'next/font/google';
 import { Toaster } from 'sonner';
 
-const inter = Inter({ subsets: ['latin'], weight: ['300', '400', '500', '600'], variable: '--font-inter' });
-const cormorant = Cormorant({
+const archivo = Archivo({
   subsets: ['latin'],
-  weight: ['300', '400', '500'],
+  axes: ['wdth'],
   style: ['normal', 'italic'],
-  variable: '--font-cormorant',
+  variable: '--font-archivo',
 });
+const plexMono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-plex-mono' });
 
 export const metadata: Metadata = {
   title: 'ICWT - In Culture We Trust',
@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} ${cormorant.variable} font-sans antialiased`}>
+      <body className={`${archivo.variable} ${plexMono.variable} font-sans antialiased`}>
         {children}
         <Toaster position="top-right" theme="dark" />
       </body>
