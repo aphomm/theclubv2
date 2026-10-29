@@ -77,7 +77,7 @@ function SearchPageContent() {
 
     const [membersResult, eventsResult, projectsResult, resourcesResult] = await Promise.all([
       supabase
-        .from('users')
+        .from('member_profiles')
         .select('id, name, role, tier, location')
         .eq('status', 'active')
         .or(`name.ilike.${searchTerm},role.ilike.${searchTerm},location.ilike.${searchTerm}`)

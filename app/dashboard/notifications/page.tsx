@@ -109,7 +109,7 @@ export default function NotificationsPage() {
 
       if (unreadPartnerIds.length > 0) {
         const { data: users } = await supabase
-          .from('users')
+          .from('member_profiles')
           .select('id, name, role, tier')
           .in('id', unreadPartnerIds);
 

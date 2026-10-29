@@ -70,7 +70,7 @@ export default function MemberProfilePage() {
 
       // Fetch user profile
       const { data: profileData } = await supabase
-        .from('users')
+        .from('member_profiles')
         .select('*')
         .eq('id', params.id)
         .maybeSingle();

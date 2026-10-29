@@ -86,7 +86,7 @@ export default function MessagesPage() {
       }
 
       const { data: users } = await supabase
-        .from('users')
+        .from('member_profiles')
         .select('id, name, role, tier')
         .in('id', partnerIds);
 

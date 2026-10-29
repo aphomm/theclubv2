@@ -31,7 +31,7 @@ export default function DirectoryPage() {
 
       const supabase = createClient(supabaseUrl, supabaseKey);
 
-      let query = supabase.from('users').select('*').eq('status', 'active');
+      let query = supabase.from('member_profiles').select('*').eq('status', 'active');
 
       if (filterTier !== 'all') {
         query = query.eq('tier', filterTier);

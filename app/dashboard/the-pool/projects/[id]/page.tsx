@@ -184,7 +184,7 @@ export default function ProjectDetailPage() {
 
       // Fetch creator
       const { data: creatorData } = await supabase
-        .from('users')
+        .from('member_profiles')
         .select('id, name, role, tier, bio')
         .eq('id', projectData.creator_id)
         .maybeSingle();

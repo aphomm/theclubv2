@@ -59,7 +59,8 @@ const generateAddToCalendarLink = (booking: {
 
 interface Booking {
   id: string;
-  user_id: string;
+  user_id?: string;
+  is_mine?: boolean;
   studio_name: string;
   date: string;
   start_time: string;
@@ -174,12 +175,11 @@ export default function StudioBookingPage() {
 
       const [allBookingsResult, userBookingsResult, monthlyBookingsResult] = await Promise.all([
         supabase
-          .from('studio_bookings')
+          .from('studio_booked_slots')
           .select('*')
           .eq('studio_name', selectedStudio.name)
           .gte('date', formatDatePST(startOfViewMonth))
-          .lte('date', formatDatePST(endOfViewMonth))
-          .not('status', 'in', '("cancelled","cancelled_late")'),
+          .lte('date', formatDatePST(endOfViewMonth)),
 
         supabase
           .from('studio_bookings')
@@ -232,14 +232,14 @@ export default function StudioBookingPage() {
   const isSlotBooked = (slot: TimeSlot, date: Date) => {
     const dateStr = formatDatePST(date);
     return bookings.some(
-      b => b.date === dateStr && b.start_time === slot.start && b.studio_name === selectedStudio.name
+      b => b.date === dateStr && b.start_time.slice(0, 5) === slot.start && b.studio_name === selectedStudio.name
     );
   };
 
   const isMyBooking = (slot: TimeSlot, date: Date) => {
     const dateStr = formatDatePST(date);
     return bookings.some(
-      b => b.date === dateStr && b.start_time === slot.start && b.user_id === userId
+      b => b.date === dateStr && b.start_time.slice(0, 5) === slot.start && (b.is_mine || b.user_id === userId)
     );
   };
 
@@ -357,12 +357,11 @@ export default function StudioBookingPage() {
 
       const [allBookingsResult, userBookingsResult, monthlyBookingsResult] = await Promise.all([
         supabase
-          .from('studio_bookings')
+          .from('studio_booked_slots')
           .select('*')
           .eq('studio_name', selectedStudio.name)
           .gte('date', formatDatePST(startOfViewMonth))
-          .lte('date', formatDatePST(endOfViewMonth))
-          .not('status', 'in', '("cancelled","cancelled_late")'),
+          .lte('date', formatDatePST(endOfViewMonth)),
 
         supabase
           .from('studio_bookings')

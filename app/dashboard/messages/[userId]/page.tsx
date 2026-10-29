@@ -63,7 +63,7 @@ export default function ConversationPage() {
 
       // Fetch partner profile
       const { data: partnerData } = await supabase
-        .from('users')
+        .from('member_profiles')
         .select('*')
         .eq('id', partnerId)
         .maybeSingle();
