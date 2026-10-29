@@ -34,6 +34,22 @@ export function getOAuthClient() {
   );
 }
 
+// The admin whose Google account holds the studio calendar.
+export async function findCalendarAdminId(): Promise<string | null> {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+  const { data } = await supabase
+    .from('users')
+    .select('id')
+    .eq('status', 'admin')
+    .not('google_refresh_token', 'is', null)
+    .limit(1)
+    .maybeSingle();
+  return data?.id ?? null;
+}
+
 export async function getAdminCalendarClient(adminUserId: string) {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

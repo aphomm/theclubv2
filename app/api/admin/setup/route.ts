@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { safeEqual } from '@/lib/server-auth';
 
 export async function POST(request: NextRequest) {
   try {
     const { email, passphrase } = await request.json();
 
     const expectedPassphrase = process.env.ADMIN_SETUP_PASSPHRASE;
-    if (!expectedPassphrase || passphrase !== expectedPassphrase) {
+    if (!expectedPassphrase || typeof passphrase !== 'string' || typeof email !== 'string' || !safeEqual(passphrase, expectedPassphrase)) {
       return NextResponse.json({ error: 'Invalid passphrase' }, { status: 401 });
     }
 
@@ -19,13 +20,15 @@ export async function POST(request: NextRequest) {
     const supabase = createClient(supabaseUrl, serviceRoleKey);
 
     // Check if any admin already exists
-    const { data: existingAdmin } = await supabase
+    const { count: adminCount, error: adminCheckError } = await supabase
       .from('users')
-      .select('id')
-      .eq('status', 'admin')
-      .maybeSingle();
+      .select('id', { count: 'exact', head: true })
+      .eq('status', 'admin');
 
-    if (existingAdmin) {
+    if (adminCheckError) {
+      return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    }
+    if ((adminCount ?? 0) > 0) {
       return NextResponse.json({ error: 'An admin already exists' }, { status: 409 });
     }
 

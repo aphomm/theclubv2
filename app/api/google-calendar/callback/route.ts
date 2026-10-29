@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 import { getOAuthClient } from '@/lib/google-calendar';
+import { createServiceClient, isAdmin, verifyState } from '@/lib/server-auth';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -12,6 +12,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL('/admin?calendar=error', request.url));
   }
 
+  const adminId = verifyState(state);
+  if (!adminId || !(await isAdmin(adminId))) {
+    return NextResponse.redirect(new URL('/admin?calendar=error', request.url));
+  }
+
   try {
     const oauth2Client = getOAuthClient();
     const { tokens } = await oauth2Client.getToken(code);
@@ -20,10 +25,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL('/admin?calendar=error', request.url));
     }
 
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabase = createServiceClient();
 
     await supabase.from('users').update({
       google_access_token: tokens.access_token,
@@ -31,7 +33,7 @@ export async function GET(request: NextRequest) {
       google_token_expiry: tokens.expiry_date
         ? new Date(tokens.expiry_date).toISOString()
         : null,
-    }).eq('id', state);
+    }).eq('id', adminId);
 
     return NextResponse.redirect(new URL('/admin?calendar=connected', request.url));
   } catch (err) {

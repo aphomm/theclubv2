@@ -1,35 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import { getAdminCalendarClient, createBookingEvent, deleteBookingEvent } from '@/lib/google-calendar';
+import { getAdminCalendarClient, createBookingEvent, deleteBookingEvent, findCalendarAdminId } from '@/lib/google-calendar';
+import { createServiceClient, getRequestUser, isAdmin } from '@/lib/server-auth';
 
 export async function POST(request: NextRequest) {
   try {
-    const { bookingId, action, adminUserId } = await request.json() as {
+    const user = await getRequestUser(request);
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { bookingId, action } = await request.json() as {
       bookingId: string;
       action: 'create' | 'delete';
-      adminUserId: string;
     };
 
-    if (!bookingId || !action || !adminUserId) {
+    if (!bookingId || (action !== 'create' && action !== 'delete')) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabase = createServiceClient();
+
+    const { data: booking, error: bookingError } = await supabase
+      .from('studio_bookings')
+      .select('*, users(name, email)')
+      .eq('id', bookingId)
+      .maybeSingle();
+
+    if (bookingError || !booking) {
+      return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+    }
+
+    // Only the booking's owner or an admin can sync it
+    if (booking.user_id !== user.id && !(await isAdmin(user.id))) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    const adminUserId = await findCalendarAdminId();
+    if (!adminUserId) {
+      return NextResponse.json({ success: false, message: 'Calendar not connected' });
+    }
 
     if (action === 'create') {
-      const { data: booking, error: bookingError } = await supabase
-        .from('studio_bookings')
-        .select('*, users(name, email)')
-        .eq('id', bookingId)
-        .single();
-
-      if (bookingError || !booking) {
-        return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+      if (booking.google_event_id) {
+        return NextResponse.json({ success: true, eventId: booking.google_event_id });
       }
-
       const calendarClient = await getAdminCalendarClient(adminUserId);
       const eventId = await createBookingEvent(calendarClient, {
         id: booking.id,
@@ -46,27 +58,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, eventId });
     }
 
-    if (action === 'delete') {
-      const { data: booking } = await supabase
-        .from('studio_bookings')
-        .select('google_event_id')
-        .eq('id', bookingId)
-        .single();
-
-      if (!booking?.google_event_id) {
-        return NextResponse.json({ success: true, message: 'No calendar event to delete' });
-      }
-
-      const calendarClient = await getAdminCalendarClient(adminUserId);
-      await deleteBookingEvent(calendarClient, booking.google_event_id);
-      await supabase.from('studio_bookings').update({ google_event_id: null }).eq('id', bookingId);
-      return NextResponse.json({ success: true });
+    if (!booking.google_event_id) {
+      return NextResponse.json({ success: true, message: 'No calendar event to delete' });
     }
 
-    return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'Internal server error';
+    const calendarClient = await getAdminCalendarClient(adminUserId);
+    await deleteBookingEvent(calendarClient, booking.google_event_id);
+    await supabase.from('studio_bookings').update({ google_event_id: null }).eq('id', bookingId);
+    return NextResponse.json({ success: true });
+  } catch (err) {
     console.error('Sync booking error:', err);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -4,19 +4,11 @@ import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId, tier, email } = await request.json();
+    const { userId } = await request.json();
 
-    if (!userId || !tier || !email) {
+    if (!userId) {
       return NextResponse.json(
-        { error: 'Missing required fields: userId, tier, email' },
-        { status: 400 }
-      );
-    }
-
-    const tierConfig = TIER_PRICES[tier];
-    if (!tierConfig) {
-      return NextResponse.json(
-        { error: 'Invalid tier' },
+        { error: 'Missing required field: userId' },
         { status: 400 }
       );
     }
@@ -29,13 +21,30 @@ export async function POST(request: NextRequest) {
     const token = authHeader.replace('Bearer ', '');
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (supabaseUrl && supabaseServiceKey) {
-      const authClient = createClient(supabaseUrl, supabaseServiceKey);
-      const { data: { user: authUser }, error: authError } = await authClient.auth.getUser(token);
-      if (authError || !authUser || authUser.id !== userId) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-      }
+    if (!supabaseUrl || !supabaseServiceKey) {
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
     }
+    const authClient = createClient(supabaseUrl, supabaseServiceKey);
+    const { data: { user: authUser }, error: authError } = await authClient.auth.getUser(token);
+    if (authError || !authUser || authUser.id !== userId || !authUser.email) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Charge for the tier on file, not whatever the client sends
+    const { data: profile } = await authClient
+      .from('users')
+      .select('tier')
+      .eq('id', userId)
+      .maybeSingle();
+    const tier = profile?.tier as string | undefined;
+    const tierConfig = tier ? TIER_PRICES[tier] : undefined;
+    if (!tier || !tierConfig) {
+      return NextResponse.json(
+        { error: 'Invalid tier' },
+        { status: 400 }
+      );
+    }
+    const email = authUser.email;
 
     // If payment bypass is enabled, skip Stripe and activate membership directly
     if (shouldBypassPayment()) {
