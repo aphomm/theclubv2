@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { createClient } from '@supabase/supabase-js';
 
 export default function LandingPage() {
   const [email, setEmail] = useState('');
@@ -13,27 +12,21 @@ export default function LandingPage() {
     if (!email) return;
     setIsSubmitting(true);
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-    if (!supabaseUrl || !supabaseKey) {
-      toast.error('Please configure Supabase credentials');
-      setIsSubmitting(false);
-      return;
-    }
-
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    const { error } = await supabase.from('waitlist').insert([{ email }]);
-
-    if (error) {
-      if (error.code === '23505') {
-        toast.error('This email is already on the waitlist');
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        toast.success('Successfully joined the waitlist!');
+        setEmail('');
       } else {
-        toast.error('Something went wrong. Please try again.');
+        toast.error(data.error || 'Something went wrong. Please try again.');
       }
-    } else {
-      toast.success('Successfully joined the waitlist!');
-      setEmail('');
+    } catch {
+      toast.error('Something went wrong. Please try again.');
     }
     setIsSubmitting(false);
   };

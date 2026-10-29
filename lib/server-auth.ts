@@ -58,3 +58,28 @@ export function verifyState(state: string): string | null {
   if (Date.now() - Number(issuedAt) > STATE_TTL_MS) return null;
   return userId;
 }
+
+export function clientIp(request: NextRequest): string {
+  return (
+    request.headers.get('x-real-ip') ||
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    'unknown'
+  );
+}
+
+// Shared limiter backed by the hit_rate_limit() Postgres function, so limits hold
+// across serverless instances. Fails open if the database call errors, so an outage
+// there can't lock members out; the per-instance middleware limiter still applies.
+export async function isRateLimited(key: string, max: number, windowSeconds: number): Promise<boolean> {
+  try {
+    const { data, error } = await createServiceClient().rpc('hit_rate_limit', {
+      p_key: key,
+      p_max: max,
+      p_window_seconds: windowSeconds,
+    });
+    if (error) return false;
+    return data === false;
+  } catch {
+    return false;
+  }
+}

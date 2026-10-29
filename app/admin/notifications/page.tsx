@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { Bell, Plus, Trash2, Edit2, ExternalLink, Users } from 'lucide-react';
 import { toast } from 'sonner';
+import { safeUrl } from '@/lib/safe-url';
 
 interface PlatformNotification {
   id: string;
@@ -394,7 +395,7 @@ export default function AdminNotificationsPage() {
                         </div>
                         {notif.action_url && (
                           <a
-                            href={notif.action_url}
+                            href={safeUrl(notif.action_url)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-1 text-accent-600 hover:underline"

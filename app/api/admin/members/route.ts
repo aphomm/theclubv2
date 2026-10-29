@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { isRateLimited } from '@/lib/server-auth';
 
 function createServiceClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -31,6 +32,9 @@ export async function POST(request: NextRequest) {
   try {
     const adminId = await verifyAdmin(request);
     if (!adminId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (await isRateLimited(`admin-members:${adminId}`, 120, 60)) {
+      return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
+    }
 
     const body = await request.json();
     const { action, memberId, data } = body as {

@@ -6,6 +6,7 @@ import {
   FileText, Video, Download, ExternalLink, File, Star,
   Briefcase, Scale, Mic2, TrendingUp, Share2, Music, LayoutGrid, BookOpen,
 } from 'lucide-react';
+import { safeUrl } from '@/lib/safe-url';
 
 interface Resource {
   id: string;
@@ -85,8 +86,9 @@ export default function ResourcesPage() {
   };
 
   const handleResourceClick = (resource: Resource) => {
-    if (resource.file_url) {
-      window.open(resource.file_url, '_blank', 'noopener,noreferrer');
+    const url = safeUrl(resource.file_url);
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
     }
   };
 

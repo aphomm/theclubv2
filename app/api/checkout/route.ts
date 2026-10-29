@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe, TIER_PRICES, isStripeConfigured, shouldBypassPayment } from '@/lib/stripe';
 import { createClient } from '@supabase/supabase-js';
+import { isRateLimited } from '@/lib/server-auth';
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,6 +29,10 @@ export async function POST(request: NextRequest) {
     const { data: { user: authUser }, error: authError } = await authClient.auth.getUser(token);
     if (authError || !authUser || authUser.id !== userId || !authUser.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    if (await isRateLimited(`checkout:${userId}`, 5, 10 * 60)) {
+      return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
     }
 
     // Charge for the tier on file, not whatever the client sends

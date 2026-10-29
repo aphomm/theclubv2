@@ -320,7 +320,13 @@ export default function StudioBookingPage() {
 
     if (error) {
       console.error('Studio booking error:', error);
-      toast.error(`Failed to book studio: ${error.message || error.code || 'Unknown error'}`);
+      if (error.code === '23505') {
+        toast.error('That slot was just booked by someone else. Pick another time.');
+      } else if (error.code === 'P0001' && error.message) {
+        toast.error(error.message);
+      } else {
+        toast.error('Failed to book studio. Please try again.');
+      }
     } else {
       toast.success('Studio booked successfully!');
 

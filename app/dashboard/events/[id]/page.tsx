@@ -6,6 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 import { ArrowLeft, Calendar, MapPin, Users, Share2, CheckCircle, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { safeUrl } from '@/lib/safe-url';
 
 interface Event {
   id: string;
@@ -310,7 +311,7 @@ export default function EventDetailPage() {
               This event is managed through an external ticketing platform.
             </p>
             <a
-              href={event.external_rsvp_url}
+              href={safeUrl(event.external_rsvp_url)}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full bg-accent-500 text-ink-950 py-4 text-sm tracking-wide hover:opacity-90 transition-opacity rounded-sm flex items-center justify-center gap-2"

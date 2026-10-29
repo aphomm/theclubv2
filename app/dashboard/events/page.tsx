@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { Calendar, MapPin, Users, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
+import { safeUrl } from '@/lib/safe-url';
 
 // Helper to get current date in PST
 const getPSTDate = () => {
@@ -180,9 +181,9 @@ export default function EventsPage() {
                       {event.instructor_name && (
                         <div className="text-sm text-accent-600">Hosted by {event.instructor_name}</div>
                       )}
-                      {event.external_rsvp_url && (
+                      {safeUrl(event.external_rsvp_url) && (
                         <a
-                          href={event.external_rsvp_url}
+                          href={safeUrl(event.external_rsvp_url)}
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}

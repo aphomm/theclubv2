@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminCalendarClient, createBookingEvent, deleteBookingEvent, findCalendarAdminId } from '@/lib/google-calendar';
-import { createServiceClient, getRequestUser, isAdmin } from '@/lib/server-auth';
+import { createServiceClient, getRequestUser, isAdmin, isRateLimited } from '@/lib/server-auth';
 
 export async function POST(request: NextRequest) {
   try {
     const user = await getRequestUser(request);
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (await isRateLimited(`calendar-sync:${user.id}`, 30, 60)) {
+      return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
+    }
 
     const { bookingId, action } = await request.json() as {
       bookingId: string;

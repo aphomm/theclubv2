@@ -85,7 +85,7 @@ export default function DashboardPage() {
           .gte('date', today)
           .order('date')
           .limit(5),
-        supabase.from('users').select('id', { count: 'exact' }),
+        supabase.from('users').select('id', { count: 'exact', head: true }),
         supabase.from('pool_projects').select('*').eq('status', 'active').limit(5),
         // Fetch user's studio bookings for current month
         supabase

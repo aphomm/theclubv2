@@ -8,7 +8,7 @@ import Link from 'next/link';
 interface Conversation {
   id: string;
   name: string;
-  email: string;
+  email?: string;
   role?: string;
   tier: string;
   lastMessage?: string;
@@ -87,7 +87,7 @@ export default function MessagesPage() {
 
       const { data: users } = await supabase
         .from('users')
-        .select('id, name, email, role, tier')
+        .select('id, name, role, tier')
         .in('id', partnerIds);
 
       const conversationsData: Conversation[] = (users || []).map(u => {
@@ -95,7 +95,6 @@ export default function MessagesPage() {
         return {
           id: u.id,
           name: u.name,
-          email: u.email,
           role: u.role,
           tier: u.tier,
           lastMessage: conv.lastMessage,

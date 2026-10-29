@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { isRateLimited } from '@/lib/server-auth';
 
 export async function POST(req: NextRequest) {
   const { bookingId, userId } = await req.json();
@@ -26,6 +27,10 @@ export async function POST(req: NextRequest) {
   const { data: { user }, error: authError } = await supabase.auth.getUser(token);
   if (authError || !user || user.id !== userId) {
     return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+  }
+
+  if (await isRateLimited(`cancel:${userId}`, 10, 5 * 60)) {
+    return NextResponse.json({ success: false, message: 'Too many requests. Please try again later.' }, { status: 429 });
   }
 
   const { data: booking, error: bookingError } = await supabase

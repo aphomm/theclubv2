@@ -19,7 +19,7 @@ interface Message {
 interface UserProfile {
   id: string;
   name: string;
-  email: string;
+  email?: string;
   role?: string;
   tier: string;
   bio?: string;

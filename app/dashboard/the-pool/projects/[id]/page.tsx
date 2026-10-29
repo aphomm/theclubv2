@@ -6,6 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 import { ArrowLeft, Calendar, MapPin, Users, DollarSign, Clock, Play, X, Check, TrendingUp, Share2, FileText, Download, ChevronRight, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { safeUrl } from '@/lib/safe-url';
 
 interface Project {
   id: string;
@@ -435,7 +436,7 @@ export default function ProjectDetailPage() {
             // Default: show link with play button fallback
             return (
               <a
-                href={url}
+                href={safeUrl(url)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full h-full flex flex-col items-center justify-center gap-4 hover:bg-white/[0.04] transition-colors"

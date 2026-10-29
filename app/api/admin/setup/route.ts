@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { safeEqual } from '@/lib/server-auth';
+import { safeEqual, clientIp, isRateLimited } from '@/lib/server-auth';
 
 export async function POST(request: NextRequest) {
+  if (await isRateLimited(`admin-setup:${clientIp(request)}`, 3, 60 * 60)) {
+    return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
+  }
+
   try {
     const { email, passphrase } = await request.json();
 

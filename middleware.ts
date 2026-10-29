@@ -38,7 +38,10 @@ function cleanupExpiredEntries() {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
+  const ip =
+    request.headers.get('x-real-ip') ||
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    'unknown';
 
   // Rate limit sensitive API endpoints
   if (request.method === 'POST') {
@@ -55,6 +58,16 @@ export function middleware(request: NextRequest) {
     // Admin setup: 3 requests per hour per IP
     if (pathname === '/api/admin/setup') {
       if (isRateLimited(ip, '/api/admin/setup', 3, 60 * 60 * 1000)) {
+        return NextResponse.json(
+          { error: 'Too many requests. Please try again later.' },
+          { status: 429 }
+        );
+      }
+    }
+
+    // Waitlist: 10 requests per 10 minutes per IP
+    if (pathname === '/api/waitlist') {
+      if (isRateLimited(ip, '/api/waitlist', 10, 10 * 60 * 1000)) {
         return NextResponse.json(
           { error: 'Too many requests. Please try again later.' },
           { status: 429 }
@@ -82,5 +95,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/checkout', '/api/cancel-booking', '/api/admin/:path*'],
+  matcher: ['/api/checkout', '/api/cancel-booking', '/api/waitlist', '/api/admin/:path*'],
 };

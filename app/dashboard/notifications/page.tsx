@@ -5,6 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 import { Bell, MessageCircle, Megaphone, Check, ExternalLink, Circle, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { safeUrl } from '@/lib/safe-url';
 
 interface Conversation {
   id: string;
@@ -386,9 +387,9 @@ export default function NotificationsPage() {
                         </p>
 
                         <div className="flex items-center gap-4">
-                          {notif.action_url && (
+                          {safeUrl(notif.action_url) && (
                             <a
-                              href={notif.action_url}
+                              href={safeUrl(notif.action_url)}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="flex items-center gap-1 text-xs text-accent-600 hover:underline"
