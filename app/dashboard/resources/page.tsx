@@ -7,6 +7,7 @@ import {
   Briefcase, Scale, Mic2, TrendingUp, Share2, Music, LayoutGrid, BookOpen,
 } from 'lucide-react';
 import { safeUrl } from '@/lib/safe-url';
+import { toast } from 'sonner';
 
 interface Resource {
   id: string;
@@ -85,10 +86,24 @@ export default function ResourcesPage() {
     }
   };
 
-  const handleResourceClick = (resource: Resource) => {
-    const url = safeUrl(resource.file_url);
-    if (url) {
-      window.open(url, '_blank', 'noopener,noreferrer');
+  const handleResourceClick = async (resource: Resource) => {
+    // Open the tab synchronously so popup blockers allow it, then point it at a signed link
+    const tab = window.open('about:blank', '_blank');
+    if (tab) tab.opener = null;
+    try {
+      const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch(`/api/resources/${resource.id}/download`, {
+        headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
+      });
+      const data = await res.json().catch(() => ({}));
+      const url = safeUrl(data.url);
+      if (!res.ok || !url) throw new Error(data.error || 'Unavailable');
+      if (tab) tab.location.href = url;
+      else window.location.href = url;
+    } catch {
+      tab?.close();
+      toast.error('Could not open this resource. Please try again.');
     }
   };
 

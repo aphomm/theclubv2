@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe';
+import { stripe, TIER_PRICES } from '@/lib/stripe';
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
 
@@ -65,25 +65,53 @@ export async function POST(request: NextRequest) {
         const session = event.data.object as Stripe.Checkout.Session;
         const { userId, tier } = session.metadata || {};
 
-        if (userId && tier) {
-          // Update membership with Stripe details
-          await supabase
-            .from('memberships')
-            .update({
-              status: 'active',
-              stripe_subscription_id: session.subscription as string,
-              stripe_customer_id: session.customer as string,
-            })
-            .eq('user_id', userId);
+        if (!userId || !tier) break;
 
-          // Update user status to active
-          await supabase
-            .from('users')
-            .update({ status: 'active' })
-            .eq('id', userId);
-
-          console.log(`Activated membership for user ${userId} with tier ${tier}`);
+        // Only activate for a paid subscription that matches the tier on file
+        if (session.mode !== 'subscription' || session.payment_status !== 'paid') {
+          console.warn(`[stripe] checkout ${session.id} not paid (${session.payment_status}); not activating`);
+          break;
         }
+
+        const { data: profile } = await supabase
+          .from('users')
+          .select('tier')
+          .eq('id', userId)
+          .maybeSingle();
+        const tierConfig = TIER_PRICES[tier];
+        if (!profile || profile.tier !== tier || !tierConfig) {
+          console.error(`[stripe] checkout ${session.id} tier mismatch for user ${userId}; not activating`);
+          break;
+        }
+
+        const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 5 });
+        const paidForTier = lineItems.data.some((item) =>
+          tierConfig.stripePriceId
+            ? item.price?.id === tierConfig.stripePriceId
+            : item.price?.unit_amount === tierConfig.monthly * 100 && item.price?.recurring?.interval === 'month'
+        );
+        if (!paidForTier) {
+          console.error(`[stripe] checkout ${session.id} price does not match ${tier}; not activating`);
+          break;
+        }
+
+        // Update membership with Stripe details
+        await supabase
+          .from('memberships')
+          .update({
+            status: 'active',
+            stripe_subscription_id: session.subscription as string,
+            stripe_customer_id: session.customer as string,
+          })
+          .eq('user_id', userId);
+
+        // Update user status to active
+        await supabase
+          .from('users')
+          .update({ status: 'active' })
+          .eq('id', userId);
+
+        console.log(`Activated membership for user ${userId} with tier ${tier}`);
         break;
       }
 
