@@ -41,13 +41,12 @@ export async function findCalendarAdminId(): Promise<string | null> {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
   const { data } = await supabase
-    .from('users')
-    .select('id')
-    .eq('status', 'admin')
-    .not('google_refresh_token', 'is', null)
+    .from('calendar_credentials')
+    .select('user_id, users!inner(status)')
+    .eq('users.status', 'admin')
     .limit(1)
     .maybeSingle();
-  return data?.id ?? null;
+  return data?.user_id ?? null;
 }
 
 export async function getAdminCalendarClient(adminUserId: string) {
@@ -56,38 +55,39 @@ export async function getAdminCalendarClient(adminUserId: string) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  const { data: adminUser, error } = await supabase
-    .from('users')
-    .select('google_access_token, google_refresh_token, google_token_expiry')
-    .eq('id', adminUserId)
-    .single();
+  const { data: creds, error } = await supabase
+    .from('calendar_credentials')
+    .select('access_token, refresh_token, token_expiry')
+    .eq('user_id', adminUserId)
+    .maybeSingle();
 
-  if (error || !adminUser?.google_refresh_token) {
+  if (error || !creds?.refresh_token) {
     throw new Error('Admin has not connected Google Calendar. Visit /admin to connect.');
   }
 
   const auth = getOAuthClient();
   auth.setCredentials({
-    access_token: adminUser.google_access_token,
-    refresh_token: adminUser.google_refresh_token,
-    expiry_date: adminUser.google_token_expiry
-      ? new Date(adminUser.google_token_expiry).getTime()
+    access_token: creds.access_token,
+    refresh_token: creds.refresh_token,
+    expiry_date: creds.token_expiry
+      ? new Date(creds.token_expiry).getTime()
       : undefined,
   });
 
   const isExpired =
-    !adminUser.google_token_expiry ||
-    new Date(adminUser.google_token_expiry).getTime() < Date.now() + 5 * 60 * 1000;
+    !creds.token_expiry ||
+    new Date(creds.token_expiry).getTime() < Date.now() + 5 * 60 * 1000;
 
   if (isExpired) {
     const { credentials } = await auth.refreshAccessToken();
     auth.setCredentials(credentials);
-    await supabase.from('users').update({
-      google_access_token: credentials.access_token,
-      google_token_expiry: credentials.expiry_date
+    await supabase.from('calendar_credentials').update({
+      access_token: credentials.access_token,
+      token_expiry: credentials.expiry_date
         ? new Date(credentials.expiry_date).toISOString()
         : null,
-    }).eq('id', adminUserId);
+      updated_at: new Date().toISOString(),
+    }).eq('user_id', adminUserId);
   }
 
   return google.calendar({ version: 'v3', auth });

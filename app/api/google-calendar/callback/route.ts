@@ -27,13 +27,15 @@ export async function GET(request: NextRequest) {
 
     const supabase = createServiceClient();
 
-    await supabase.from('users').update({
-      google_access_token: tokens.access_token,
-      google_refresh_token: tokens.refresh_token,
-      google_token_expiry: tokens.expiry_date
+    await supabase.from('calendar_credentials').upsert({
+      user_id: adminId,
+      access_token: tokens.access_token,
+      refresh_token: tokens.refresh_token,
+      token_expiry: tokens.expiry_date
         ? new Date(tokens.expiry_date).toISOString()
         : null,
-    }).eq('id', adminId);
+      updated_at: new Date().toISOString(),
+    });
 
     return NextResponse.redirect(new URL('/admin?calendar=connected', request.url));
   } catch (err) {
